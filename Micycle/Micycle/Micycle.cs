@@ -14,11 +14,18 @@ namespace Micycle
     /// <summary>
     /// This is the main type for your game
     /// </summary>
+    
     public class Micycle : Microsoft.Xna.Framework.Game
     {
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        public SpriteBatch SpriteBatch {
+            get { return spriteBatch; }
+        }
+
         MiScreen activeScreen;
+
 
         public Micycle()
         {
