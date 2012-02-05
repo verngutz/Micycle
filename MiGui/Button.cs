@@ -14,6 +14,11 @@ namespace MiGui
     public delegate void ActionEvent ( Button button );
     public class Button
     {
+        Button Up { set; get; }
+        Button Down { set; get; }
+        Button Left { set; get; }
+        Button Right { set; get; }
+
         public event ActionEvent Pressed;
         protected virtual void OnPressed(EventArgs e)
         {
