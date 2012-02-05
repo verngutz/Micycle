@@ -9,29 +9,20 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using MiUtil;
+
 namespace Micycle
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     
-    public class Micycle : Microsoft.Xna.Framework.Game
+    public class Micycle : MiGame
     {
-        
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        public SpriteBatch SpriteBatch {
-            get { return spriteBatch; }
-        }
-
         MiScreen activeScreen;
-
-
-        public Micycle()
-        {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-        }
+        MiMenuScreen menuScreen;
+        MiGameScreen gameScreen;
+        MiInputProxy inputProxy;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -41,8 +32,25 @@ namespace Micycle
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            activeScreen = new MiMenuScreen();
+            // Initialize input proxy
+            inputProxy = new MiInputProxy(this);
+            Components.Add(inputProxy);
+            // Initialize screens
+            menuScreen = new MiMenuScreen(this);
+            gameScreen = new MiGameScreen(this);
+            Components.Add(menuScreen);
+            Components.Add(gameScreen);
+            
+            // Set the active screen
+            activeScreen = gameScreen;
+            activeScreen.Enabled = true;
+            activeScreen.Visible = true;
+
+            // Set the game resolution
+            MiResolution.Init(ref graphics);
+            MiResolution.SetVirtualResolution(800, 600);
+            MiResolution.SetResolution(800, 600);
+
             base.Initialize();
         }
 
@@ -52,10 +60,8 @@ namespace Micycle
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
             // TODO: use this.Content to load your game content here
+            base.LoadContent();
         }
 
         /// <summary>
@@ -79,7 +85,6 @@ namespace Micycle
                 this.Exit();
 
             // TODO: Add your update logic here
-            activeScreen.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -89,10 +94,8 @@ namespace Micycle
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            MiResolution.BeginDraw();
             // TODO: Add your drawing code here
-            activeScreen.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

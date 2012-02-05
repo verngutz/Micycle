@@ -42,6 +42,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MenuScreen.png">
+      <Name>MenuScreen</Name>
+	  <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <Compile Include="City.png">
       <Name>City</Name>
       <Importer>TextureImporter</Importer>
