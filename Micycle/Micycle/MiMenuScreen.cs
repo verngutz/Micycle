@@ -1,12 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using MiUtil;
 
 namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
         Texture2D background;
-
-        public MiMenuScreen(Micycle game) : base(game) { }
+        public MiMenuScreen(MiGame game) : base(game) { }
 
         protected override void LoadContent()
         {
@@ -16,7 +18,10 @@ namespace Micycle
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            Game.SpriteBatch.Begin();
+            Game.SpriteBatch.Draw(background, MiResolution.BoundingRectangle, Color.White);
             base.Draw(gameTime);
+            Game.SpriteBatch.End();
         }
     }
 }
