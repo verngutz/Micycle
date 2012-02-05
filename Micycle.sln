@@ -2,11 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Micycle", "Micycle\Micycle\Micycle.csproj", "{AF49B8A2-0962-4012-9D33-0CB28259A9A9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8734C993-8822-49CF-9BA5-2562F2832891} = {8734C993-8822-49CF-9BA5-2562F2832891}
-	EndProjectSection
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "MicycleContent", "Micycle\MicycleContent\MicycleContent.contentproj", "{DF1128F2-C12E-480E-9C26-2C17F9D352F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicycleContent", "Micycle\MicycleContent\MicycleContent.contentproj", "{DF1128F2-C12E-480E-9C26-2C17F9D352F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiGui", "MiGui\MiGui.csproj", "{1BF3E18B-9CC8-4AB3-8AE6-AA5FE6497D4C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiUtil", "MiUtil\MiUtil.csproj", "{8734C993-8822-49CF-9BA5-2562F2832891}"
 EndProject
@@ -22,6 +21,10 @@ Global
 		{AF49B8A2-0962-4012-9D33-0CB28259A9A9}.Release|x86.Build.0 = Release|x86
 		{DF1128F2-C12E-480E-9C26-2C17F9D352F6}.Debug|x86.ActiveCfg = Debug|x86
 		{DF1128F2-C12E-480E-9C26-2C17F9D352F6}.Release|x86.ActiveCfg = Release|x86
+		{1BF3E18B-9CC8-4AB3-8AE6-AA5FE6497D4C}.Debug|x86.ActiveCfg = Debug|x86
+		{1BF3E18B-9CC8-4AB3-8AE6-AA5FE6497D4C}.Debug|x86.Build.0 = Debug|x86
+		{1BF3E18B-9CC8-4AB3-8AE6-AA5FE6497D4C}.Release|x86.ActiveCfg = Release|x86
+		{1BF3E18B-9CC8-4AB3-8AE6-AA5FE6497D4C}.Release|x86.Build.0 = Release|x86
 		{8734C993-8822-49CF-9BA5-2562F2832891}.Debug|x86.ActiveCfg = Debug|x86
 		{8734C993-8822-49CF-9BA5-2562F2832891}.Debug|x86.Build.0 = Debug|x86
 		{8734C993-8822-49CF-9BA5-2562F2832891}.Release|x86.ActiveCfg = Release|x86
