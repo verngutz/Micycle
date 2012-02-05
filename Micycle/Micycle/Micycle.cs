@@ -18,6 +18,7 @@ namespace Micycle
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        MiScreen activeScreen;
 
         public Micycle()
         {
@@ -34,7 +35,7 @@ namespace Micycle
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            activeScreen = new MiMenuScreen();
             base.Initialize();
         }
 
@@ -71,7 +72,7 @@ namespace Micycle
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            activeScreen.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -84,7 +85,7 @@ namespace Micycle
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            activeScreen.Draw(gameTime);
             base.Draw(gameTime);
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Micycle
 {
-    class MiScreen : GameComponent
+    class MiScreen : DrawableGameComponent
     {
     }
 }
