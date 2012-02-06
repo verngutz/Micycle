@@ -1,4 +1,6 @@
-﻿namespace MiUtil
+﻿using Microsoft.Xna.Framework;
+
+namespace MiUtil
 {
     public abstract class MiScreen : MiDrawableGameComponent
     {

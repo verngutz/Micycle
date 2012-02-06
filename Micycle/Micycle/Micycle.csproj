@@ -107,9 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MiCommand.cs" />
     <Compile Include="MiGameScreen.cs" />
-    <Compile Include="MiInputProxy.cs" />
     <Compile Include="MiMenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

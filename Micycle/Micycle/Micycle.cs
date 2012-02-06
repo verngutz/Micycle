@@ -19,10 +19,22 @@ namespace Micycle
     
     public class Micycle : MiGame
     {
-        MiScreen activeScreen;
-        MiMenuScreen menuScreen;
-        MiGameScreen gameScreen;
-        MiInputProxy inputProxy;
+        private MiScreen activeScreen;
+        public MiScreen ActiveScreen
+        {
+            set
+            {
+                activeScreen.Enabled = false;
+                activeScreen.Visible = false;
+                activeScreen = value;
+                activeScreen.Enabled = true;
+                activeScreen.Visible = true;
+            }
+        }
+
+        private MiMenuScreen menuScreen;
+        private MiGameScreen gameScreen;
+        private MiInputProxy inputProxy;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -34,15 +46,13 @@ namespace Micycle
         {
             // Initialize input proxy
             inputProxy = new MiInputProxy(this);
-            Components.Add(inputProxy);
+
             // Initialize screens
             menuScreen = new MiMenuScreen(this);
             gameScreen = new MiGameScreen(this);
-            Components.Add(menuScreen);
-            Components.Add(gameScreen);
             
             // Set the active screen
-            activeScreen = gameScreen;
+            activeScreen = menuScreen;
             activeScreen.Enabled = true;
             activeScreen.Visible = true;
 
@@ -60,7 +70,8 @@ namespace Micycle
         /// </summary>
         protected override void LoadContent()
         {
-            // TODO: use this.Content to load your game content here
+            menuScreen.LoadContent();
+            gameScreen.LoadContent();
             base.LoadContent();
         }
 
@@ -84,7 +95,8 @@ namespace Micycle
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            inputProxy.Update(gameTime);
+            activeScreen.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -95,7 +107,14 @@ namespace Micycle
         protected override void Draw(GameTime gameTime)
         {
             MiResolution.BeginDraw();
-            // TODO: Add your drawing code here
+            activeScreen.Draw(gameTime);
+
+            // Draw frame rate
+            SpriteBatch.Begin();
+            int frameRate = (int)(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
+            spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, 575), Color.Black);
+            SpriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

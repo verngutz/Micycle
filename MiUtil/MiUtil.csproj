@@ -92,11 +92,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MiAnimating.cs" />
+    <Compile Include="MiControllerButton.cs" />
     <Compile Include="MiDrawableGameComponent.cs" />
     <Compile Include="MiGame.cs" />
     <Compile Include="MiGameComponent.cs" />
+    <Compile Include="MiInputProxy.cs" />
     <Compile Include="MiResolution.cs" />
     <Compile Include="MiScreen.cs" />
+    <Compile Include="MiControllerState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

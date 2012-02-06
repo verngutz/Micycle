@@ -10,5 +10,10 @@ namespace MiUtil
         {
             Game = game;
         }
+
+        public new virtual void LoadContent()
+        {
+            base.LoadContent();
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace Micycle
 
         public MiGameScreen(MiGame game) : base(game) { }
 
-        protected override void LoadContent()
+        public override void LoadContent()
         {
             factory = Game.Content.Load<Texture2D>("Factory");
             school = Game.Content.Load<Texture2D>("School");
@@ -22,7 +22,8 @@ namespace Micycle
             rnd = Game.Content.Load<Texture2D>("RnD");
             base.LoadContent();
         }
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
+
+        public override void Draw(GameTime gameTime)
         {
             Game.SpriteBatch.Begin();
             Game.SpriteBatch.Draw(school, new Rectangle(250, 250, 100, 100), Color.White );
