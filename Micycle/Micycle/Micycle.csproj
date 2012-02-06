@@ -118,6 +118,10 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\MiGui\MiGui.csproj">
+      <Project>{1BF3E18B-9CC8-4AB3-8AE6-AA5FE6497D4C}</Project>
+      <Name>MiGui</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MiUtil\MiUtil.csproj">
       <Project>{8734C993-8822-49CF-9BA5-2562F2832891}</Project>
       <Name>MiUtil</Name>

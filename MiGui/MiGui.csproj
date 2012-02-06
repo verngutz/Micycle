@@ -92,8 +92,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Button.cs" />
+    <Compile Include="MiButton.cs" />
+    <Compile Include="MiButtonState.cs" />
+    <Compile Include="MiResolution.cs" />
+    <Compile Include="MiScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MiUtil\MiUtil.csproj">
+      <Project>{8734C993-8822-49CF-9BA5-2562F2832891}</Project>
+      <Name>MiUtil</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

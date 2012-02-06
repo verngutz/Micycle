@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace MiUtil
+using MiUtil;
+
+namespace MiGui
 {
     public abstract class MiScreen : MiDrawableGameComponent
     {
@@ -10,7 +12,5 @@ namespace MiUtil
             Enabled = false;
             Visible = false;
         }
-
-        //public abstract void RespondTo(MiCommand command);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 using MiUtil;
+using MiGui;
 
 namespace Micycle
 {

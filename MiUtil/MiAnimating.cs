@@ -12,7 +12,7 @@ namespace MiUtil
     /// </summary>
     public class MiAnimating : MiDrawableGameComponent
     {
-        private Queue<KeyValuePair<Texture2D, int>> spriteQueue;
+        protected Queue<KeyValuePair<Texture2D, int>> spriteQueue;
         private int spriteQueueTimer;
         public bool SpriteQueueLoop { get; set; }
         public bool SpriteQueueEnabled { get; set; }
@@ -27,11 +27,15 @@ namespace MiUtil
         public ulong Time { get; set; }
 
         private Vector2 position;
+        public Vector2 Position { get { return position; } }
+
         private Vector2 rotationPoint;
         private float scale;
         private float rotation;
 
         public MiAnimating(MiGame game) : this(game, 0, 0, 1, 0, 0, 0) { }
+
+        public MiAnimating(MiGame game, float default_x, float default_y) : this(game, default_x, default_y, 1, 0, 0, 0) { }
 
         public MiAnimating(MiGame game, float default_x, float default_y, float default_scale, float default_rotate, float rotation_x, float rotation_y)
             : base(game)
@@ -68,38 +72,41 @@ namespace MiUtil
         /// </summary>
         /// <param name="texture">The texture that will be drawn</param>
         /// <param name="time">The number of frames the texture will be drawn</param>
-        public void AddTexture(Texture2D texture, int time)
+        public virtual void AddTexture(Texture2D texture, int time)
         {
             spriteQueue.Enqueue(new KeyValuePair<Texture2D, int>(texture, time));
         }
 
         public override void Update(GameTime gameTime)
         {
-            Time++;
-            spriteQueueTimer++;
-            if (SpriteQueueEnabled && spriteQueueTimer > spriteQueue.Peek().Value)
+            if (Enabled)
             {
-                spriteQueueTimer = 0;
-                if (SpriteQueueLoop)
-                    spriteQueue.Enqueue(spriteQueue.Dequeue());
-                else if (spriteQueue.Count > 1)
-                    spriteQueue.Dequeue();
+                Time++;
+                spriteQueueTimer++;
+                if (SpriteQueueEnabled && spriteQueueTimer > spriteQueue.Peek().Value)
+                {
+                    spriteQueueTimer = 0;
+                    if (SpriteQueueLoop)
+                        spriteQueue.Enqueue(spriteQueue.Dequeue());
+                    else if (spriteQueue.Count > 1)
+                        spriteQueue.Dequeue();
+                }
+
+                position.X = XPositionOverTime.Evaluate(Time);
+                position.Y = YPositionOverTime.Evaluate(Time);
+                scale = ScalingOverTime.Evaluate(Time);
+                rotation = RotationOverTime.Evaluate(Time);
+                rotationPoint.X = RotationPointXOverTime.Evaluate(Time);
+                rotationPoint.Y = RotationPointYOverTime.Evaluate(Time);
             }
-
-            position.X = XPositionOverTime.Evaluate(Time);
-            position.Y = YPositionOverTime.Evaluate(Time);
-            scale = ScalingOverTime.Evaluate(Time);
-            rotation = RotationOverTime.Evaluate(Time);
-            rotationPoint.X = RotationPointXOverTime.Evaluate(Time);
-            rotationPoint.Y = RotationPointYOverTime.Evaluate(Time);
-
-            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Draw(spriteQueue.Peek().Key, position, null, Color.White, rotation, rotationPoint, scale, SpriteEffects.None, 0);
-            base.Draw(gameTime);
+            if (Visible)
+            {
+                Game.SpriteBatch.Draw(spriteQueue.Peek().Key, position, null, Color.White, rotation, rotationPoint, scale, SpriteEffects.None, 0);
+            }
         }
     }
 }

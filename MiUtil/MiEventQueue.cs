@@ -11,13 +11,20 @@ namespace MiUtil
         private Queue<MiEvent> eventQueue;
         private LinkedList<int> timesliceQueue;
 
-        public MiEventQueue()
+        public bool Enabled { get; set; }
+
+        private int sizeLimit;
+
+        public MiEventQueue(int size_limit)
         {
             eventQueue = new Queue<MiEvent>();
-            eventQueue.Enqueue(null);
 
             timesliceQueue = new LinkedList<int>();
             timesliceQueue.AddLast(0);
+
+            Enabled = true;
+
+            sizeLimit = size_limit;
         }
 
         /// <summary>
@@ -27,8 +34,11 @@ namespace MiUtil
         /// <param name="timeslice">The amount of time between after the specified state change is applied and before the next state change can be applied.</param>
         public void AddEvent(MiEvent anEvent, int timeslice)
         {
-            eventQueue.Enqueue(anEvent);
-            timesliceQueue.AddLast(timeslice);
+            if (Enabled && eventQueue.Count < sizeLimit)
+            {
+                eventQueue.Enqueue(anEvent);
+                timesliceQueue.AddLast(timeslice);
+            }
         }
 
         /// <summary>
@@ -40,21 +50,25 @@ namespace MiUtil
         /// </returns>
         public MiEvent GetNextEvent()
         {
-            timesliceQueue.First.Value = timesliceQueue.First.Value - 1;
-            if (timesliceQueue.First.Value < 0)
+            if (Enabled)
             {
-                timesliceQueue.RemoveFirst();
-                if (timesliceQueue.Count == 0)
+                timesliceQueue.First.Value = timesliceQueue.First.Value - 1;
+                if (timesliceQueue.First.Value < 0)
                 {
-                    timesliceQueue.AddLast(0);
-                    eventQueue.Enqueue(null);
+                    timesliceQueue.RemoveFirst();
+                    if (timesliceQueue.Count == 0)
+                    {
+                        timesliceQueue.AddLast(0);
+                        eventQueue.Enqueue(null);
+                    }
+                    return eventQueue.Dequeue();
                 }
-                return eventQueue.Dequeue();
+                else
+                {
+                    return null;
+                }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
     }
 }
