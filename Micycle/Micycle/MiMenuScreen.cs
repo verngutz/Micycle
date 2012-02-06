@@ -15,7 +15,7 @@ namespace Micycle
         private MiButton quitGameButton;
         private MiButton activeButton;
 
-        private KeyboardState old;
+        private MiControllerState old;
 
         public MiMenuScreen(Micycle game)
             : base(game)
@@ -47,7 +47,7 @@ namespace Micycle
 
             activeButton = newGameButton;
 
-            old = Keyboard.GetState();
+            old = ((Micycle)Game).GameController.GetState();
         }
 
         private void ButtonEntrance()
@@ -97,6 +97,11 @@ namespace Micycle
             Game.ActiveScreen = (Game as Micycle).GameScreen;
         }
 
+        private void PressActiveButton()
+        {
+            activeButton.Pressed();
+        }
+
         public override void LoadContent()
         {
             background = Game.Content.Load<Texture2D>("MenuScreen");
@@ -117,22 +122,25 @@ namespace Micycle
             if(cursor.Enabled)
                 cursor.Update(gameTime);
 
-            if (old.IsKeyUp(Keys.Up) && Keyboard.GetState().IsKeyDown(Keys.Up) && activeButton != newGameButton)
+            MiControllerState newState = ((Micycle)Game).GameController.GetState();
+            if (old.IsReleased(MiGameControls.UP) && newState.IsPressed(MiGameControls.UP) && activeButton != newGameButton)
             {
                 Game.EventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 50);
                 Game.EventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
             }
-            if (old.IsKeyUp(Keys.Down) && Keyboard.GetState().IsKeyDown(Keys.Down) && activeButton != quitGameButton)
+
+            if (old.IsReleased(MiGameControls.DOWN) && newState.IsPressed(MiGameControls.DOWN) && activeButton != quitGameButton)
             {
                 Game.EventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 50);
                 Game.EventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
             }
-            if (old.IsKeyUp(Keys.Enter) && Keyboard.GetState().IsKeyDown(Keys.Enter) && activeButton != null)
+
+            if (old.IsReleased(MiGameControls.A) && newState.IsPressed(MiGameControls.A))
             {
-                Game.EventQueue.AddEvent(activeButton.Pressed, 0);
+                Game.EventQueue.AddEvent(new MiEvent(PressActiveButton), 0);
             }
 
-            old = Keyboard.GetState();
+            old = ((Micycle)Game).GameController.GetState();
 
             MiEvent nextEvent = Game.EventQueue.GetNextEvent();
             if (nextEvent != null)

@@ -11,6 +11,23 @@ namespace Micycle
         private MiGameControls gameControls;
         private ButtonState[] controlStates;
 
+        public MiGameControllerState copy()
+        {
+            ButtonState[] states = new ButtonState[MiGameControls.SIZE];
+            for (int i = 0; i < MiGameControls.SIZE; i++)
+            {
+                states[i] = controlStates[i];
+            }
+
+            MiGameControllerState toRet = new MiGameControllerState();
+            toRet.setState(states);
+            return toRet;
+        }
+
+        public void setState(ButtonState[] b)
+        {
+            controlStates = b;
+        }
         public MiGameControllerState()
         {
             gameControls = new MiGameControls();

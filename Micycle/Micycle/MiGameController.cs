@@ -13,6 +13,10 @@ namespace Micycle
         {
         }
 
+        public  MiGameControllerState GetState() {
+
+            return this.controllerState.copy();
+        }
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
         {
             base.Update(gameTime);
