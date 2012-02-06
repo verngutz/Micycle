@@ -1,4 +1,5 @@
-﻿namespace MiUtil
+﻿
+namespace MiUtil
 {
     public struct MiControl
     {

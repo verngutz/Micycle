@@ -7,9 +7,8 @@ namespace MiUtil
     /// </summary>
     public abstract class MiControllerState
     {
-        public abstract KeyState this[MiControl control] { get; }
-        public abstract MiControl[] GetPressedControls();
-        public abstract bool IsUp(MiControl control);
-        public abstract bool IsDown(MiControl control);
+        public abstract ButtonState this[MiControl control] { get; set; }
+        public abstract bool IsPressed(MiControl control);
+        public abstract bool IsReleased(MiControl control);
     }
 }

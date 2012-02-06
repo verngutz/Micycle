@@ -107,6 +107,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MiGameController.cs" />
+    <Compile Include="MiGameControllerState.cs" />
+    <Compile Include="MiGameControls.cs" />
     <Compile Include="MiGameScreen.cs" />
     <Compile Include="MiMenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
