@@ -107,10 +107,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MiGameController.cs" />
-    <Compile Include="MiGameControllerState.cs" />
-    <Compile Include="MiGameControls.cs" />
+    <Compile Include="MicycleController.cs" />
+    <Compile Include="MicycleControllerState.cs" />
+    <Compile Include="MicycleControls.cs" />
     <Compile Include="MiGameScreen.cs" />
+    <Compile Include="MicycleInputHandler.cs" />
     <Compile Include="MiMenuScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
