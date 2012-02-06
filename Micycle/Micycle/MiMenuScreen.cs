@@ -17,7 +17,7 @@ namespace Micycle
 
         private MiEventQueue eventQueue;
 
-        private KeyboardState old;
+        private MiControllerState old;
 
         public MiMenuScreen(Micycle game)
             : base(game)
@@ -52,7 +52,7 @@ namespace Micycle
 
             activeButton = newGameButton;
 
-            old = Keyboard.GetState();
+            old = ((Micycle)Game).GameController.GetState();
         }
 
         private void ButtonEntrance()
@@ -116,23 +116,26 @@ namespace Micycle
             newGameButton.Update(gameTime);
             quitGameButton.Update(gameTime);
             cursor.Update(gameTime);
-
-            if (old.IsKeyUp(Keys.Up) && Keyboard.GetState().IsKeyDown(Keys.Up) && activeButton != newGameButton)
+            MiControllerState newState = ((Micycle)Game).GameController.GetState();
+            if (old.IsReleased(MiGameControls.UP) && newState.IsPressed(MiGameControls.UP) && activeButton != newGameButton)
             {
                 eventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 50);
                 eventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
             }
-            if (old.IsKeyUp(Keys.Down) && Keyboard.GetState().IsKeyDown(Keys.Down) && activeButton != quitGameButton)
+
+            if (old.IsReleased(MiGameControls.DOWN) && newState.IsPressed(MiGameControls.DOWN) && activeButton != quitGameButton)
             {
                 eventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 50);
                 eventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
             }
-            if (old.IsKeyUp(Keys.Enter) && Keyboard.GetState().IsKeyDown(Keys.Enter) && activeButton != null)
+
+
+            if (old.IsReleased(MiGameControls.A) && newState.IsPressed(MiGameControls.A) && activeButton != null)
             {
                 eventQueue.AddEvent(activeButton.Pressed, 0);
             }
 
-            old = Keyboard.GetState();
+            old = ((Micycle)Game).GameController.GetState();
 
             MiEvent nextEvent = eventQueue.GetNextEvent();
             if (nextEvent != null)

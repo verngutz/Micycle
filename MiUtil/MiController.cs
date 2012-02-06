@@ -7,16 +7,16 @@ namespace MiUtil
 {
     public abstract class MiController<T> : MiGameComponent where T : MiControllerState, new()
     {
-        protected MiControllerState controllerState;
+        protected T controllerState;
 
         public MiController(MiGame game) : base(game)
         {
             controllerState = new T();
         }
 
-        public MiControllerState GetState()
+        /*public T GetState()
         {
             return controllerState;
-        }
+        }*/
     }
 }
