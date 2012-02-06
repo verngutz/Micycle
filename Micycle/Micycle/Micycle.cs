@@ -34,7 +34,7 @@ namespace Micycle
 
         private MiMenuScreen menuScreen;
         private MiGameScreen gameScreen;
-        private MiInputProxy inputProxy;
+        //private MiController inputProxy;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -45,7 +45,7 @@ namespace Micycle
         protected override void Initialize()
         {
             // Initialize input proxy
-            inputProxy = new MiInputProxy(this);
+            //inputProxy = new MiController(this);
 
             // Initialize screens
             menuScreen = new MiMenuScreen(this);
@@ -95,7 +95,7 @@ namespace Micycle
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            inputProxy.Update(gameTime);
+            //inputProxy.Update(gameTime);
             activeScreen.Update(gameTime);
             base.Update(gameTime);
         }

@@ -10,6 +10,7 @@ namespace Micycle
         Texture2D background;
         MiAnimating newGameButtonGraphics;
         MiAnimating quitGameButtonGraphics;
+        MiEventQueue eventQueue;
 
         public MiMenuScreen(MiGame game)
             : base(game)
@@ -19,7 +20,8 @@ namespace Micycle
 
             newGameButtonGraphics.SpriteQueueEnabled = false;
             quitGameButtonGraphics.SpriteQueueEnabled = false;
-            
+
+            eventQueue = new MiEventQueue();
             newGameButtonGraphics.XPositionOverTime.Keys.Add(new CurveKey(100, 300));
             quitGameButtonGraphics.XPositionOverTime.Keys.Add(new CurveKey(100, 400));
         }

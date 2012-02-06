@@ -1,6 +1,0 @@
-﻿namespace MiUtil
-{
-    class MiControllerButton
-    {
-    }
-}

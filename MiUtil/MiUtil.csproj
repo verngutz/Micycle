@@ -93,13 +93,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MiAnimating.cs" />
-    <Compile Include="MiControllerButton.cs" />
+    <Compile Include="MiControl.cs" />
     <Compile Include="MiDrawableGameComponent.cs" />
     <Compile Include="MiEvent.cs" />
     <Compile Include="MiEventQueue.cs" />
     <Compile Include="MiGame.cs" />
     <Compile Include="MiGameComponent.cs" />
-    <Compile Include="MiInputProxy.cs" />
+    <Compile Include="MiController.cs" />
     <Compile Include="MiResolution.cs" />
     <Compile Include="MiScreen.cs" />
     <Compile Include="MiControllerState.cs" />
