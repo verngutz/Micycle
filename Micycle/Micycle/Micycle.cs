@@ -20,23 +20,13 @@ namespace Micycle
     
     public class Micycle : MiGame
     {
-        private MiScreen activeScreen;
-        public MiScreen ActiveScreen
-        {
-            set
-            {
-                activeScreen.Enabled = false;
-                activeScreen.Visible = false;
-                activeScreen = value;
-                activeScreen.Enabled = true;
-                activeScreen.Visible = true;
-            }
-        }
-
         private MiMenuScreen menuScreen;
+        internal MiMenuScreen MenuScreen { get { return menuScreen; } }
+
         private MiGameScreen gameScreen;
+        internal MiGameScreen GameScreen { get { return gameScreen; } }
+
         private MiGameController gameController;
-        //private MiController inputProxy;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -46,9 +36,6 @@ namespace Micycle
         /// </summary>
         protected override void Initialize()
         {
-            // Initialize input proxy
-            //inputProxy = new MiController(this);
-
             // Initialize game controller
             gameController = new MiGameController(this);
 
@@ -100,7 +87,6 @@ namespace Micycle
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            //inputProxy.Update(gameTime);
             activeScreen.Update(gameTime);
             gameController.Update(gameTime);
             base.Update(gameTime);

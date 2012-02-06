@@ -101,6 +101,7 @@
     <Compile Include="MiGameComponent.cs" />
     <Compile Include="MiController.cs" />
     <Compile Include="MiControllerState.cs" />
+    <Compile Include="MiScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

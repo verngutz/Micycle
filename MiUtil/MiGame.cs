@@ -9,6 +9,19 @@ namespace MiUtil
         protected SpriteBatch spriteBatch;
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
 
+        protected MiScreen activeScreen;
+        public MiScreen ActiveScreen
+        {
+            set
+            {
+                activeScreen.Enabled = false;
+                activeScreen.Visible = false;
+                activeScreen = value;
+                activeScreen.Enabled = true;
+                activeScreen.Visible = true;
+            }
+        }
+
         public MiGame()
             : base()
         {

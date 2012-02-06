@@ -13,7 +13,7 @@ namespace Micycle
         Texture2D city;
         Texture2D rnd;
 
-        public MiGameScreen(MiGame game) : base(game) { }
+        public MiGameScreen(Micycle game) : base(game) { }
 
         public override void LoadContent()
         {

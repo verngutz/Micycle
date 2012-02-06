@@ -9,17 +9,17 @@ namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
-        Texture2D background;
-        MiAnimating cursor;
-        MiButton newGameButton;
-        MiButton quitGameButton;
-        MiButton activeButton;
+        private Texture2D background;
+        private MiAnimating cursor;
+        private MiButton newGameButton;
+        private MiButton quitGameButton;
+        private MiButton activeButton;
 
-        MiEventQueue eventQueue;
+        private MiEventQueue eventQueue;
 
-        KeyboardState old;
+        private KeyboardState old;
 
-        public MiMenuScreen(MiGame game)
+        public MiMenuScreen(Micycle game)
             : base(game)
         {
             //
@@ -34,12 +34,14 @@ namespace Micycle
             //
             newGameButton = new MiButton(game, -100, 350, 1, 0, 0, 0);
             newGameButton.SpriteQueueEnabled = false;
+            newGameButton.Pressed += new MiEvent(GoToMiGameScreen);
 
             //
             // Quit Game Button
             //
             quitGameButton = new MiButton(game, -100, 460, 1, 0, 0, 0);
             quitGameButton.SpriteQueueEnabled = false;
+            quitGameButton.Pressed += new MiEvent(Game.Exit);
 
             //
             // Event Queue
@@ -95,6 +97,11 @@ namespace Micycle
             activeButton = newGameButton;
         }
 
+        private void GoToMiGameScreen()
+        {
+            Game.ActiveScreen = (Game as Micycle).GameScreen;
+        }
+
         public override void LoadContent()
         {
             background = Game.Content.Load<Texture2D>("MenuScreen");
@@ -119,6 +126,10 @@ namespace Micycle
             {
                 eventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 50);
                 eventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
+            }
+            if (old.IsKeyUp(Keys.Enter) && Keyboard.GetState().IsKeyDown(Keys.Enter) && activeButton != null)
+            {
+                eventQueue.AddEvent(activeButton.Pressed, 0);
             }
 
             old = Keyboard.GetState();
