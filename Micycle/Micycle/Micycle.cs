@@ -34,6 +34,7 @@ namespace Micycle
 
         private MiMenuScreen menuScreen;
         private MiGameScreen gameScreen;
+        private MiGameController gameController;
         //private MiController inputProxy;
 
         /// <summary>
@@ -46,6 +47,9 @@ namespace Micycle
         {
             // Initialize input proxy
             //inputProxy = new MiController(this);
+
+            // Initialize game controller
+            gameController = new MiGameController(this);
 
             // Initialize screens
             menuScreen = new MiMenuScreen(this);
@@ -97,6 +101,7 @@ namespace Micycle
 
             //inputProxy.Update(gameTime);
             activeScreen.Update(gameTime);
+            gameController.Update(gameTime);
             base.Update(gameTime);
         }
 
