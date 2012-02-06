@@ -9,6 +9,9 @@ namespace MiUtil
         protected SpriteBatch spriteBatch;
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
 
+        protected MiEventQueue eventQueue;
+        public MiEventQueue EventQueue { get { return eventQueue; } }
+
         protected MiScreen activeScreen;
         public MiScreen ActiveScreen
         {

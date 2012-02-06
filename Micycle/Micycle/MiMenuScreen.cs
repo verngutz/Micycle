@@ -10,12 +10,10 @@ namespace Micycle
     class MiMenuScreen : MiScreen
     {
         private Texture2D background;
-        private MiAnimating cursor;
+        private MiAnimatingComponent cursor;
         private MiButton newGameButton;
         private MiButton quitGameButton;
         private MiButton activeButton;
-
-        private MiEventQueue eventQueue;
 
         private KeyboardState old;
 
@@ -25,30 +23,27 @@ namespace Micycle
             //
             // Cursor
             //
-            cursor = new MiAnimating(game, 300, 350, 1, 0, 0, 0);
+            cursor = new MiAnimatingComponent(game, 300, 350);
             cursor.Visible = false;
             cursor.Enabled = false;
 
             //
             // New Game Button
             //
-            newGameButton = new MiButton(game, -100, 350, 1, 0, 0, 0);
-            newGameButton.SpriteQueueEnabled = false;
+            newGameButton = new MiButton(game, -100, 350);
             newGameButton.Pressed += new MiEvent(GoToMiGameScreen);
 
             //
             // Quit Game Button
             //
-            quitGameButton = new MiButton(game, -100, 460, 1, 0, 0, 0);
-            quitGameButton.SpriteQueueEnabled = false;
+            quitGameButton = new MiButton(game, -100, 460);
             quitGameButton.Pressed += new MiEvent(Game.Exit);
 
             //
             // Event Queue
             //
-            eventQueue = new MiEventQueue(5);
-            eventQueue.AddEvent(new MiEvent(ButtonEntrance), 100);
-            eventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
+            Game.EventQueue.AddEvent(new MiEvent(ButtonEntrance), 100);
+            Game.EventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
 
             activeButton = newGameButton;
 
@@ -113,40 +108,51 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            newGameButton.Update(gameTime);
-            quitGameButton.Update(gameTime);
-            cursor.Update(gameTime);
+            if(newGameButton.Enabled)
+                newGameButton.Update(gameTime);
+
+            if(quitGameButton.Enabled)
+                quitGameButton.Update(gameTime);
+
+            if(cursor.Enabled)
+                cursor.Update(gameTime);
 
             if (old.IsKeyUp(Keys.Up) && Keyboard.GetState().IsKeyDown(Keys.Up) && activeButton != newGameButton)
             {
-                eventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 50);
-                eventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
+                Game.EventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 50);
+                Game.EventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
             }
             if (old.IsKeyUp(Keys.Down) && Keyboard.GetState().IsKeyDown(Keys.Down) && activeButton != quitGameButton)
             {
-                eventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 50);
-                eventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
+                Game.EventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 50);
+                Game.EventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
             }
             if (old.IsKeyUp(Keys.Enter) && Keyboard.GetState().IsKeyDown(Keys.Enter) && activeButton != null)
             {
-                eventQueue.AddEvent(activeButton.Pressed, 0);
+                Game.EventQueue.AddEvent(activeButton.Pressed, 0);
             }
 
             old = Keyboard.GetState();
 
-            MiEvent nextEvent = eventQueue.GetNextEvent();
+            MiEvent nextEvent = Game.EventQueue.GetNextEvent();
             if (nextEvent != null)
                 nextEvent();
-            base.Update(gameTime);
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             Game.SpriteBatch.Begin();
             Game.SpriteBatch.Draw(background, MiResolution.BoundingRectangle, Color.White);
-            newGameButton.Draw(gameTime);
-            quitGameButton.Draw(gameTime);
-            cursor.Draw(gameTime);
+
+            if(newGameButton.Visible)
+                newGameButton.Draw(gameTime);
+
+            if(quitGameButton.Visible)
+                quitGameButton.Draw(gameTime);
+
+            if(cursor.Visible)
+                cursor.Draw(gameTime);
+
             Game.SpriteBatch.End();
         }
     }

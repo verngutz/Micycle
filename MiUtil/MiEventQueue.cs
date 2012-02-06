@@ -28,6 +28,17 @@ namespace MiUtil
         }
 
         /// <summary>
+        /// Remove all MiEvents from this MiEventQueue
+        /// </summary>
+        public void Clear()
+        {
+            eventQueue = new Queue<MiEvent>();
+
+            timesliceQueue = new LinkedList<int>();
+            timesliceQueue.AddLast(0);
+        }
+
+        /// <summary>
         /// Add a new MiEvent to this MiEventQueue.
         /// </summary>
         /// <param name="anEvent">The state change to add</param>

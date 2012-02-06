@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MiUtil
 {
-    public abstract class MiController<T> : MiGameComponent where T : MiControllerState, new()
+    public abstract class MiController<T> : MiComponent where T : MiControllerState, new()
     {
         protected MiControllerState controllerState;
 

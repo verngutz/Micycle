@@ -2,10 +2,10 @@
 
 namespace MiUtil
 {
-    public abstract class MiGameComponent : GameComponent
+    public abstract class MiComponent : GameComponent
     {
         public new MiGame Game { get; set; }
-        public MiGameComponent(MiGame game)
+        public MiComponent(MiGame game)
             : base(game)
         {
             Game = game;

@@ -36,6 +36,14 @@ namespace Micycle
         /// </summary>
         protected override void Initialize()
         {
+            // Set the game resolution
+            MiResolution.Init(ref graphics);
+            MiResolution.SetVirtualResolution(800, 600);
+            MiResolution.SetResolution(800, 600);
+
+            // Initialize event queue
+            eventQueue = new MiEventQueue(5);
+
             // Initialize game controller
             gameController = new MiGameController(this);
 
@@ -47,11 +55,6 @@ namespace Micycle
             activeScreen = menuScreen;
             activeScreen.Enabled = true;
             activeScreen.Visible = true;
-
-            // Set the game resolution
-            MiResolution.Init(ref graphics);
-            MiResolution.SetVirtualResolution(800, 600);
-            MiResolution.SetResolution(800, 600);
 
             base.Initialize();
         }
