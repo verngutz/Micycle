@@ -26,8 +26,6 @@ namespace Micycle
         private MiGameScreen gameScreen;
         internal MiGameScreen GameScreen { get { return gameScreen; } }
 
-        private MiGameController gameController;
-        internal MiGameController GameController { get { return gameController; } }
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -36,8 +34,13 @@ namespace Micycle
         /// </summary>
         protected override void Initialize()
         {
-            // Initialize game controller
-            gameController = new MiGameController(this);
+            // Set the game resolution
+            MiResolution.Init(ref graphics);
+            MiResolution.SetVirtualResolution(800, 600);
+            MiResolution.SetResolution(800, 600);
+
+            // Initialize event queue
+            eventQueue = new MiEventQueue(5);
 
             // Initialize screens
             menuScreen = new MiMenuScreen(this);
@@ -47,11 +50,6 @@ namespace Micycle
             activeScreen = menuScreen;
             activeScreen.Enabled = true;
             activeScreen.Visible = true;
-
-            // Set the game resolution
-            MiResolution.Init(ref graphics);
-            MiResolution.SetVirtualResolution(800, 600);
-            MiResolution.SetResolution(800, 600);
 
             base.Initialize();
         }
@@ -88,7 +86,11 @@ namespace Micycle
                 this.Exit();
 
             activeScreen.Update(gameTime);
-            gameController.Update(gameTime);
+
+            MiEvent nextEvent = EventQueue.GetNextEvent();
+            if (nextEvent != null)
+                nextEvent();
+
             base.Update(gameTime);
         }
 

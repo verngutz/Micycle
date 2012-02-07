@@ -7,7 +7,7 @@ using MiUtil;
 
 namespace MiGui
 {
-    public class MiButton : MiAnimating
+    public class MiButton : MiAnimatingComponent
     {
         public MiEvent Pressed;
 

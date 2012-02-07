@@ -1,22 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace MiUtil
 {
-    public abstract class MiController<T> : MiGameComponent where T : MiControllerState, new()
+    public abstract class MiController<T> where T : MiControllerState, new()
     {
-        protected T controllerState;
-
-        public MiController(MiGame game) : base(game)
-        {
-            controllerState = new T();
-        }
-
-        /*public T GetState()
-        {
-            return controllerState;
-        }*/
+        protected static T controllerState = new T();
+        public static T GetState() { throw new NotImplementedException();  }
     }
 }
