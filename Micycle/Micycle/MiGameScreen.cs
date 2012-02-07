@@ -259,7 +259,7 @@ namespace Micycle
             resumeButton.Draw(gameTime);
             goToMainMenuButton.Draw(gameTime);
             quitGameButton.Draw(gameTime);
-            cursor.Draw(gameTime);
+            
 
             if (factory.Visible)
                 factory.Draw(gameTime);
