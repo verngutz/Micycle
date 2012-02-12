@@ -2,10 +2,14 @@
 
 using Microsoft.Xna.Framework;
 
-namespace MiUtil
+using MiUtil;
+
+namespace MiGui
 {
-    public abstract class MiScreen : MiDrawableComponent
+    public abstract class MiScreen : MiGameState
     {
+        public MiButton ActiveButton { get; set; }
+
         public MiScreen(MiGame game)
             : base(game)
         {

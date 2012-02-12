@@ -9,13 +9,16 @@ namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
+        public MiGameScreen GameScreen;
+
         private Texture2D background;
+
         private MiAnimatingComponent cursor;
+        private MiAnimatingComponent newGameButtonGraphic;
+        private MiAnimatingComponent quitGameButtonGraphic;
+
         private MiButton newGameButton;
         private MiButton quitGameButton;
-        private MiButton activeButton;
-
-        private MiControllerState old;
 
         public MiMenuScreen(Micycle game)
             : base(game)
@@ -24,135 +27,152 @@ namespace Micycle
             // Cursor
             //
             cursor = new MiAnimatingComponent(game, 300, 350);
-            cursor.Visible = false;
             cursor.Enabled = false;
+            cursor.Visible = false;
+            cursor.MoveEnabled = true;
 
             //
             // New Game Button
             //
-            newGameButton = new MiButton(game, -100, 350);
+            newGameButton = new MiButton();
             newGameButton.Pressed += new MiEvent(GoToMiGameScreen);
+            newGameButtonGraphic = new MiAnimatingComponent(game, -100, 350);
+            newGameButtonGraphic.MoveEnabled = true;
 
             //
             // Quit Game Button
             //
-            quitGameButton = new MiButton(game, -100, 460);
+            quitGameButton = new MiButton();
             quitGameButton.Pressed += new MiEvent(Game.Exit);
+            quitGameButtonGraphic = new MiAnimatingComponent(game, -100, 460);
+            quitGameButtonGraphic.MoveEnabled = true;
 
             //
-            // Event Queue
+            // Entrance Events
             //
             Game.EventQueue.AddEvent(new MiEvent(ButtonEntrance), 50);
             Game.EventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
 
-            activeButton = newGameButton;
+            //
+            // Action Events
+            //
+            Upped += delegate
+            {
+                if (ActiveButton != newGameButton)
+                {
+                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 25);
+                    Game.EventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
+                }
+            };
 
-            old = MicycleController.GetState();
+            Downed += delegate
+            {
+                if (ActiveButton != quitGameButton)
+                {
+                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 25);
+                    Game.EventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
+                }
+            };
+
+            Pressed += delegate
+            {
+                Game.EventQueue.AddEvent(new MiEvent(ClearButtonsFromScreen), 50);
+                Game.EventQueue.AddEvent(new MiEvent(PressActiveButton), 0);
+            };
+
+            ActiveButton = newGameButton;
         }
 
         private void ButtonEntrance()
         {
-            newGameButton.XPositionOverTime.Keys.Add(new CurveKey(50, 300));
-            quitGameButton.XPositionOverTime.Keys.Add(new CurveKey(50, 400));
+            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(50, 300));
+            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(50, 400));
         }
 
         private void CursorEntrance()
         {
-            newGameButton.Enabled = false;
-            quitGameButton.Enabled = false;
+            newGameButtonGraphic.Enabled = false;
+            quitGameButtonGraphic.Enabled = false;
             cursor.Visible = true;
             cursor.Enabled = false;
         }
 
-        private void MoveCursorToExitButton()
-        {
-            activeButton = null;
-            cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButton.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButton.Position.Y));
-        }
-
-        private void SetExitButtonAsActive()
-        {
-            cursor.Enabled = false;
-            activeButton = quitGameButton;
-        }
-
         private void MoveCursorToNewGameButton()
         {
-            activeButton = null;
+            ActiveButton = null;
             cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButton.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButton.Position.Y));
+            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.X));
+            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.Y));
         }
 
         private void SetNewGameButtonAsActive()
         {
             cursor.Enabled = false;
-            activeButton = newGameButton;
+            ActiveButton = newGameButton;
+        }
+
+        private void MoveCursorToExitButton()
+        {
+            ActiveButton = null;
+            cursor.Enabled = true;
+            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.X));
+            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.Y));
+        }
+
+        private void SetExitButtonAsActive()
+        {
+            cursor.Enabled = false;
+            ActiveButton = quitGameButton;
         }
 
         private void GoToMiGameScreen()
         {
-            Game.ActiveScreen = (Game as Micycle).GameScreen;
+            Enabled = false;
+            Visible = false;
+            GameScreen.Enabled = true;
+            GameScreen.Visible = true;
+            Game.ToUpdate.Pop();
+            Game.ToDraw.Pop();
+            Game.ToUpdate.Push(GameScreen);
+            Game.ToUpdate.Push(GameScreen);
+            Game.InputHandler.Focused = GameScreen;
         }
 
         private void ClearButtonsFromScreen()
         {
-            newGameButton.Enabled = true;
-            quitGameButton.Enabled = true;
+            newGameButtonGraphic.Enabled = true;
+            quitGameButtonGraphic.Enabled = true;
             cursor.Visible = false;
-            newGameButton.XPositionOverTime.Keys.Add(new CurveKey(newGameButton.Time + 50, -100));
-            quitGameButton.XPositionOverTime.Keys.Add(new CurveKey(quitGameButton.Time + 50, -100));
+            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, -100));
+            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, -100));
         }
 
         private void PressActiveButton()
         {
-            newGameButton.Enabled = false;
-            quitGameButton.Enabled = false;
-            activeButton.Pressed();
+            newGameButtonGraphic.Enabled = false;
+            quitGameButtonGraphic.Enabled = false;
+            ActiveButton.Pressed();
         }
 
         public override void LoadContent()
         {
             background = Game.Content.Load<Texture2D>("MenuScreen");
-            newGameButton.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
-            quitGameButton.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
+            newGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
+            quitGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if(newGameButton.Enabled)
-                newGameButton.Update(gameTime);
+            if(newGameButtonGraphic.Enabled)
+                newGameButtonGraphic.Update(gameTime);
 
-            if(quitGameButton.Enabled)
-                quitGameButton.Update(gameTime);
+            if(quitGameButtonGraphic.Enabled)
+                quitGameButtonGraphic.Update(gameTime);
 
             if(cursor.Enabled)
                 cursor.Update(gameTime);
-
-            MiControllerState newState = MicycleController.GetState();
-            if (old.IsReleased(MicycleControls.UP) && newState.IsPressed(MicycleControls.UP) && activeButton != newGameButton)
-            {
-                Game.EventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 25);
-                Game.EventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
-            }
-
-            if (old.IsReleased(MicycleControls.DOWN) && newState.IsPressed(MicycleControls.DOWN) && activeButton != quitGameButton)
-            {
-                Game.EventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 25);
-                Game.EventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
-            }
-
-            if (old.IsReleased(MicycleControls.A) && newState.IsPressed(MicycleControls.A))
-            {
-                Game.EventQueue.AddEvent(new MiEvent(ClearButtonsFromScreen), 50);
-                Game.EventQueue.AddEvent(new MiEvent(PressActiveButton), 0);
-            }
-
-            old = MicycleController.GetState();
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
@@ -160,11 +180,11 @@ namespace Micycle
             Game.SpriteBatch.Begin();
             Game.SpriteBatch.Draw(background, MiResolution.BoundingRectangle, Color.White);
 
-            if(newGameButton.Visible)
-                newGameButton.Draw(gameTime);
+            if(newGameButtonGraphic.Visible)
+                newGameButtonGraphic.Draw(gameTime);
 
-            if(quitGameButton.Visible)
-                quitGameButton.Draw(gameTime);
+            if(quitGameButtonGraphic.Visible)
+                quitGameButtonGraphic.Draw(gameTime);
 
             if(cursor.Visible)
                 cursor.Draw(gameTime);

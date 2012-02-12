@@ -5,7 +5,7 @@ using MiUtil;
 
 namespace Micycle
 {
-    public class MicycleController : MiController<MicycleControllerState>
+    class MicycleController : MiController<MicycleControllerState>
     {
         new public static MicycleControllerState GetState()
         {

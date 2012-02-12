@@ -23,6 +23,7 @@ namespace MiUtil
         public Curve RotationOverTime { get; set; }
         public Curve RotationPointXOverTime { get; set; }
         public Curve RotationPointYOverTime { get; set; }
+        public bool MoveEnabled { get; set; }
 
         public ulong Time { get; set; }
 
@@ -79,15 +80,22 @@ namespace MiUtil
 
         public override void Update(GameTime gameTime)
         {
-            Time++;
-            spriteQueueTimer++;
-            if (SpriteQueueEnabled && spriteQueueTimer > spriteQueue.Peek().Value)
+            if (MoveEnabled)
             {
-                spriteQueueTimer = 0;
-                if (SpriteQueueLoop)
-                    spriteQueue.Enqueue(spriteQueue.Dequeue());
-                else if (spriteQueue.Count > 1)
-                    spriteQueue.Dequeue();
+                Time++;
+            }
+
+            if (SpriteQueueEnabled)
+            {
+                spriteQueueTimer++;
+                if (spriteQueueTimer > spriteQueue.Peek().Value)
+                {
+                    spriteQueueTimer = 0;
+                    if (SpriteQueueLoop)
+                        spriteQueue.Enqueue(spriteQueue.Dequeue());
+                    else if (spriteQueue.Count > 1)
+                        spriteQueue.Dequeue();
+                }
             }
 
             position.X = XPositionOverTime.Evaluate(Time);

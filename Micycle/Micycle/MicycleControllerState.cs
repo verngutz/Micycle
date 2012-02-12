@@ -4,7 +4,7 @@ using MiUtil;
 
 namespace Micycle
 {
-    public class MicycleControllerState: MiControllerState
+    class MicycleControllerState: MiControllerState
     {
         private ButtonState[] controlStates;
 

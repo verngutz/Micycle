@@ -8,11 +8,10 @@ namespace Micycle
 {
     class MiGameScreen : MiScreen
     {
-        private MiButton factory;
-        private MiButton school;
-        private MiButton city;
-        private MiButton rnd;
-        private MiButton activeButton;
+        private MiAnimatingComponent factory;
+        private MiAnimatingComponent school;
+        private MiAnimatingComponent city;
+        private MiAnimatingComponent rnd;
 
         private MiAnimatingComponent cursor;
 
@@ -29,24 +28,22 @@ namespace Micycle
             //
             // Factory
             //
-            factory = new MiButton(game, 100, 400, 0.5f, 0, 0, 0);
+            factory = new MiAnimatingComponent(game, 100, 400, 0.5f, 0, 0, 0);
 
             //
             // School
             //
-            school = new MiButton(game, 400, 300, 0.5f, 0, 0, 0);
+            school = new MiAnimatingComponent(game, 400, 300, 0.5f, 0, 0, 0);
 
             //
             // City
             //
-            city = new MiButton(game, 400, 50, 0.5f, 0, 0, 0);
+            city = new MiAnimatingComponent(game, 400, 50, 0.5f, 0, 0, 0);
 
             //
             // Rnd
             //
-            rnd = new MiButton(game, 700, 400, 0.5f, 0, 0, 0);
-
-            activeButton = school;
+            rnd = new MiAnimatingComponent(game, 700, 400, 0.5f, 0, 0, 0);
         }
 
         public override void LoadContent()

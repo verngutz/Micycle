@@ -21,10 +21,9 @@ namespace Micycle
     public class Micycle : MiGame
     {
         private MiMenuScreen menuScreen;
-        internal MiMenuScreen MenuScreen { get { return menuScreen; } }
-
         private MiGameScreen gameScreen;
-        internal MiGameScreen GameScreen { get { return gameScreen; } }
+
+        
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -39,17 +38,27 @@ namespace Micycle
             MiResolution.SetVirtualResolution(800, 600);
             MiResolution.SetResolution(800, 600);
 
+            // Initialize Input Handler
+            inputHandler = new MicycleInputHandler(this);
+
             // Initialize event queue
             eventQueue = new MiEventQueue(5);
 
             // Initialize screens
             menuScreen = new MiMenuScreen(this);
             gameScreen = new MiGameScreen(this);
-            
-            // Set the active screen
-            activeScreen = menuScreen;
-            activeScreen.Enabled = true;
-            activeScreen.Visible = true;
+
+            // Attach screens to each other
+            menuScreen.GameScreen = gameScreen;
+
+            // Set active screen
+            menuScreen.Visible = true;
+            ToDraw.Push(menuScreen);
+
+            menuScreen.Enabled = true;
+            ToUpdate.Push(menuScreen);
+
+            InputHandler.Focused = menuScreen;
 
             base.Initialize();
         }
@@ -85,7 +94,10 @@ namespace Micycle
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            activeScreen.Update(gameTime);
+            inputHandler.Update(gameTime);
+
+            foreach (MiScreen screen in ToUpdate)
+                screen.Update(gameTime);
 
             MiEvent nextEvent = EventQueue.GetNextEvent();
             if (nextEvent != null)
@@ -101,7 +113,9 @@ namespace Micycle
         protected override void Draw(GameTime gameTime)
         {
             MiResolution.BeginDraw();
-            activeScreen.Draw(gameTime);
+
+            foreach (MiScreen screen in ToDraw)
+                screen.Draw(gameTime);
 
             // Draw frame rate
             SpriteBatch.Begin();
