@@ -22,8 +22,7 @@ namespace Micycle
     {
         private MiMenuScreen menuScreen;
         private MiGameScreen gameScreen;
-
-        
+        private MiInGameMenu inGameMenu;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -47,18 +46,21 @@ namespace Micycle
             // Initialize screens
             menuScreen = new MiMenuScreen(this);
             gameScreen = new MiGameScreen(this);
+            inGameMenu = new MiInGameMenu(this);
 
             // Attach screens to each other
             menuScreen.GameScreen = gameScreen;
+            gameScreen.InGameMenu = inGameMenu;
+            inGameMenu.MenuScreen = menuScreen;
 
             // Set active screen
             menuScreen.Visible = true;
             ToDraw.Push(menuScreen);
-
             menuScreen.Enabled = true;
             ToUpdate.Push(menuScreen);
-
             InputHandler.Focused = menuScreen;
+
+            menuScreen.EntrySequence();
 
             base.Initialize();
         }
@@ -71,6 +73,7 @@ namespace Micycle
         {
             menuScreen.LoadContent();
             gameScreen.LoadContent();
+            inGameMenu.LoadContent();
             base.LoadContent();
         }
 
@@ -80,7 +83,8 @@ namespace Micycle
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            Content.Unload();
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -113,14 +117,16 @@ namespace Micycle
         protected override void Draw(GameTime gameTime)
         {
             MiResolution.BeginDraw();
+            SpriteBatch.Begin();
 
             foreach (MiScreen screen in ToDraw)
                 screen.Draw(gameTime);
 
             // Draw frame rate
-            SpriteBatch.Begin();
             int frameRate = (int)(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
             spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, 575), Color.Black);
+            // End draw frame rate
+
             SpriteBatch.End();
 
             base.Draw(gameTime);

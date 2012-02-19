@@ -28,7 +28,11 @@ namespace MiUtil
         public ulong Time { get; set; }
 
         private Vector2 position;
-        public Vector2 Position { get { return position; } }
+        public Vector2 Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
 
         private Vector2 rotationPoint;
         private float scale;

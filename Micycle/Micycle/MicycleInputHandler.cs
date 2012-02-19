@@ -22,7 +22,6 @@ namespace Micycle
 
             if (oldState.IsReleased(MicycleControls.DOWN) && newState.IsPressed(MicycleControls.DOWN))
             {
-                System.Console.WriteLine("Downed");
                 Focused.Downed();
             }
 

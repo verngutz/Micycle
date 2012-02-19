@@ -9,6 +9,14 @@
         public MiEvent Pressed;
         public MiEvent Cancelled;
 
-        public MiGameState(MiGame game) : base(game) { }
+        public MiGameState(MiGame game) : base(game) 
+        {
+            Upped += delegate { };
+            Downed += delegate { };
+            Lefted += delegate { };
+            Righted += delegate { };
+            Pressed += delegate { };
+            Cancelled += delegate { };
+        }
     }
 }

@@ -8,6 +8,8 @@ namespace Micycle
 {
     class MiGameScreen : MiScreen
     {
+        public MiInGameMenu InGameMenu { get; set; }
+
         private MiAnimatingComponent factory;
         private MiAnimatingComponent school;
         private MiAnimatingComponent city;
@@ -21,7 +23,7 @@ namespace Micycle
             //
             // Cursor
             //
-            cursor = new MiAnimatingComponent(game, 400, 300);
+            cursor = new MiAnimatingComponent(game, 200, 50, 1, 0, 0, 0);
             cursor.Visible = false;
             cursor.Enabled = false;
 
@@ -44,6 +46,24 @@ namespace Micycle
             // Rnd
             //
             rnd = new MiAnimatingComponent(game, 700, 400, 0.5f, 0, 0, 0);
+
+            //
+            // Action Events
+            //
+            Cancelled += delegate
+            {
+                Game.EventQueue.AddEvent(new MiEvent(showInGameMenu), 0);
+            };
+        }
+
+        private void showInGameMenu()
+        {
+            InGameMenu.Enabled = true;
+            InGameMenu.Visible = true;
+            Game.ToUpdate.Push(InGameMenu);
+            Game.ToDraw.Push(InGameMenu);
+            Game.InputHandler.Focused = InGameMenu;
+            InGameMenu.EntrySequence();
         }
 
         public override void LoadContent()
@@ -52,8 +72,8 @@ namespace Micycle
             school.AddTexture(Game.Content.Load<Texture2D>("School"), 0);
             city.AddTexture(Game.Content.Load<Texture2D>("City"), 0);
             rnd.AddTexture(Game.Content.Load<Texture2D>("RnD"), 0);
+
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
-            base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -76,8 +96,6 @@ namespace Micycle
 
         public override void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Begin();
-
             if (factory.Visible)
                 factory.Draw(gameTime);
 
@@ -92,8 +110,6 @@ namespace Micycle
 
             if (cursor.Visible)
                 cursor.Draw(gameTime);
-
-            Game.SpriteBatch.End();
         }
     }
 }

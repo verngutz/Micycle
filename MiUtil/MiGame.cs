@@ -2,6 +2,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace MiUtil
 {
@@ -27,6 +28,7 @@ namespace MiUtil
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
 
             toDraw = new Stack<MiGameState>();
@@ -35,8 +37,8 @@ namespace MiUtil
 
         protected override void LoadContent()
         {
-            base.LoadContent();
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            base.LoadContent();
         }
     }
 }

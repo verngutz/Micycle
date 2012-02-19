@@ -9,7 +9,7 @@ namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
-        public MiGameScreen GameScreen;
+        public MiGameScreen GameScreen { get; set; }
 
         private Texture2D background;
 
@@ -35,7 +35,7 @@ namespace Micycle
             // New Game Button
             //
             newGameButton = new MiButton();
-            newGameButton.Pressed += new MiEvent(GoToMiGameScreen);
+            newGameButton.Pressed += new MiEvent(GoToGameScreen);
             newGameButtonGraphic = new MiAnimatingComponent(game, -100, 350);
             newGameButtonGraphic.MoveEnabled = true;
 
@@ -46,12 +46,6 @@ namespace Micycle
             quitGameButton.Pressed += new MiEvent(Game.Exit);
             quitGameButtonGraphic = new MiAnimatingComponent(game, -100, 460);
             quitGameButtonGraphic.MoveEnabled = true;
-
-            //
-            // Entrance Events
-            //
-            Game.EventQueue.AddEvent(new MiEvent(ButtonEntrance), 50);
-            Game.EventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
 
             //
             // Action Events
@@ -76,25 +70,41 @@ namespace Micycle
 
             Pressed += delegate
             {
-                Game.EventQueue.AddEvent(new MiEvent(ClearButtonsFromScreen), 50);
+                Game.EventQueue.AddEvent(new MiEvent(CursorExit), 0);
+                Game.EventQueue.AddEvent(new MiEvent(ButtonExit), 50);
+                Game.EventQueue.AddEvent(new MiEvent(FreezeButtons), 0);
                 Game.EventQueue.AddEvent(new MiEvent(PressActiveButton), 0);
             };
 
             ActiveButton = newGameButton;
         }
 
+        public void EntrySequence()
+        {
+            Game.EventQueue.AddEvent(new MiEvent(ButtonEntrance), 50);
+            Game.EventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
+            Game.EventQueue.AddEvent(new MiEvent(FreezeButtons), 0);
+        }
+
         private void ButtonEntrance()
         {
-            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(50, 300));
-            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(50, 400));
+            newGameButtonGraphic.Enabled = true;
+            quitGameButtonGraphic.Enabled = true;
+
+            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, 300));
+            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, 400));
         }
 
         private void CursorEntrance()
         {
-            newGameButtonGraphic.Enabled = false;
-            quitGameButtonGraphic.Enabled = false;
             cursor.Visible = true;
             cursor.Enabled = false;
+        }
+
+        private void FreezeButtons()
+        {
+            newGameButtonGraphic.Enabled = false;
+            quitGameButtonGraphic.Enabled = false;
         }
 
         private void MoveCursorToNewGameButton()
@@ -125,7 +135,7 @@ namespace Micycle
             ActiveButton = quitGameButton;
         }
 
-        private void GoToMiGameScreen()
+        private void GoToGameScreen()
         {
             Enabled = false;
             Visible = false;
@@ -134,24 +144,21 @@ namespace Micycle
             Game.ToUpdate.Pop();
             Game.ToDraw.Pop();
             Game.ToUpdate.Push(GameScreen);
-            Game.ToUpdate.Push(GameScreen);
+            Game.ToDraw.Push(GameScreen);
             Game.InputHandler.Focused = GameScreen;
         }
 
-        private void ClearButtonsFromScreen()
+        private void CursorExit()
+        {
+            cursor.Visible = false;
+        }
+
+        private void ButtonExit()
         {
             newGameButtonGraphic.Enabled = true;
             quitGameButtonGraphic.Enabled = true;
-            cursor.Visible = false;
             newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, -100));
             quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, -100));
-        }
-
-        private void PressActiveButton()
-        {
-            newGameButtonGraphic.Enabled = false;
-            quitGameButtonGraphic.Enabled = false;
-            ActiveButton.Pressed();
         }
 
         public override void LoadContent()
@@ -160,7 +167,6 @@ namespace Micycle
             newGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
             quitGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
-            base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
@@ -177,7 +183,6 @@ namespace Micycle
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            Game.SpriteBatch.Begin();
             Game.SpriteBatch.Draw(background, MiResolution.BoundingRectangle, Color.White);
 
             if(newGameButtonGraphic.Visible)
@@ -188,8 +193,6 @@ namespace Micycle
 
             if(cursor.Visible)
                 cursor.Draw(gameTime);
-
-            Game.SpriteBatch.End();
         }
     }
 }

@@ -16,5 +16,10 @@ namespace MiGui
             Enabled = false;
             Visible = false;
         }
+
+        protected void PressActiveButton()
+        {
+            ActiveButton.Pressed();
+        }
     }
 }
