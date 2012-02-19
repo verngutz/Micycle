@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MiGameState.cs" />
     <Compile Include="MiAnimatingComponent.cs" />
     <Compile Include="MiControl.cs" />
     <Compile Include="MiDrawableComponent.cs" />
@@ -101,7 +102,7 @@
     <Compile Include="MiComponent.cs" />
     <Compile Include="MiController.cs" />
     <Compile Include="MiControllerState.cs" />
-    <Compile Include="MiScreen.cs" />
+    <Compile Include="MiInputHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

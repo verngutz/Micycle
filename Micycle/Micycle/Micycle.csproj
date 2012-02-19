@@ -114,6 +114,7 @@
     <Compile Include="MicycleGameSystem.cs" />
     <Compile Include="MiGameScreen.cs" />
     <Compile Include="MicycleInputHandler.cs" />
+    <Compile Include="MiInGameMenu.cs" />
     <Compile Include="MiMenuScreen.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

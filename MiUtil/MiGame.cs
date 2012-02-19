@@ -1,5 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace MiUtil
 {
@@ -13,30 +16,30 @@ namespace MiUtil
         protected MiEventQueue eventQueue;
         public MiEventQueue EventQueue { get { return eventQueue; } }
 
-        protected MiScreen activeScreen;
-        public MiScreen ActiveScreen
-        {
-            set
-            {
-                activeScreen.Enabled = false;
-                activeScreen.Visible = false;
-                activeScreen = value;
-                activeScreen.Enabled = true;
-                activeScreen.Visible = true;
-            }
-        }
+        private Stack<MiGameState> toDraw;
+        private Stack<MiGameState> toUpdate;
+
+        public Stack<MiGameState> ToDraw { get { return toDraw; } }
+        public Stack<MiGameState> ToUpdate { get { return toUpdate; } }
+
+        protected MiInputHandler inputHandler;
+        public MiInputHandler InputHandler { get { return inputHandler; } }
 
         public MiGame()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
+
             Content.RootDirectory = "Content";
+
+            toDraw = new Stack<MiGameState>();
+            toUpdate = new Stack<MiGameState>();
         }
 
         protected override void LoadContent()
         {
-            base.LoadContent();
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            base.LoadContent();
         }
     }
 }

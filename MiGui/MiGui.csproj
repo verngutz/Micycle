@@ -95,6 +95,7 @@
     <Compile Include="MiButton.cs" />
     <Compile Include="MiButtonState.cs" />
     <Compile Include="MiResolution.cs" />
+    <Compile Include="MiScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

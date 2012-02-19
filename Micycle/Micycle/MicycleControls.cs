@@ -7,7 +7,7 @@ using MiUtil;
 
 namespace Micycle
 {
-    public class MicycleControls
+    class MicycleControls
     {
         public static int SIZE = 6;
         public static MiControl LEFT = new MiControl((int)Button.LEFT);
