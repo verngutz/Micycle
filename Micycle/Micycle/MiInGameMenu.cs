@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using MiUtil;
-using MiGui;
 
 namespace Micycle
 {
@@ -27,181 +28,134 @@ namespace Micycle
             //
             cursor = new MiAnimatingComponent(game, 200, 50, 1, 0, 0, 0);
             cursor.Visible = false;
-            cursor.Enabled = false;
-            cursor.MoveEnabled = true;
 
             //
             // Resume Button
             //
             resumeButton = new MiButton();
-            resumeButton.Pressed += new MiEvent(ResumeGame);
+            resumeButton.Pressed += new MiScript(
+                delegate
+                {
+                    Game.ToUpdate.Pop();
+                    Game.ToDraw.Pop();
+                    return null;
+                });
             resumeButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);
-            resumeButtonGraphic.MoveEnabled = true;
 
             //
             // Quit Button
             //
             quitGameButton = new MiButton();
-            quitGameButton.Pressed += new MiEvent(Game.Exit);
+            quitGameButton.Pressed += new MiScript(
+                delegate
+                {
+                    Game.Exit();
+                    return null;
+                });
             quitGameButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);
-            quitGameButtonGraphic.MoveEnabled = true;
 
             //
             // Go To Main Menu Button
             //
             goToMainMenuButton = new MiButton();
-            goToMainMenuButton.Pressed += new MiEvent(GoToMenuScreen);
+            goToMainMenuButton.Pressed += new MiScript(
+                delegate
+                {
+                    Game.ToUpdate.Pop();
+                    Game.ToUpdate.Pop();
+                    Game.ToDraw.Pop();
+                    Game.ToDraw.Pop();
+                    Game.ToUpdate.Push(MenuScreen);
+                    Game.ToDraw.Push(MenuScreen);
+                    Game.ScriptEngine.ExecuteScript(MenuScreen.EntrySequence);
+                    return null;
+                });
             goToMainMenuButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);
+        }
+
+        public IEnumerator<int> EntrySequence()
+        {
+            resumeButtonGraphic.MoveEnabled = true;
             goToMainMenuButtonGraphic.MoveEnabled = true;
-
-            //
-            // Action Events
-            //
-            Upped += delegate
-            {
-                if (ActiveButton == quitGameButton)
-                {
-                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToGoToMainMenuButton), 20);
-                    Game.EventQueue.AddEvent(new MiEvent(SetGoToMainMenuButtonAsActive), 0);
-                }
-                if (ActiveButton == goToMainMenuButton)
-                {
-                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToResumeButton), 20);
-                    Game.EventQueue.AddEvent(new MiEvent(SetResumeButtonAsActive), 0);
-                }
-            };
-
-            Downed += delegate
-            {
-                if (ActiveButton == resumeButton)
-                {
-                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToGoToMainMenuButton), 20);
-                    Game.EventQueue.AddEvent(new MiEvent(SetGoToMainMenuButtonAsActive), 0);
-                }
-                if (ActiveButton == goToMainMenuButton)
-                {
-                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToQuitGameButton), 20);
-                    Game.EventQueue.AddEvent(new MiEvent(SetQuitGameButtonAsActive), 0);
-                }
-
-            };
-
-            Pressed += delegate
-            {
-                Game.EventQueue.AddEvent(new MiEvent(ExitSequence), 20);
-                Game.EventQueue.AddEvent(new MiEvent(PressActiveButton), 0);
-            };
-
-        }
-
-        public void EntrySequence()
-        {
-            Game.EventQueue.AddEvent(new MiEvent(ButtonEntrance), 20);
-            Game.EventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
-            Game.EventQueue.AddEvent(new MiEvent(FreezeButtons), 0);
-
-            ActiveButton = resumeButton;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time, resumeButtonGraphic.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time, resumeButtonGraphic.Position.Y));
-        }
-
-        public void ExitSequence()
-        {
-            cursor.Visible = false;
-
-            resumeButtonGraphic.Enabled = true;
-            goToMainMenuButtonGraphic.Enabled = true;
-            quitGameButtonGraphic.Enabled = true;
-
-            resumeButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(resumeButtonGraphic.Time + 20, -100));
-            goToMainMenuButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(goToMainMenuButtonGraphic.Time + 20, -100));
-            quitGameButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 20, -100));
-        }
-
-        private void ButtonEntrance()
-        {
+            quitGameButtonGraphic.MoveEnabled = true;
             resumeButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(resumeButtonGraphic.Time + 20, 50));
             goToMainMenuButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(goToMainMenuButtonGraphic.Time + 20, 150));
             quitGameButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 20, 250));
-        }
-
-        private void CursorEntrance()
-        {
+            yield return 20;
             cursor.Visible = true;
-        }
-
-        private void FreezeButtons()
-        {
-            resumeButtonGraphic.Enabled = false;
-            goToMainMenuButtonGraphic.Enabled = false;
-            quitGameButtonGraphic.Enabled = false;
-        }
-
-        public void ResumeGame()
-        {
-            Enabled = false;
-            Visible = false;
-            Game.ToUpdate.Pop();
-            Game.ToDraw.Pop();
-            Game.InputHandler.Focused = Game.ToUpdate.Peek();
-        }
-
-        private void MoveCursorToGoToMainMenuButton()
-        {
-            ActiveButton = null;
-            cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, goToMainMenuButtonGraphic.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, goToMainMenuButtonGraphic.Position.Y));
-        }
-
-        private void SetGoToMainMenuButtonAsActive()
-        {
-            cursor.Enabled = false;
-            ActiveButton = goToMainMenuButton;
-        }
-
-        private void MoveCursorToQuitGameButton()
-        {
-            ActiveButton = null;
-            cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, quitGameButtonGraphic.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, quitGameButtonGraphic.Position.Y));
-        }
-
-        private void SetQuitGameButtonAsActive()
-        {
-            cursor.Enabled = false;
-            ActiveButton = quitGameButton;
-        }
-
-        private void MoveCursorToResumeButton()
-        {
-            ActiveButton = null;
-            cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, resumeButtonGraphic.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, resumeButtonGraphic.Position.Y));
-        }
-
-        private void SetResumeButtonAsActive()
-        {
-            cursor.Enabled = false;
+            resumeButtonGraphic.MoveEnabled = false;
+            goToMainMenuButtonGraphic.MoveEnabled = false;
+            quitGameButtonGraphic.MoveEnabled = false;
             ActiveButton = resumeButton;
         }
 
-        private void GoToMenuScreen()
+        public override IEnumerator<int> Pressed()
         {
-            Enabled = false;
-            Visible = false;
-            MenuScreen.Enabled = true;
-            MenuScreen.Visible = true;
-            Game.ToUpdate.Pop();
-            Game.ToUpdate.Pop();
-            Game.ToDraw.Pop();
-            Game.ToDraw.Pop();
-            Game.ToUpdate.Push(MenuScreen);
-            Game.ToDraw.Push(MenuScreen);
-            Game.InputHandler.Focused = MenuScreen;
-            MenuScreen.EntrySequence();
+            cursor.Visible = false;
+            resumeButtonGraphic.MoveEnabled = true;
+            goToMainMenuButtonGraphic.MoveEnabled = true;
+            quitGameButtonGraphic.MoveEnabled = true;
+            cursor.MoveEnabled = true;
+            resumeButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(resumeButtonGraphic.Time + 20, -100));
+            goToMainMenuButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(goToMainMenuButtonGraphic.Time + 20, -100));
+            quitGameButtonGraphic.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 20, -100));
+            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, resumeButtonGraphic.Position.Y));
+            yield return 20;
+            resumeButtonGraphic.MoveEnabled = false;
+            goToMainMenuButtonGraphic.MoveEnabled = false;
+            quitGameButtonGraphic.MoveEnabled = false;
+            cursor.MoveEnabled = false;
+            ActiveButton.Pressed();
+        }
+
+        public override IEnumerator<int> Cancelled()
+        {
+            ActiveButton = resumeButton;
+            return Pressed();
+        }
+
+        public override IEnumerator<int> Upped()
+        {
+            if (ActiveButton == goToMainMenuButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, resumeButtonGraphic.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = resumeButton;
+            }
+            else if (ActiveButton == quitGameButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, goToMainMenuButtonGraphic.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = goToMainMenuButton;
+            }
+        }
+
+        public override IEnumerator<int> Downed()
+        {
+            if (ActiveButton == goToMainMenuButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, quitGameButtonGraphic.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = quitGameButton;
+            }
+            else if (ActiveButton == resumeButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 20, goToMainMenuButtonGraphic.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = goToMainMenuButton;
+            }
         }
 
         public override void LoadContent()
@@ -215,17 +169,10 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            if (resumeButtonGraphic.Enabled)
-                resumeButtonGraphic.Update(gameTime);
-
-            if (goToMainMenuButtonGraphic.Enabled)
-                goToMainMenuButtonGraphic.Update(gameTime);
-
-            if (quitGameButtonGraphic.Enabled)
-                quitGameButtonGraphic.Update(gameTime);
-
-            if (cursor.Enabled)
-                cursor.Update(gameTime);
+            resumeButtonGraphic.Update(gameTime);
+            goToMainMenuButtonGraphic.Update(gameTime);
+            quitGameButtonGraphic.Update(gameTime);
+            cursor.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)

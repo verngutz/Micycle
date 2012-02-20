@@ -6,9 +6,10 @@ using Microsoft.Xna.Framework;
 namespace MiUtil
 {
     /// <summary>
-    /// MiAnimation defines an animation sequence as a queue of textures. 
+    /// MiAnimatingComponent defines an animation sequence as a queue of textures. 
     /// The textures are drawn one by one using a queue, with each texture staying on the queue for a certain amount of time.
-    /// On top of that, the position, scaling, and rotation of the textures can be changed over time by manipulating the sequence's movement curves.
+    /// On top of that, the position, scaling, and rotation of the textures can be changed over time 
+    /// by manipulating the sequence's movement curves.
     /// </summary>
     public class MiAnimatingComponent : MiDrawableComponent
     {
@@ -23,9 +24,14 @@ namespace MiUtil
         public Curve RotationOverTime { get; set; }
         public Curve RotationPointXOverTime { get; set; }
         public Curve RotationPointYOverTime { get; set; }
-        public bool MoveEnabled { get; set; }
 
-        public ulong Time { get; set; }
+        public bool MoveEnabled { get; set; }
+        public bool ScaleEnabled { get; set; }
+        public bool RotateEnabled { get; set; }
+        public bool RotateAxisChangeEnabled { get; set; }
+
+        private ulong time;
+        public ulong Time { get { return time; } }
 
         private Vector2 position;
         public Vector2 Position
@@ -47,6 +53,8 @@ namespace MiUtil
         {
             spriteQueue = new Queue<KeyValuePair<Texture2D, int>>();
             spriteQueueTimer = 0;
+
+            time = 0;
 
             position = new Vector2(default_x, default_y);
             scale = default_scale;
@@ -84,15 +92,33 @@ namespace MiUtil
 
         public override void Update(GameTime gameTime)
         {
+            time++;
+
             if (MoveEnabled)
             {
-                Time++;
+                position.X = XPositionOverTime.Evaluate(Time);
+                position.Y = YPositionOverTime.Evaluate(Time);
+            }
+
+            if (ScaleEnabled)
+            {
+                scale = ScalingOverTime.Evaluate(Time);
+            }
+
+            if (RotateEnabled)
+            {
+                rotation = RotationOverTime.Evaluate(Time);
+            }
+
+            if(RotateAxisChangeEnabled)
+            {
+                rotationPoint.X = RotationPointXOverTime.Evaluate(Time);
+                rotationPoint.Y = RotationPointYOverTime.Evaluate(Time);
             }
 
             if (SpriteQueueEnabled)
             {
-                spriteQueueTimer++;
-                if (spriteQueueTimer > spriteQueue.Peek().Value)
+                if (spriteQueueTimer++ > spriteQueue.Peek().Value)
                 {
                     spriteQueueTimer = 0;
                     if (SpriteQueueLoop)
@@ -101,13 +127,6 @@ namespace MiUtil
                         spriteQueue.Dequeue();
                 }
             }
-
-            position.X = XPositionOverTime.Evaluate(Time);
-            position.Y = YPositionOverTime.Evaluate(Time);
-            scale = ScalingOverTime.Evaluate(Time);
-            rotation = RotationOverTime.Evaluate(Time);
-            rotationPoint.X = RotationPointXOverTime.Evaluate(Time);
-            rotationPoint.Y = RotationPointYOverTime.Evaluate(Time);
         }
 
         public override void Draw(GameTime gameTime)

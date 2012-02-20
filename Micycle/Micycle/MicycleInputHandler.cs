@@ -1,5 +1,6 @@
-﻿using MiUtil;
-using MiGui;
+﻿using Microsoft.Xna.Framework;
+
+using MiUtil;
 
 namespace Micycle
 {
@@ -11,38 +12,37 @@ namespace Micycle
             oldState = MicycleController.GetState();
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             MicycleControllerState newState = MicycleController.GetState();
-
             if (oldState.IsReleased(MicycleControls.UP) && newState.IsPressed(MicycleControls.UP))
             {
-                Focused.Upped();
+                Game.ScriptEngine.ExecuteScript(Focused.Upped);
             }
 
             if (oldState.IsReleased(MicycleControls.DOWN) && newState.IsPressed(MicycleControls.DOWN))
             {
-                Focused.Downed();
+                Game.ScriptEngine.ExecuteScript(Focused.Downed);
             }
 
             if (oldState.IsReleased(MicycleControls.LEFT) && newState.IsPressed(MicycleControls.LEFT))
             {
-                Focused.Lefted();
+                Game.ScriptEngine.ExecuteScript(Focused.Lefted);
             }
 
             if (oldState.IsReleased(MicycleControls.RIGHT) && newState.IsPressed(MicycleControls.RIGHT))
             {
-                Focused.Righted();
+                Game.ScriptEngine.ExecuteScript(Focused.Righted);
             }
 
             if (oldState.IsReleased(MicycleControls.A) && newState.IsPressed(MicycleControls.A))
             {
-                Focused.Pressed();
+                Game.ScriptEngine.ExecuteScript(Focused.Pressed);
             }
 
             if (oldState.IsReleased(MicycleControls.B) && newState.IsPressed(MicycleControls.B))
             {
-                Focused.Cancelled();
+                Game.ScriptEngine.ExecuteScript(Focused.Cancelled);
             }
 
             oldState = newState;

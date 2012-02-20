@@ -1,8 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using MiUtil;
-using MiGui;
 
 namespace Micycle
 {
@@ -46,24 +47,13 @@ namespace Micycle
             // Rnd
             //
             rnd = new MiAnimatingComponent(game, 700, 400, 0.5f, 0, 0, 0);
-
-            //
-            // Action Events
-            //
-            Cancelled += delegate
-            {
-                Game.EventQueue.AddEvent(new MiEvent(showInGameMenu), 0);
-            };
         }
 
-        private void showInGameMenu()
+        public override IEnumerator<int> Cancelled()
         {
-            InGameMenu.Enabled = true;
-            InGameMenu.Visible = true;
             Game.ToUpdate.Push(InGameMenu);
             Game.ToDraw.Push(InGameMenu);
-            Game.InputHandler.Focused = InGameMenu;
-            InGameMenu.EntrySequence();
+            return InGameMenu.EntrySequence();
         }
 
         public override void LoadContent()

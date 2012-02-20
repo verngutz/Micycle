@@ -1,9 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using MiUtil;
-using MiGui;
 
 namespace Micycle
 {
@@ -27,138 +28,90 @@ namespace Micycle
             // Cursor
             //
             cursor = new MiAnimatingComponent(game, 300, 350);
-            cursor.Enabled = false;
             cursor.Visible = false;
-            cursor.MoveEnabled = true;
 
             //
             // New Game Button
             //
             newGameButton = new MiButton();
-            newGameButton.Pressed += new MiEvent(GoToGameScreen);
+            newGameButton.Pressed += new MiScript(
+                delegate
+                {
+                    Game.ToUpdate.Pop();
+                    Game.ToDraw.Pop();
+                    Game.ToUpdate.Push(GameScreen);
+                    Game.ToDraw.Push(GameScreen);
+                    return null;
+                });
             newGameButtonGraphic = new MiAnimatingComponent(game, -100, 350);
-            newGameButtonGraphic.MoveEnabled = true;
 
             //
             // Quit Game Button
             //
             quitGameButton = new MiButton();
-            quitGameButton.Pressed += new MiEvent(Game.Exit);
+            quitGameButton.Pressed += new MiScript(
+                delegate
+                {
+                    Game.Exit();
+                    return null;
+                });
             quitGameButtonGraphic = new MiAnimatingComponent(game, -100, 460);
-            quitGameButtonGraphic.MoveEnabled = true;
-
-            //
-            // Action Events
-            //
-            Upped += delegate
-            {
-                if (ActiveButton != newGameButton)
-                {
-                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToNewGameButton), 25);
-                    Game.EventQueue.AddEvent(new MiEvent(SetNewGameButtonAsActive), 0);
-                }
-            };
-
-            Downed += delegate
-            {
-                if (ActiveButton != quitGameButton)
-                {
-                    Game.EventQueue.AddEvent(new MiEvent(MoveCursorToExitButton), 25);
-                    Game.EventQueue.AddEvent(new MiEvent(SetExitButtonAsActive), 0);
-                }
-            };
-
-            Pressed += delegate
-            {
-                Game.EventQueue.AddEvent(new MiEvent(CursorExit), 0);
-                Game.EventQueue.AddEvent(new MiEvent(ButtonExit), 50);
-                Game.EventQueue.AddEvent(new MiEvent(FreezeButtons), 0);
-                Game.EventQueue.AddEvent(new MiEvent(PressActiveButton), 0);
-            };
 
             ActiveButton = newGameButton;
         }
 
-        public void EntrySequence()
+        public IEnumerator<int> EntrySequence()
         {
-            Game.EventQueue.AddEvent(new MiEvent(ButtonEntrance), 50);
-            Game.EventQueue.AddEvent(new MiEvent(CursorEntrance), 0);
-            Game.EventQueue.AddEvent(new MiEvent(FreezeButtons), 0);
-        }
-
-        private void ButtonEntrance()
-        {
-            newGameButtonGraphic.Enabled = true;
-            quitGameButtonGraphic.Enabled = true;
-
+            newGameButtonGraphic.MoveEnabled = true;
+            quitGameButtonGraphic.MoveEnabled = true;
             newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, 300));
             quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, 400));
-        }
-
-        private void CursorEntrance()
-        {
+            yield return 50;
             cursor.Visible = true;
-            cursor.Enabled = false;
+            cursor.MoveEnabled = false;
+            newGameButtonGraphic.MoveEnabled = false;
+            quitGameButtonGraphic.MoveEnabled = false;
         }
 
-        private void FreezeButtons()
-        {
-            newGameButtonGraphic.Enabled = false;
-            quitGameButtonGraphic.Enabled = false;
-        }
-
-        private void MoveCursorToNewGameButton()
-        {
-            ActiveButton = null;
-            cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.Y));
-        }
-
-        private void SetNewGameButtonAsActive()
-        {
-            cursor.Enabled = false;
-            ActiveButton = newGameButton;
-        }
-
-        private void MoveCursorToExitButton()
-        {
-            ActiveButton = null;
-            cursor.Enabled = true;
-            cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.X));
-            cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.Y));
-        }
-
-        private void SetExitButtonAsActive()
-        {
-            cursor.Enabled = false;
-            ActiveButton = quitGameButton;
-        }
-
-        private void GoToGameScreen()
-        {
-            Enabled = false;
-            Visible = false;
-            GameScreen.Enabled = true;
-            GameScreen.Visible = true;
-            Game.ToUpdate.Pop();
-            Game.ToDraw.Pop();
-            Game.ToUpdate.Push(GameScreen);
-            Game.ToDraw.Push(GameScreen);
-            Game.InputHandler.Focused = GameScreen;
-        }
-
-        private void CursorExit()
+        public override IEnumerator<int> Pressed()
         {
             cursor.Visible = false;
-        }
-
-        private void ButtonExit()
-        {
-            newGameButtonGraphic.Enabled = true;
-            quitGameButtonGraphic.Enabled = true;
+            newGameButtonGraphic.MoveEnabled = true;
+            quitGameButtonGraphic.MoveEnabled = true;
             newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, -100));
             quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, -100));
+            yield return 50;
+            newGameButtonGraphic.MoveEnabled = false;
+            quitGameButtonGraphic.MoveEnabled = false;
+            ActiveButton.Pressed();
+        }
+
+        public override IEnumerator<int> Upped()
+        {
+            if (ActiveButton == quitGameButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.Y));
+                yield return 25;
+                cursor.MoveEnabled = false;
+                ActiveButton = newGameButton;
+            }
+        }
+
+        public override IEnumerator<int> Downed()
+        {
+            if (ActiveButton == newGameButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.Y));
+                yield return 25;
+                cursor.MoveEnabled = false;
+                ActiveButton = quitGameButton;
+            }
         }
 
         public override void LoadContent()
@@ -171,14 +124,9 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            if(newGameButtonGraphic.Enabled)
-                newGameButtonGraphic.Update(gameTime);
-
-            if(quitGameButtonGraphic.Enabled)
-                quitGameButtonGraphic.Update(gameTime);
-
-            if(cursor.Enabled)
-                cursor.Update(gameTime);
+            newGameButtonGraphic.Update(gameTime);
+            quitGameButtonGraphic.Update(gameTime);
+            cursor.Update(gameTime);
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)

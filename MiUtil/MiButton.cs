@@ -1,10 +1,8 @@
-using MiUtil;
-
-namespace MiGui
+namespace MiUtil
 {
     public class MiButton
     {
-        public MiEvent Pressed;
+        public MiScript Pressed;
 
         public MiButtonState State { set; get; }
 

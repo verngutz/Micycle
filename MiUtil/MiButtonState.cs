@@ -1,4 +1,4 @@
-﻿namespace MiGui
+﻿namespace MiUtil
 {
     public enum MiButtonState
     {
