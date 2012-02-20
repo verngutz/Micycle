@@ -13,7 +13,7 @@ namespace Micycle
     {
         public static int speed = 20;
 
-        private Texture2D image;
+        private static Texture2D image;
         string filename;
         Vector2 position;
         Vector2 dimension;
@@ -51,7 +51,6 @@ namespace Micycle
 
         public override void LoadContent()
         {
-            base.LoadContent();
             image = Game.Content.Load<Texture2D>(filename);
         }
 
@@ -59,7 +58,6 @@ namespace Micycle
         {
             base.Draw(gameTime);
             this.Game.SpriteBatch.Draw(image, new Rectangle((int)position.X, (int)position.Y, (int)dimension.X, (int)dimension.Y), Color.White);
-
         }
     }
 

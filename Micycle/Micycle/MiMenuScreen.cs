@@ -41,6 +41,7 @@ namespace Micycle
                     Game.ToDraw.Pop();
                     Game.ToUpdate.Push(GameScreen);
                     Game.ToDraw.Push(GameScreen);
+                    GameScreen.Initialize();
                     return null;
                 });
             newGameButtonGraphic = new MiAnimatingComponent(game, -100, 350);

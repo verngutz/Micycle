@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Xna.Framework;
+using MiUtil;
 
-using Microsoft.Xna.Framework;
 namespace Micycle
 {
-    public class MicycleGameSystem
+    public class MicycleGameSystem : MiComponent
     {
         private int cityPeople;
         private int schoolStudents;
@@ -27,6 +24,12 @@ namespace Micycle
         private int cityMoney;
         private int ownerMoney;
         private int researchPoints;
+
+        public MicycleGameSystem(Micycle game)
+            : base(game)
+        {
+
+        }
 
         private void AddEducationBudget(int dx) 
         {
@@ -64,12 +67,6 @@ namespace Micycle
             if (researcherCapacity < 0) researcherCapacity = 0;
         }
 
-
-        public void update()
-        {
-            time++;
-        }
-
         public void updateCity()
         {
             //update city population
@@ -95,6 +92,11 @@ namespace Micycle
             //update owner money
             //update the in flow and out flow from research center (research center + teachers(?))
             //update research points
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            time++;
         }
     }
 }

@@ -65,8 +65,7 @@ namespace MiUtil
             inputHandler.Focused = ToUpdate.Peek();
             inputHandler.Update(gameTime);
 
-            foreach (MiScreen screen in ToUpdate)
-                screen.Update(gameTime);
+            ToUpdate.Peek().Update(gameTime);
 
             base.Update(gameTime);
         }
