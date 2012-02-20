@@ -18,9 +18,24 @@ namespace Micycle
 
         private MiAnimatingComponent cursor;
 
-        public MiGameScreen(Micycle game)
-            : base(game)
+        private Mice mice;
+
+        public MiGameScreen(Micycle game) : base(game) 
+
         {
+            // Mouse
+            Node first = new Node(10, 10);
+            Node second = new Node( 10, 500 );
+            Node third = new Node( 500, 500 );
+            Node fourth = new Node ( 500, 10 );
+
+            first.next = second;
+            second.next = third;
+            third.next = fourth;
+            fourth.next = first;
+
+            mice = new Mice(Game, second, 10, 10, 50, 50, "mice");
+
             //
             // Cursor
             //
@@ -62,12 +77,15 @@ namespace Micycle
             school.AddTexture(Game.Content.Load<Texture2D>("School"), 0);
             city.AddTexture(Game.Content.Load<Texture2D>("City"), 0);
             rnd.AddTexture(Game.Content.Load<Texture2D>("RnD"), 0);
-
+            mice.LoadContent();
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
         }
 
         public override void Update(GameTime gameTime)
         {
+            mice.Update(gameTime);
+
+
             if (factory.Enabled)
                 factory.Update(gameTime);
 
@@ -86,6 +104,8 @@ namespace Micycle
 
         public override void Draw(GameTime gameTime)
         {
+
+
             if (factory.Visible)
                 factory.Draw(gameTime);
 
@@ -100,6 +120,9 @@ namespace Micycle
 
             if (cursor.Visible)
                 cursor.Draw(gameTime);
+
+            mice.Draw(gameTime);
+
         }
     }
 }

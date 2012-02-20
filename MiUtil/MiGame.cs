@@ -9,6 +9,7 @@ namespace MiUtil
 {
     public abstract class MiGame : Game
     {
+        
         protected GraphicsDeviceManager graphics;
         protected SpriteBatch spriteBatch;
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
