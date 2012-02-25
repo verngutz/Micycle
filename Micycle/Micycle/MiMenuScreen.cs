@@ -43,9 +43,9 @@ namespace Micycle
                 delegate
                 {
                     Game.ToUpdate.Pop();
-                    Game.ToDraw.Pop();
+                    Game.ToDraw.RemoveLast();
                     Game.ToUpdate.Push(gameScreen);
-                    Game.ToDraw.Push(gameScreen);
+                    Game.ToDraw.AddLast(gameScreen);
                     gameScreen.Initialize();
                     return null;
                 });
@@ -85,7 +85,7 @@ namespace Micycle
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
-                yield return 0;
+                yield break;
             }
             else
             {
@@ -106,7 +106,7 @@ namespace Micycle
         public override IEnumerator<int> Upped()
         {
             if (entrySequenceMutex || exitSequenceMutex)
-                yield return 0;
+                yield break;
 
             else if (ActiveButton == quitGameButton)
             {
@@ -123,7 +123,7 @@ namespace Micycle
         public override IEnumerator<int> Downed()
         {
             if (entrySequenceMutex || exitSequenceMutex)
-                yield return 0;
+                yield break;
 
             else if (ActiveButton == newGameButton)
             {
@@ -157,11 +157,8 @@ namespace Micycle
         {
             Game.SpriteBatch.Draw(background, MiResolution.BoundingRectangle, Color.White);
 
-            if(newGameButtonGraphic.Visible)
-                newGameButtonGraphic.Draw(gameTime);
-
-            if(quitGameButtonGraphic.Visible)
-                quitGameButtonGraphic.Draw(gameTime);
+            newGameButtonGraphic.Draw(gameTime);
+            quitGameButtonGraphic.Draw(gameTime);
 
             if(cursor.Visible)
                 cursor.Draw(gameTime);

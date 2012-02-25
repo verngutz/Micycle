@@ -35,7 +35,7 @@ namespace Micycle
             startScreen = new MiMenuScreen(this);
 
             // Set active screen
-            ToDraw.Push(startScreen);
+            ToDraw.AddLast(startScreen);
             ToUpdate.Push(startScreen);
 
             ScriptEngine.ExecuteScript(new MiScript(startScreen.EntrySequence));

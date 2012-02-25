@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MiBuildingMenu.cs" />
     <Compile Include="Mice.cs" />
     <Compile Include="MicycleController.cs" />
     <Compile Include="MicycleControllerState.cs" />

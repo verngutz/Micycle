@@ -35,7 +35,7 @@ namespace Micycle
                 delegate
                 {
                     Game.ToUpdate.Pop();
-                    Game.ToDraw.Pop();
+                    Game.ToDraw.RemoveLast();
                     return null;
                 });
             resumeButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);
@@ -61,10 +61,10 @@ namespace Micycle
                 {
                     Game.ToUpdate.Pop();
                     Game.ToUpdate.Pop();
-                    Game.ToDraw.Pop();
-                    Game.ToDraw.Pop();
+                    Game.ToDraw.RemoveLast();
+                    Game.ToDraw.RemoveLast();
                     Game.ToUpdate.Push(game.StartScreen);
-                    Game.ToDraw.Push(game.StartScreen);
+                    Game.ToDraw.AddLast(game.StartScreen);
                     Game.ScriptEngine.ExecuteScript(game.StartScreen.EntrySequence);
                     return null;
                 });
@@ -93,7 +93,7 @@ namespace Micycle
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
-                yield return 0;
+                yield break;
             }
             else
             {
@@ -121,7 +121,7 @@ namespace Micycle
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
-                yield return 0;
+                yield break;
             }
             else
             {
@@ -133,7 +133,7 @@ namespace Micycle
         public override IEnumerator<int> Upped()
         {
             if (entrySequenceMutex || exitSequenceMutex)
-                yield return 0;
+                yield break;
 
             else if (ActiveButton == goToMainMenuButton)
             {
@@ -200,14 +200,9 @@ namespace Micycle
 
         public override void Draw(GameTime gameTime)
         {
-            if (resumeButtonGraphic.Visible)
-                resumeButtonGraphic.Draw(gameTime);
-
-            if (goToMainMenuButtonGraphic.Visible)
-                goToMainMenuButtonGraphic.Draw(gameTime);
-
-            if (quitGameButtonGraphic.Visible)
-                quitGameButtonGraphic.Draw(gameTime);
+            resumeButtonGraphic.Draw(gameTime);
+            goToMainMenuButtonGraphic.Draw(gameTime);
+            quitGameButtonGraphic.Draw(gameTime);
 
             if (cursor.Visible)
                 cursor.Draw(gameTime);

@@ -16,30 +16,38 @@ namespace Micycle
 
         private const int SCHOOL_WIDTH = 188;
         private const int SCHOOL_HEIGHT = 365;
-        private const int SCHOOL_X = CENTER_X - (int)(SCHOOL_WIDTH * SCHOOL_SCALE / 2);
-        private const int SCHOOL_Y = CENTER_Y - (int)(SCHOOL_HEIGHT * SCHOOL_SCALE / 2);
         private const float SCHOOL_SCALE = 0.5f;
+        private const int SCHOOL_CENTER_X = CENTER_X;
+        private const int SCHOOL_CENTER_Y = CENTER_Y;
+        private const int SCHOOL_X = SCHOOL_CENTER_X - (int)(SCHOOL_WIDTH * SCHOOL_SCALE / 2);
+        private const int SCHOOL_Y = SCHOOL_CENTER_Y - (int)(SCHOOL_HEIGHT * SCHOOL_SCALE / 2);
 
         private const int CITY_WIDTH = 188;
         private const int CITY_HEIGHT = 365;
-        private const float CITY_THETA = (float)(3 * Math.PI / 2);
-        private static readonly int CITY_X = (int)(CENTER_X + RADIUS * Math.Cos(CITY_THETA) - (int)(CITY_WIDTH * SCHOOL_SCALE / 2));
-        private static readonly int CITY_Y = (int)(CENTER_Y + RADIUS * Math.Sin(CITY_THETA) - (int)(CITY_HEIGHT * SCHOOL_SCALE / 2));
         private const float CITY_SCALE = 0.5f;
+        private const float CITY_THETA = (float)(3 * Math.PI / 2);
+        private static readonly int CITY_CENTER_X = (int)(CENTER_X + RADIUS * Math.Cos(CITY_THETA));
+        private static readonly int CITY_CENTER_Y = (int)(CENTER_Y + RADIUS * Math.Sin(CITY_THETA));
+        private static readonly int CITY_X = CITY_CENTER_X - (int)(CITY_WIDTH * CITY_SCALE / 2);
+        private static readonly int CITY_Y = CITY_CENTER_Y - (int)(CITY_HEIGHT * CITY_SCALE / 2);
 
         private const int RND_WIDTH = 188;
         private const int RND_HEIGHT = 365;
-        private const float RND_THETA = (float)(1 * Math.PI / 6);
-        private static readonly int RND_X = (int)(CENTER_X + RADIUS * Math.Cos(RND_THETA) - (int)(RND_WIDTH * SCHOOL_SCALE / 2));
-        private static readonly int RND_Y = (int)(CENTER_Y + RADIUS * Math.Sin(RND_THETA) - (int)(RND_HEIGHT * SCHOOL_SCALE / 2));
         private const float RND_SCALE = 0.5f;
-
+        private const float RND_THETA = (float)(1 * Math.PI / 6);
+        private static readonly int RND_CENTER_X = (int)(CENTER_X + RADIUS * Math.Cos(RND_THETA));
+        private static readonly int RND_CENTER_Y = (int)(CENTER_Y + RADIUS * Math.Sin(RND_THETA));
+        private static readonly int RND_X = RND_CENTER_X - (int)(RND_WIDTH * RND_SCALE / 2);
+        private static readonly int RND_Y = RND_CENTER_Y - (int)(RND_HEIGHT * RND_SCALE / 2);
+        
         private const int FACTORY_WIDTH = 188;
         private const int FACTORY_HEIGHT = 365;
-        private const float FACTORY_THETA = (float)(5 * Math.PI / 6);
-        private static readonly int FACTORY_X = (int)(CENTER_X + RADIUS * Math.Cos(FACTORY_THETA) - (int)(FACTORY_WIDTH * SCHOOL_SCALE / 2));
-        private static readonly int FACTORY_Y = (int)(CENTER_Y + RADIUS * Math.Sin(FACTORY_THETA) - (int)(FACTORY_HEIGHT * SCHOOL_SCALE / 2));
         private const float FACTORY_SCALE = 0.5f;
+        private const float FACTORY_THETA = (float)(5 * Math.PI / 6);
+        private static readonly int FACTORY_CENTER_X = (int)(CENTER_X + RADIUS * Math.Cos(FACTORY_THETA));
+        private static readonly int FACTORY_CENTER_Y = (int)(CENTER_Y + RADIUS * Math.Sin(FACTORY_THETA));
+        private static readonly int FACTORY_X = FACTORY_CENTER_X - (int)(FACTORY_WIDTH * FACTORY_SCALE / 2);
+        private static readonly int FACTORY_Y = FACTORY_CENTER_Y - (int)(FACTORY_HEIGHT * FACTORY_SCALE / 2);
 
         private MiInGameMenu inGameMenu;
         private MiFactoryMenu factoryMenu;
@@ -75,7 +83,7 @@ namespace Micycle
                 delegate
                 {
                     Game.ToUpdate.Push(schoolMenu); 
-                    Game.ToDraw.Push(schoolMenu);
+                    Game.ToDraw.AddLast(schoolMenu);
                     return null;
                 });
 
@@ -94,7 +102,7 @@ namespace Micycle
                 delegate
                 {
                     Game.ToUpdate.Push(rndMenu);
-                    Game.ToDraw.Push(rndMenu);
+                    Game.ToDraw.AddLast(rndMenu);
                     return null;
                 });
 
@@ -107,7 +115,7 @@ namespace Micycle
                 delegate
                 {
                     Game.ToUpdate.Push(factoryMenu);
-                    Game.ToDraw.Push(factoryMenu);
+                    Game.ToDraw.AddLast(factoryMenu);
                     return null;
                 });
 
@@ -118,9 +126,9 @@ namespace Micycle
             ActiveButton = schoolButton;
 
             inGameMenu = new MiInGameMenu(game);
-            factoryMenu = new MiFactoryMenu(game);
-            schoolMenu = new MiSchoolMenu(game);
-            rndMenu = new MiRndMenu(game);
+            factoryMenu = new MiFactoryMenu(game, FACTORY_CENTER_X, FACTORY_CENTER_Y);
+            schoolMenu = new MiSchoolMenu(game, SCHOOL_CENTER_X, SCHOOL_CENTER_Y);
+            rndMenu = new MiRndMenu(game, RND_CENTER_X, RND_CENTER_Y);
         }
 
         public override void Initialize()
@@ -158,7 +166,7 @@ namespace Micycle
         public override IEnumerator<int> Cancelled()
         {
             Game.ToUpdate.Push(inGameMenu);
-            Game.ToDraw.Push(inGameMenu);
+            Game.ToDraw.AddLast(inGameMenu);
             return inGameMenu.EntrySequence();
         }
 

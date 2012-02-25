@@ -7,10 +7,10 @@ using MiUtil;
 
 namespace Micycle
 {
-    class MiRndMenu : MiScreen
+    class MiRndMenu : MiBuildingMenu
     {
-        public MiRndMenu(Micycle game)
-            : base(game)
+        public MiRndMenu(Micycle game, int center_x, int center_y)
+            : base(game, center_x, center_y)
         {
         }
     }

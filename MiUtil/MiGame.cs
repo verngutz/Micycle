@@ -14,10 +14,10 @@ namespace MiUtil
         protected SpriteBatch spriteBatch;
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
 
-        private Stack<MiScreen> toDraw;
+        private LinkedList<MiScreen> toDraw;
         private Stack<MiScreen> toUpdate;
 
-        public Stack<MiScreen> ToDraw { get { return toDraw; } }
+        public LinkedList<MiScreen> ToDraw { get { return toDraw; } }
         public Stack<MiScreen> ToUpdate { get { return toUpdate; } }
 
         protected MiInputHandler inputHandler;
@@ -34,7 +34,7 @@ namespace MiUtil
 
             Content.RootDirectory = "Content";
 
-            toDraw = new Stack<MiScreen>();
+            toDraw = new LinkedList<MiScreen>();
             toUpdate = new Stack<MiScreen>();
 
             scriptEngine = new MiScriptEngine(this);
