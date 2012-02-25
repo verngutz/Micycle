@@ -9,8 +9,6 @@ namespace Micycle
 {
     class MiInGameMenu : MiScreen
     {
-        public MiMenuScreen MenuScreen { get; set; }
-
         private MiAnimatingComponent cursor;
         private MiAnimatingComponent resumeButtonGraphic;
         private MiAnimatingComponent goToMainMenuButtonGraphic;
@@ -19,9 +17,6 @@ namespace Micycle
         private MiButton resumeButton;
         private MiButton goToMainMenuButton;
         private MiButton quitGameButton;
-
-        private bool exitSequenceMutex;
-        private bool entrySequenceMutex;
 
         public MiInGameMenu(Micycle game)
             : base(game)
@@ -68,15 +63,15 @@ namespace Micycle
                     Game.ToUpdate.Pop();
                     Game.ToDraw.Pop();
                     Game.ToDraw.Pop();
-                    Game.ToUpdate.Push(MenuScreen);
-                    Game.ToDraw.Push(MenuScreen);
-                    Game.ScriptEngine.ExecuteScript(MenuScreen.EntrySequence);
+                    Game.ToUpdate.Push(game.StartScreen);
+                    Game.ToDraw.Push(game.StartScreen);
+                    Game.ScriptEngine.ExecuteScript(game.StartScreen.EntrySequence);
                     return null;
                 });
             goToMainMenuButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);
         }
 
-        public IEnumerator<int> EntrySequence()
+        public override IEnumerator<int> EntrySequence()
         {
             entrySequenceMutex = true;
             resumeButtonGraphic.MoveEnabled = true;
@@ -137,7 +132,7 @@ namespace Micycle
 
         public override IEnumerator<int> Upped()
         {
-            if (entrySequenceMutex)
+            if (entrySequenceMutex || exitSequenceMutex)
                 yield return 0;
 
             else if (ActiveButton == goToMainMenuButton)
@@ -149,6 +144,7 @@ namespace Micycle
                 cursor.MoveEnabled = false;
                 ActiveButton = resumeButton;
             }
+
             else if (ActiveButton == quitGameButton)
             {
                 ActiveButton = null;
@@ -162,7 +158,7 @@ namespace Micycle
 
         public override IEnumerator<int> Downed()
         {
-            if (entrySequenceMutex)
+            if (entrySequenceMutex || exitSequenceMutex)
                 yield return 0;
 
             else if (ActiveButton == goToMainMenuButton)

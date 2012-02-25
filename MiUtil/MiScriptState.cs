@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace MiUtil
 {
-    public class MiScriptState
+    class MiScriptState
     {
         private double sleepTime;
         private MiScript script;
@@ -36,7 +36,7 @@ namespace MiUtil
                 {
                     unfinished = scriptEnumerator.MoveNext();
                     sleepTime = scriptEnumerator.Current;
-                } 
+                }
                 while (sleepTime <= 0 && unfinished);
 
                 if (!unfinished)

@@ -21,6 +21,7 @@ namespace MiUtil
         public Stack<MiScreen> ToUpdate { get { return toUpdate; } }
 
         protected MiInputHandler inputHandler;
+        public MiInputHandler InputHandler { get { return inputHandler; } }
 
         private MiScriptEngine scriptEngine;
         public MiScriptEngine ScriptEngine { get { return scriptEngine; } }
@@ -65,7 +66,8 @@ namespace MiUtil
             inputHandler.Focused = ToUpdate.Peek();
             inputHandler.Update(gameTime);
 
-            ToUpdate.Peek().Update(gameTime);
+            foreach (MiScreen screen in ToUpdate)
+                screen.Update(gameTime);
 
             base.Update(gameTime);
         }

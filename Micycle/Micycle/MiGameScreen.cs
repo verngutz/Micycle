@@ -41,10 +41,10 @@ namespace Micycle
         private static readonly int FACTORY_Y = (int)(CENTER_Y + RADIUS * Math.Sin(FACTORY_THETA) - (int)(FACTORY_HEIGHT * SCHOOL_SCALE / 2));
         private const float FACTORY_SCALE = 0.5f;
 
-        public MiInGameMenu InGameMenu { get; set; }
-        public MiFactoryMenu FactoryMenu { get; set; }
-        public MiSchoolMenu SchoolMenu { get; set; }
-        public MiRndMenu RndMenu { get; set; }
+        private MiInGameMenu inGameMenu;
+        private MiFactoryMenu factoryMenu;
+        private MiSchoolMenu schoolMenu;
+        private MiRndMenu rndMenu;
 
         private MiAnimatingComponent school;
         private MiAnimatingComponent city;
@@ -63,12 +63,9 @@ namespace Micycle
         private static uint mouseKey = 0;
 
         private MicycleGameSystem system;
-        private MiScriptEngine inGameScripts;
 
         public MiGameScreen(Micycle game) : base(game) 
-        {
-            inGameScripts = new MiScriptEngine(game);            
-
+        {   
             //
             // School
             //
@@ -77,8 +74,8 @@ namespace Micycle
             schoolButton.Pressed += new MiScript(
                 delegate
                 {
-                    Game.ToUpdate.Push(SchoolMenu); 
-                    Game.ToDraw.Push(SchoolMenu);
+                    Game.ToUpdate.Push(schoolMenu); 
+                    Game.ToDraw.Push(schoolMenu);
                     return null;
                 });
 
@@ -96,8 +93,8 @@ namespace Micycle
             rndButton.Pressed += new MiScript(
                 delegate
                 {
-                    Game.ToUpdate.Push(RndMenu);
-                    Game.ToDraw.Push(RndMenu);
+                    Game.ToUpdate.Push(rndMenu);
+                    Game.ToDraw.Push(rndMenu);
                     return null;
                 });
 
@@ -109,8 +106,8 @@ namespace Micycle
             factoryButton.Pressed += new MiScript(
                 delegate
                 {
-                    Game.ToUpdate.Push(FactoryMenu);
-                    Game.ToDraw.Push(FactoryMenu);
+                    Game.ToUpdate.Push(factoryMenu);
+                    Game.ToDraw.Push(factoryMenu);
                     return null;
                 });
 
@@ -118,6 +115,12 @@ namespace Micycle
             // Cursor
             //
             cursor = new MiAnimatingComponent(game, school.Position.X, school.Position.Y, 1, 0, 0, 0);
+            ActiveButton = schoolButton;
+
+            inGameMenu = new MiInGameMenu(game);
+            factoryMenu = new MiFactoryMenu(game);
+            schoolMenu = new MiSchoolMenu(game);
+            rndMenu = new MiRndMenu(game);
         }
 
         public override void Initialize()
@@ -148,35 +151,71 @@ namespace Micycle
 
         public override IEnumerator<int> Pressed()
         {
-            return base.Pressed();
+            ActiveButton.Pressed();
+            yield return 0;
         }
 
         public override IEnumerator<int> Cancelled()
         {
-            Game.ToUpdate.Push(InGameMenu);
-            Game.ToDraw.Push(InGameMenu);
-            return InGameMenu.EntrySequence();
+            Game.ToUpdate.Push(inGameMenu);
+            Game.ToDraw.Push(inGameMenu);
+            return inGameMenu.EntrySequence();
         }
 
         public override IEnumerator<int> Upped()
         {
-
-            return base.Upped();
+            if (ActiveButton == factoryButton || ActiveButton == rndButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, school.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, school.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = schoolButton;
+            }
         }
 
         public override IEnumerator<int> Downed()
         {
-            return base.Downed();
+            if (ActiveButton == schoolButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, factory.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, factory.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = factoryButton;
+            }
         }
 
         public override IEnumerator<int> Lefted()
         {
-            return base.Lefted();
+            if (ActiveButton == schoolButton || ActiveButton == rndButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, factory.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, factory.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = factoryButton;
+            }
         }
 
         public override IEnumerator<int> Righted()
         {
-            return base.Righted();
+            if (ActiveButton == schoolButton || ActiveButton == factoryButton)
+            {
+                ActiveButton = null;
+                cursor.MoveEnabled = true;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, rnd.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, rnd.Position.Y));
+                yield return 20;
+                cursor.MoveEnabled = false;
+                ActiveButton = rndButton;
+            }
         }
 
         public override void LoadContent()
@@ -189,12 +228,15 @@ namespace Micycle
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
 
             mouseImage = Game.Content.Load<Texture2D>("mice");
+
+            inGameMenu.LoadContent();
+            schoolMenu.LoadContent();
+            factoryMenu.LoadContent();
+            rndMenu.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            inGameScripts.Update(gameTime);
-
             foreach (MiAnimatingComponent mouse in mice.Values)
                 mouse.Update(gameTime);
 

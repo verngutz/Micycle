@@ -8,6 +8,9 @@ namespace MiUtil
     {
         public MiButton ActiveButton { get; set; }
 
+        protected bool exitSequenceMutex;
+        protected bool entrySequenceMutex;
+
         public MiScreen(MiGame game)
             : base(game)
         {
@@ -15,6 +18,7 @@ namespace MiUtil
             Visible = false;
         }
 
+        public virtual IEnumerator<int> EntrySequence() { yield return 0; }
         public virtual IEnumerator<int> Upped() { yield return 0; }
         public virtual IEnumerator<int> Downed() { yield return 0; }
         public virtual IEnumerator<int> Lefted() { yield return 0; }

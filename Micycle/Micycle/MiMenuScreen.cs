@@ -10,7 +10,7 @@ namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
-        public MiGameScreen GameScreen { get; set; }
+        private MiGameScreen gameScreen;
 
         private Texture2D background;
 
@@ -24,6 +24,11 @@ namespace Micycle
         public MiMenuScreen(Micycle game)
             : base(game)
         {
+            //
+            // Game Screen
+            //
+            gameScreen = new MiGameScreen(game);
+
             //
             // Cursor
             //
@@ -39,9 +44,9 @@ namespace Micycle
                 {
                     Game.ToUpdate.Pop();
                     Game.ToDraw.Pop();
-                    Game.ToUpdate.Push(GameScreen);
-                    Game.ToDraw.Push(GameScreen);
-                    GameScreen.Initialize();
+                    Game.ToUpdate.Push(gameScreen);
+                    Game.ToDraw.Push(gameScreen);
+                    gameScreen.Initialize();
                     return null;
                 });
             newGameButtonGraphic = new MiAnimatingComponent(game, -100, 350);
@@ -61,8 +66,9 @@ namespace Micycle
             ActiveButton = newGameButton;
         }
 
-        public IEnumerator<int> EntrySequence()
+        public override IEnumerator<int> EntrySequence()
         {
+            entrySequenceMutex = true;
             newGameButtonGraphic.MoveEnabled = true;
             quitGameButtonGraphic.MoveEnabled = true;
             newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, 300));
@@ -72,30 +78,43 @@ namespace Micycle
             cursor.MoveEnabled = false;
             newGameButtonGraphic.MoveEnabled = false;
             quitGameButtonGraphic.MoveEnabled = false;
+            entrySequenceMutex = false;
         }
 
         public override IEnumerator<int> Pressed()
         {
-            cursor.Visible = false;
-            newGameButtonGraphic.MoveEnabled = true;
-            quitGameButtonGraphic.MoveEnabled = true;
-            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, -100));
-            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.MoveTimer + 50, -100));
-            yield return 50;
-            newGameButtonGraphic.MoveEnabled = false;
-            quitGameButtonGraphic.MoveEnabled = false;
-            ActiveButton.Pressed();
+            if (entrySequenceMutex || exitSequenceMutex)
+            {
+                yield return 0;
+            }
+            else
+            {
+                exitSequenceMutex = true;
+                cursor.Visible = false;
+                newGameButtonGraphic.MoveEnabled = true;
+                quitGameButtonGraphic.MoveEnabled = true;
+                newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, -100));
+                quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.MoveTimer + 50, -100));
+                yield return 50;
+                newGameButtonGraphic.MoveEnabled = false;
+                quitGameButtonGraphic.MoveEnabled = false;
+                ActiveButton.Pressed();
+                exitSequenceMutex = false;
+            }
         }
 
         public override IEnumerator<int> Upped()
         {
-            if (ActiveButton == quitGameButton)
+            if (entrySequenceMutex || exitSequenceMutex)
+                yield return 0;
+
+            else if (ActiveButton == quitGameButton)
             {
                 ActiveButton = null;
                 cursor.MoveEnabled = true;
-                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, newGameButtonGraphic.Position.X));
-                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, newGameButtonGraphic.Position.Y));
-                yield return 25;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, newGameButtonGraphic.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, newGameButtonGraphic.Position.Y));
+                yield return 20;
                 cursor.MoveEnabled = false;
                 ActiveButton = newGameButton;
             }
@@ -103,13 +122,16 @@ namespace Micycle
 
         public override IEnumerator<int> Downed()
         {
-            if (ActiveButton == newGameButton)
+            if (entrySequenceMutex || exitSequenceMutex)
+                yield return 0;
+
+            else if (ActiveButton == newGameButton)
             {
                 ActiveButton = null;
                 cursor.MoveEnabled = true;
-                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, quitGameButtonGraphic.Position.X));
-                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, quitGameButtonGraphic.Position.Y));
-                yield return 25;
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, quitGameButtonGraphic.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, quitGameButtonGraphic.Position.Y));
+                yield return 20;
                 cursor.MoveEnabled = false;
                 ActiveButton = quitGameButton;
             }
@@ -121,6 +143,7 @@ namespace Micycle
             newGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
             quitGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
+            gameScreen.LoadContent();
         }
 
         public override void Update(GameTime gameTime)

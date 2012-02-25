@@ -19,12 +19,8 @@ namespace Micycle
     
     public class Micycle : MiGame
     {
-        private MiMenuScreen menuScreen;
-        private MiGameScreen gameScreen;
-        private MiInGameMenu inGameMenu;
-        private MiFactoryMenu factoryMenu;
-        private MiSchoolMenu schoolMenu;
-        private MiRndMenu rndMenu;
+        private MiScreen startScreen;
+        internal MiScreen StartScreen { get { return startScreen; } }
 
         protected override void Initialize()
         {
@@ -36,34 +32,19 @@ namespace Micycle
             inputHandler = new MicycleInputHandler(this);
 
             // Initialize screens
-            menuScreen = new MiMenuScreen(this);
-            gameScreen = new MiGameScreen(this);
-            inGameMenu = new MiInGameMenu(this);
-            factoryMenu = new MiFactoryMenu(this);
-            schoolMenu = new MiSchoolMenu(this);
-            rndMenu = new MiRndMenu(this);
-
-            // Attach screens to each other
-            menuScreen.GameScreen = gameScreen;
-            inGameMenu.MenuScreen = menuScreen;
-            gameScreen.InGameMenu = inGameMenu;
-            gameScreen.FactoryMenu = factoryMenu;
-            gameScreen.SchoolMenu = schoolMenu;
-            gameScreen.RndMenu = rndMenu;
+            startScreen = new MiMenuScreen(this);
 
             // Set active screen
-            ToDraw.Push(menuScreen);
-            ToUpdate.Push(menuScreen);
+            ToDraw.Push(startScreen);
+            ToUpdate.Push(startScreen);
 
-            ScriptEngine.ExecuteScript(new MiScript(menuScreen.EntrySequence));
+            ScriptEngine.ExecuteScript(new MiScript(startScreen.EntrySequence));
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            menuScreen.LoadContent();
-            gameScreen.LoadContent();
-            inGameMenu.LoadContent();
+            startScreen.LoadContent();
             base.LoadContent();
         }
     }
