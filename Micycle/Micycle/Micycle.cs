@@ -22,6 +22,9 @@ namespace Micycle
         private MiMenuScreen menuScreen;
         private MiGameScreen gameScreen;
         private MiInGameMenu inGameMenu;
+        private MiFactoryMenu factoryMenu;
+        private MiSchoolMenu schoolMenu;
+        private MiRndMenu rndMenu;
 
         protected override void Initialize()
         {
@@ -36,11 +39,17 @@ namespace Micycle
             menuScreen = new MiMenuScreen(this);
             gameScreen = new MiGameScreen(this);
             inGameMenu = new MiInGameMenu(this);
+            factoryMenu = new MiFactoryMenu(this);
+            schoolMenu = new MiSchoolMenu(this);
+            rndMenu = new MiRndMenu(this);
 
             // Attach screens to each other
             menuScreen.GameScreen = gameScreen;
-            gameScreen.InGameMenu = inGameMenu;
             inGameMenu.MenuScreen = menuScreen;
+            gameScreen.InGameMenu = inGameMenu;
+            gameScreen.FactoryMenu = factoryMenu;
+            gameScreen.SchoolMenu = schoolMenu;
+            gameScreen.RndMenu = rndMenu;
 
             // Set active screen
             ToDraw.Push(menuScreen);

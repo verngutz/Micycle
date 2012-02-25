@@ -30,8 +30,17 @@ namespace MiUtil
         public bool RotateEnabled { get; set; }
         public bool RotateAxisChangeEnabled { get; set; }
 
-        private ulong time;
-        public ulong Time { get { return time; } }
+        private ulong moveTimer;
+        public ulong MoveTimer { get { return moveTimer; } }
+
+        private ulong scaleTimer;
+        public ulong ScaleTimer { get { return scaleTimer; } }
+
+        private ulong rotateTimer;
+        public ulong RotateTimer { get { return rotateTimer; } }
+
+        private ulong rotateAxisChangeTimer;
+        public ulong RotateAxisChangeTimer { get { return rotateAxisChangeTimer; } }
 
         private Vector2 position;
         public Vector2 Position
@@ -54,7 +63,7 @@ namespace MiUtil
             spriteQueue = new Queue<KeyValuePair<Texture2D, int>>();
             spriteQueueTimer = 0;
 
-            time = 0;
+            moveTimer = 0;
 
             position = new Vector2(default_x, default_y);
             scale = default_scale;
@@ -92,28 +101,30 @@ namespace MiUtil
 
         public override void Update(GameTime gameTime)
         {
-            time++;
-
             if (MoveEnabled)
             {
-                position.X = XPositionOverTime.Evaluate(Time);
-                position.Y = YPositionOverTime.Evaluate(Time);
+                moveTimer++;
+                position.X = XPositionOverTime.Evaluate(MoveTimer);
+                position.Y = YPositionOverTime.Evaluate(MoveTimer);
             }
 
             if (ScaleEnabled)
             {
-                scale = ScalingOverTime.Evaluate(Time);
+                scaleTimer++;
+                scale = ScalingOverTime.Evaluate(MoveTimer);
             }
 
             if (RotateEnabled)
             {
-                rotation = RotationOverTime.Evaluate(Time);
+                rotateTimer++;
+                rotation = RotationOverTime.Evaluate(MoveTimer);
             }
 
             if(RotateAxisChangeEnabled)
             {
-                rotationPoint.X = RotationPointXOverTime.Evaluate(Time);
-                rotationPoint.Y = RotationPointYOverTime.Evaluate(Time);
+                rotateAxisChangeTimer++;
+                rotationPoint.X = RotationPointXOverTime.Evaluate(MoveTimer);
+                rotationPoint.Y = RotationPointYOverTime.Evaluate(MoveTimer);
             }
 
             if (SpriteQueueEnabled)

@@ -65,8 +65,8 @@ namespace Micycle
         {
             newGameButtonGraphic.MoveEnabled = true;
             quitGameButtonGraphic.MoveEnabled = true;
-            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, 300));
-            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, 400));
+            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, 300));
+            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.MoveTimer + 50, 400));
             yield return 50;
             cursor.Visible = true;
             cursor.MoveEnabled = false;
@@ -79,8 +79,8 @@ namespace Micycle
             cursor.Visible = false;
             newGameButtonGraphic.MoveEnabled = true;
             quitGameButtonGraphic.MoveEnabled = true;
-            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.Time + 50, -100));
-            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.Time + 50, -100));
+            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, -100));
+            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.MoveTimer + 50, -100));
             yield return 50;
             newGameButtonGraphic.MoveEnabled = false;
             quitGameButtonGraphic.MoveEnabled = false;
@@ -93,8 +93,8 @@ namespace Micycle
             {
                 ActiveButton = null;
                 cursor.MoveEnabled = true;
-                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.X));
-                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, newGameButtonGraphic.Position.Y));
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, newGameButtonGraphic.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, newGameButtonGraphic.Position.Y));
                 yield return 25;
                 cursor.MoveEnabled = false;
                 ActiveButton = newGameButton;
@@ -107,8 +107,8 @@ namespace Micycle
             {
                 ActiveButton = null;
                 cursor.MoveEnabled = true;
-                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.X));
-                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.Time + 25, quitGameButtonGraphic.Position.Y));
+                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, quitGameButtonGraphic.Position.X));
+                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 25, quitGameButtonGraphic.Position.Y));
                 yield return 25;
                 cursor.MoveEnabled = false;
                 ActiveButton = quitGameButton;
