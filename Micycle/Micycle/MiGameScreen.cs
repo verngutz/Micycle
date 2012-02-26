@@ -247,7 +247,6 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            System.Console.WriteLine(mice.Count);
             foreach (MiAnimatingComponent mouse in mice.Values)
                 mouse.Update(gameTime);
 

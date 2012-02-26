@@ -7,7 +7,7 @@ using MiUtil;
 
 namespace Micycle
 {
-    abstract class MiBuildingMenu : MiScreen
+    public abstract class MiBuildingMenu : MiScreen
     {
         private static int centerX;
         private static int centerY;
