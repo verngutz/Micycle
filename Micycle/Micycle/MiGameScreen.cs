@@ -49,6 +49,8 @@ namespace Micycle
         private static readonly int FACTORY_X = FACTORY_CENTER_X - (int)(FACTORY_WIDTH * FACTORY_SCALE / 2);
         private static readonly int FACTORY_Y = FACTORY_CENTER_Y - (int)(FACTORY_HEIGHT * FACTORY_SCALE / 2);
 
+        private const ushort mouseMoveSpeed = 50;
+
         private MiInGameMenu inGameMenu;
         private MiFactoryMenu factoryMenu;
         private MiSchoolMenu schoolMenu;
@@ -144,16 +146,16 @@ namespace Micycle
             system = new MicycleGameSystem(Game as Micycle);
         }
 
-        private IEnumerator<int> SendMouse(float source_x, float source_y, float dest_x, float dest_y, ushort time)
+        private IEnumerator<int> SendMouse(float source_x, float source_y, float dest_x, float dest_y)
         {
             MiAnimatingComponent mouse = new MiAnimatingComponent(Game, source_x, source_y);
             mouse.AddTexture(mouseImage, 0);
-            mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + time, dest_x));
-            mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + time, dest_y));
+            mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + mouseMoveSpeed, dest_x));
+            mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + mouseMoveSpeed, dest_y));
             mouse.MoveEnabled = true;
             uint key = mouseKey++;
             mice.Add(key, mouse);
-            yield return time;
+            yield return mouseMoveSpeed;
             mice.Remove(key);
         }
 
@@ -245,6 +247,7 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
+            System.Console.WriteLine(mice.Count);
             foreach (MiAnimatingComponent mouse in mice.Values)
                 mouse.Update(gameTime);
 
@@ -256,6 +259,69 @@ namespace Micycle
             cursor.Update(gameTime);
 
             system.Update(gameTime);
+
+            if (system.SendMouseFromCityToSchool)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(CITY_CENTER_X, CITY_CENTER_Y, SCHOOL_CENTER_X, SCHOOL_CENTER_Y);
+                    }));
+
+            if (system.SendMouseFromCityToFactory)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(CITY_CENTER_X, CITY_CENTER_Y, FACTORY_CENTER_X, FACTORY_CENTER_Y);
+                    }));
+
+            if (system.SendMouseFromCityToRnd)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(CITY_CENTER_X, CITY_CENTER_Y, RND_CENTER_X, RND_CENTER_Y);
+                    }));
+
+            if (system.SendMouseFromSchoolToCity)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(SCHOOL_CENTER_X, SCHOOL_CENTER_Y, CITY_CENTER_X, CITY_CENTER_Y);
+                    }));
+
+            if (system.SendMouseFromSchoolToFactory) 
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                      delegate
+                      {
+                          return SendMouse(SCHOOL_CENTER_X, SCHOOL_CENTER_Y, FACTORY_CENTER_X, FACTORY_CENTER_Y);
+                      }));
+
+            if (system.SendMouseFromSchoolToRnd)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(SCHOOL_CENTER_X, SCHOOL_CENTER_Y, RND_CENTER_X, RND_CENTER_Y);
+                    }));
+
+            if (system.SendMouseFromFactoryToCity)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(FACTORY_CENTER_X, FACTORY_CENTER_Y, CITY_CENTER_X, CITY_CENTER_Y);
+                    }));
+
+            if (system.SendMouseFromRndToCity)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(RND_CENTER_X, RND_CENTER_Y, CITY_CENTER_X, CITY_CENTER_Y);
+                    }));
+
+            if (system.SendRobotFromRndToFactory)
+                Game.ScriptEngine.ExecuteScript(new MiScript(
+                    delegate
+                    {
+                        return SendMouse(RND_CENTER_X, RND_CENTER_Y, FACTORY_CENTER_X, FACTORY_CENTER_Y);
+                    }));
         }
 
         public override void Draw(GameTime gameTime)

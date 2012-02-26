@@ -25,6 +25,28 @@ namespace Micycle
         private int ownerMoney;
         private int researchPoints;
 
+        private bool sendMouseFromCityToSchool;
+        public bool SendMouseFromCityToSchool { get { return sendMouseFromCityToSchool; } }
+        private bool sendMouseFromCityToFactory;
+        public bool SendMouseFromCityToFactory { get { return sendMouseFromCityToFactory; } }
+        private bool sendMouseFromCityToRnd;
+        public bool SendMouseFromCityToRnd { get { return sendMouseFromCityToRnd; } }
+
+        private bool sendMouseFromSchoolToCity;
+        public bool SendMouseFromSchoolToCity { get { return sendMouseFromSchoolToCity; } }
+        private bool sendMouseFromSchoolToFactory;
+        public bool SendMouseFromSchoolToFactory { get { return sendMouseFromSchoolToFactory; } }
+        private bool sendMouseFromSchoolToRnd;
+        public bool SendMouseFromSchoolToRnd { get { return sendMouseFromSchoolToRnd; } }
+
+        private bool sendMouseFromRndToCity;
+        public bool SendMouseFromRndToCity { get { return sendMouseFromRndToCity; } }
+        private bool sendRobotFromRndToFactory;
+        public bool SendRobotFromRndToFactory { get { return sendRobotFromRndToFactory; } }
+
+        private bool sendMouseFromFactoryToCity;
+        public bool SendMouseFromFactoryToCity { get { return sendMouseFromFactoryToCity; } }
+
         public MicycleGameSystem(Micycle game)
             : base(game)
         {
@@ -97,6 +119,8 @@ namespace Micycle
         public override void Update(GameTime gameTime)
         {
             time++;
+            if (time % 120 == 0) sendMouseFromCityToSchool = true;
+            else sendMouseFromCityToSchool = false;
         }
     }
 }
