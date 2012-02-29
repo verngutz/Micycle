@@ -1,10 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using MiUtil;
+using System.Collections.Generic;
+using System;
 
 namespace Micycle
 {
     public class MicycleGameSystem : MiComponent
     {
+        public static Random rnd = new Random();
+
         private int cityPeople;
         private int schoolStudents;
         private int schoolTeachers;
@@ -14,16 +18,18 @@ namespace Micycle
 
         private int factoryWorkerCapacity;
         private int researcherCapacity;
+        private int schoolCapacity;
 
-        private int educationBudget;
-        private int workerWage;
-        private int researcherWage;
+        private float educationBudget;
+        private float factoryWorkerWage;
+        private float researcherWage;
 
         private int time;
 
-        private int cityMoney;
-        private int ownerMoney;
-        private int researchPoints;
+        private float cityMoney;
+        private float ownerMoney;
+        private float researchPoints;
+        
 
         private bool sendMouseFromCityToSchool;
         public bool SendMouseFromCityToSchool { get { return sendMouseFromCityToSchool; } }
@@ -47,10 +53,71 @@ namespace Micycle
         private bool sendMouseFromFactoryToCity;
         public bool SendMouseFromFactoryToCity { get { return sendMouseFromFactoryToCity; } }
 
+        float birthRate, deathRate;
+        float factoryRetirementRate;
+        float rndRetirementRate;
+
+        float researchRate;
+
+        float bumToRndRate;
+        float bumToFactoryRate;
+
+        float cityPeopleBirthBias;
+        float studentsBirthBias;
+        float researchersBirthBias;
+        float factoryWorkersBirthBias;
+        float bumsBirthBias;
+
+        int costOfLiving;
+        int year;
+        int month;
+        int schoolSendRate;
+        int studyTime;
+        int INCOME_PER_WORKER = 30;
+
+        int educationLevel;
+        int max_educationLevel;
+
+        private List<StudentWrapper> students;
+
         public MicycleGameSystem(Micycle game)
             : base(game)
         {
 
+            birthRate = 0.2f;
+            deathRate = 0.1f;
+            researchRate = 0.5f;
+            year = 1200;
+            month = year / 12;
+            schoolSendRate = month/5;
+            studyTime = 200;
+            schoolCapacity = 5;
+            researcherCapacity = 45;
+            factoryWorkerCapacity = 45;
+
+            bumToFactoryRate = 0.02f;
+            bumToRndRate = 0.02f;
+
+            factoryRetirementRate = 0.2f;
+            rndRetirementRate = 0.2f;
+
+            cityPeople = 400;
+
+
+            cityPeopleBirthBias = 0f;
+            studentsBirthBias = 0.1f;
+            researchersBirthBias = 0.2f;
+            factoryWorkersBirthBias = 0.2f;
+            bumsBirthBias = 0.5f;
+
+            factoryWorkerWage = 10;
+            researcherWage = 10;
+            educationLevel = 90;
+            max_educationLevel = 100;
+
+            costOfLiving = 10;
+
+            students = new List<StudentWrapper>();
         }
 
         private void AddEducationBudget(int dx) 
@@ -67,8 +134,8 @@ namespace Micycle
 
         private void AddWorkerWage(int dx)
         {
-            workerWage += dx;
-            if (workerWage < 0) workerWage = 0;
+            factoryWorkerWage += dx;
+            if (factoryWorkerWage < 0) factoryWorkerWage = 0;
         }
 
         private void AddWorkerCapacity(int dx)
@@ -89,38 +156,177 @@ namespace Micycle
             if (researcherCapacity < 0) researcherCapacity = 0;
         }
 
+        
+        
         public void updateCity()
         {
             //update city population
             //update the bums
-            //update the in flow and out flow from city (bums + "kids")
-            //update money
+            if (time % year == 0)
+            {
+                cityMoney -= (cityBums + cityPeople) * costOfLiving;
+                cityPeople += (int)Math.Ceiling(((birthRate) * 
+                    (cityPeople*cityPeopleBirthBias + factoryWorkers*factoryWorkersBirthBias + 
+                    researchers*researchersBirthBias + students.Count*studentsBirthBias + cityBums*bumsBirthBias)));
+
+                cityBums -= (int)Math.Ceiling((deathRate) * cityBums);
+            }
         }
 
         public void updateFactory()
         {
-            //update owner money
-            //update the in flow and out flow from factory (workers)
+            sendMouseFromFactoryToCity = false;
+
+            if (time % month == 0)
+            {
+                ownerMoney += INCOME_PER_WORKER * factoryWorkers;
+                cityMoney += factoryWorkerWage * factoryWorkers;
+            }
+            if (time % year == 0)
+            {
+                int toRetire = (int)Math.Ceiling(factoryRetirementRate * factoryWorkers);
+                if (toRetire > 0)
+                {
+                    sendMouseFromFactoryToCity = true;
+                    cityBums += toRetire;
+                    factoryWorkers -= toRetire;
+                }
+            }
         }
 
         public void updateSchool()
         {
-            //update owner money
-            //update the in flow and out flow from school (students)
+            if( time%year == 0 )
+                ownerMoney -= educationBudget;
+
+            List<StudentWrapper> toRemove = new List<StudentWrapper>();
+
+            sendMouseFromSchoolToCity = false;
+            sendMouseFromSchoolToFactory = false;
+            sendMouseFromSchoolToRnd = false;
+
+            foreach (StudentWrapper st in students)
+            {
+                st.timeLeft--;
+                if (st.timeLeft <= 0)
+                {
+                    toRemove.Add(st);
+                }
+            }
+
+            foreach (StudentWrapper st in toRemove)
+            {
+                students.Remove(st);
+                graduateStudent();
+            }
+
+            
+        }
+
+        public void graduateStudent()
+        {
+            //do whatever needed when student leaves school
+            double num = rnd.NextDouble();
+
+            double S = (float)educationLevel / max_educationLevel;
+
+            double researcherPull = (S * (researcherWage + educationLevel)) / (researcherWage + factoryWorkerWage + educationLevel);
+            double factoryWorkerPull = (S * (factoryWorkerWage)) / (researcherWage + factoryWorkerWage + educationLevel);
+
+            if (num >= 0 && num <= researcherPull && researcherCapacity > researchers)
+            {
+                //send to researchCenter
+                sendMouseFromSchoolToRnd = true;
+                researchers++;
+                return;
+            }
+
+            else if (num > researcherPull && num <= researcherPull + factoryWorkerPull && factoryWorkerCapacity > factoryWorkers)
+            {
+                //send to factory
+                sendMouseFromSchoolToFactory = true;
+                factoryWorkers++;
+                return;
+            }
+
+
+            //send to bum
+            sendMouseFromSchoolToCity = true;
+            cityBums++;
         }
 
         public void updateResearchCenter()
         {
-            //update owner money
-            //update the in flow and out flow from research center (research center + teachers(?))
-            //update research points
+            sendMouseFromRndToCity = false;
+            if (time % month == 0)
+            {
+                ownerMoney -= researcherWage * researchers;
+                cityMoney += researcherWage * researchers;
+                researchPoints += researchRate * researchers;
+            }
+            if (time % year == 0)
+            {
+                int toRetire = (int)Math.Ceiling(rndRetirementRate * researchers);
+                if (toRetire > 0)
+                {
+                    sendMouseFromRndToCity = true;
+                    cityBums += toRetire;
+                    researchers -= toRetire;
+                }
+            }
         }
+
 
         public override void Update(GameTime gameTime)
         {
+            System.Console.WriteLine(cityPeople + " " + cityBums + " st=" + students.Count + " r=" + researchers + " f=" + factoryWorkers);
             time++;
-            if (time % 120 == 0) sendMouseFromCityToSchool = true;
-            else sendMouseFromCityToSchool = false;
+            updateCity();
+            updateFactory();
+            updateSchool();
+            updateResearchCenter();
+            if (cityPeople > 0 && time % schoolSendRate == 0 && students.Count < schoolCapacity )
+            {
+                cityPeople--;
+                sendMouseFromCityToSchool = true;
+                students.Add(new StudentWrapper(studyTime));
+            }
+            else
+            {
+                sendMouseFromCityToSchool = false;
+            }
+
+            double num = rnd.NextDouble();
+            if (cityBums > 0 && researcherCapacity > researchers && num <= bumToRndRate)
+            {
+                sendMouseFromCityToRnd = true;
+                cityBums--;
+                researchers++;
+            }
+            else
+            {
+                sendMouseFromCityToRnd = false;
+            }
+
+            num = rnd.NextDouble();
+            if (cityBums > 0 && factoryWorkerCapacity > factoryWorkers && num <= bumToFactoryRate)
+            {
+                sendMouseFromCityToFactory = true;
+                cityBums--;
+                factoryWorkers++;
+            }
+            else
+            {
+                sendMouseFromCityToFactory = false;
+            }
+            if (time % year == 0) time = 0;
         }
+    }
+
+    class StudentWrapper
+    {
+        public int timeLeft;
+
+        public StudentWrapper(int t) { timeLeft = t; }
     }
 }
