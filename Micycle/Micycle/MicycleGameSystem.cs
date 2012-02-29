@@ -21,7 +21,7 @@ namespace Micycle
         private int schoolCapacity;
 
         private float educationBudget;
-        private float workerWage;
+        private float factoryWorkerWage;
         private float researcherWage;
 
         private int time;
@@ -56,17 +56,27 @@ namespace Micycle
         float birthRate, deathRate;
         float factoryRetirementRate;
         float rndRetirementRate;
+
         float researchRate;
-        float researcherPull;
-        float factoryPull;
+
         float bumToRndRate;
         float bumToFactoryRate;
 
+        float cityPeopleBirthBias;
+        float studentsBirthBias;
+        float researchersBirthBias;
+        float factoryWorkersBirthBias;
+        float bumsBirthBias;
+
+        int costOfLiving;
         int year;
         int month;
         int schoolSendRate;
         int studyTime;
         int INCOME_PER_WORKER = 30;
+
+        int educationLevel;
+        int max_educationLevel;
 
         private List<StudentWrapper> students;
 
@@ -77,15 +87,13 @@ namespace Micycle
             birthRate = 0.2f;
             deathRate = 0.1f;
             researchRate = 0.5f;
-            researcherPull = 0.5f;
-            factoryPull = 0.4f;
             year = 1200;
             month = year / 12;
-            schoolSendRate = month;
+            schoolSendRate = month/5;
             studyTime = 200;
             schoolCapacity = 5;
-            researcherCapacity = 5;
-            factoryWorkerCapacity = 5;
+            researcherCapacity = 45;
+            factoryWorkerCapacity = 45;
 
             bumToFactoryRate = 0.02f;
             bumToRndRate = 0.02f;
@@ -93,7 +101,21 @@ namespace Micycle
             factoryRetirementRate = 0.2f;
             rndRetirementRate = 0.2f;
 
-            cityPeople = 100;
+            cityPeople = 400;
+
+
+            cityPeopleBirthBias = 0f;
+            studentsBirthBias = 0.1f;
+            researchersBirthBias = 0.2f;
+            factoryWorkersBirthBias = 0.2f;
+            bumsBirthBias = 0.5f;
+
+            factoryWorkerWage = 10;
+            researcherWage = 10;
+            educationLevel = 90;
+            max_educationLevel = 100;
+
+            costOfLiving = 10;
 
             students = new List<StudentWrapper>();
         }
@@ -112,8 +134,8 @@ namespace Micycle
 
         private void AddWorkerWage(int dx)
         {
-            workerWage += dx;
-            if (workerWage < 0) workerWage = 0;
+            factoryWorkerWage += dx;
+            if (factoryWorkerWage < 0) factoryWorkerWage = 0;
         }
 
         private void AddWorkerCapacity(int dx)
@@ -142,8 +164,10 @@ namespace Micycle
             //update the bums
             if (time % year == 0)
             {
+                cityMoney -= (cityBums + cityPeople) * costOfLiving;
                 cityPeople += (int)Math.Ceiling(((birthRate) * 
-                    (cityPeople + factoryWorkers + researchers + schoolTeachers + cityBums)));
+                    (cityPeople*cityPeopleBirthBias + factoryWorkers*factoryWorkersBirthBias + 
+                    researchers*researchersBirthBias + students.Count*studentsBirthBias + cityBums*bumsBirthBias)));
 
                 cityBums -= (int)Math.Ceiling((deathRate) * cityBums);
             }
@@ -156,7 +180,7 @@ namespace Micycle
             if (time % month == 0)
             {
                 ownerMoney += INCOME_PER_WORKER * factoryWorkers;
-                cityMoney += workerWage * factoryWorkers;
+                cityMoney += factoryWorkerWage * factoryWorkers;
             }
             if (time % year == 0)
             {
@@ -203,6 +227,12 @@ namespace Micycle
         {
             //do whatever needed when student leaves school
             double num = rnd.NextDouble();
+
+            double S = (float)educationLevel / max_educationLevel;
+
+            double researcherPull = (S * (researcherWage + educationLevel)) / (researcherWage + factoryWorkerWage + educationLevel);
+            double factoryWorkerPull = (S * (factoryWorkerWage)) / (researcherWage + factoryWorkerWage + educationLevel);
+
             if (num >= 0 && num <= researcherPull && researcherCapacity > researchers)
             {
                 //send to researchCenter
@@ -211,7 +241,7 @@ namespace Micycle
                 return;
             }
 
-            else if (num > researcherPull && num <= researcherPull + factoryPull && factoryWorkerCapacity > factoryWorkers)
+            else if (num > researcherPull && num <= researcherPull + factoryWorkerPull && factoryWorkerCapacity > factoryWorkers)
             {
                 //send to factory
                 sendMouseFromSchoolToFactory = true;
