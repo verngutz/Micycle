@@ -75,7 +75,7 @@ namespace MiUtil
         protected override void Draw(GameTime gameTime)
         {
             MiResolution.BeginDraw();
-            SpriteBatch.Begin();
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
             foreach (MiScreen screen in ToDraw)
                 screen.Draw(gameTime);

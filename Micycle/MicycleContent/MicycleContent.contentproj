@@ -42,11 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MenuScreen.png">
-      <Name>MenuScreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="City.png">
       <Name>City</Name>
       <Importer>TextureImporter</Importer>
@@ -90,6 +85,48 @@
   <ItemGroup>
     <Compile Include="mice.png">
       <Name>mice</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MenuScreen\SCREEN.png">
+      <Name>SCREEN</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="MenuScreen\START\BUTTON.png">
+      <Name>BUTTON</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuScreen\START\CLICK_INDICATOR.png">
+      <Name>CLICK_INDICATOR</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuScreen\START\HOVER_INDICATOR.png">
+      <Name>HOVER_INDICATOR</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MenuScreen\EXIT\BUTTON.png">
+      <Name>BUTTON</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuScreen\EXIT\CLICKED_INDICATOR.png">
+      <Name>CLICKED_INDICATOR</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="MenuScreen\EXIT\HOVER_INDICATOR.png">
+      <Name>HOVER_INDICATOR</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

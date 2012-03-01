@@ -9,9 +9,7 @@ namespace Micycle
 {
     class MiRndMenu : MiBuildingMenu
     {
-        public MiRndMenu(Micycle game, int center_x, int center_y)
-            : base(game, center_x, center_y)
-        {
-        }
+        public MiRndMenu(Micycle game, float center_x, float center_y)
+            : base(game, center_x, center_y) { }
     }
 }
