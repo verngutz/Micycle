@@ -19,6 +19,8 @@ namespace Micycle
         private int factoryWorkerCapacity;
         private int researcherCapacity;
         private int schoolCapacity;
+        private int schoolFacultyCapacity;
+
 
         private float educationBudget;
         private float factoryWorkerWage;
@@ -167,7 +169,7 @@ namespace Micycle
                 cityMoney -= (cityBums + cityPeople) * costOfLiving;
                 cityPeople += (int)Math.Ceiling(((birthRate) * 
                     (cityPeople*cityPeopleBirthBias + factoryWorkers*factoryWorkersBirthBias + 
-                    researchers*researchersBirthBias + students.Count*studentsBirthBias + cityBums*bumsBirthBias)));
+                    (researchers+schoolTeachers)*researchersBirthBias + students.Count*studentsBirthBias + cityBums*bumsBirthBias)));
 
                 cityBums -= (int)Math.Ceiling((deathRate) * cityBums);
             }
@@ -230,8 +232,10 @@ namespace Micycle
 
             double S = (float)educationLevel / max_educationLevel;
 
-            double researcherPull = (S * (researcherWage + educationLevel)) / (researcherWage + factoryWorkerWage + educationLevel);
-            double factoryWorkerPull = (S * (factoryWorkerWage)) / (researcherWage + factoryWorkerWage + educationLevel);
+            double researcherPull = (S * (researcherWage + educationLevel)) / 
+                                (researcherWage + factoryWorkerWage + educationLevel);
+            double factoryWorkerPull = (S * (factoryWorkerWage)) / 
+                                (researcherWage + factoryWorkerWage + educationLevel);
 
             if (num >= 0 && num <= researcherPull && researcherCapacity > researchers)
             {
@@ -260,8 +264,8 @@ namespace Micycle
             sendMouseFromRndToCity = false;
             if (time % month == 0)
             {
-                ownerMoney -= researcherWage * researchers;
-                cityMoney += researcherWage * researchers;
+                ownerMoney -= researcherWage * (schoolTeachers+researchers);
+                cityMoney += researcherWage * (schoolTeachers+researchers);
                 researchPoints += researchRate * researchers;
             }
             if (time % year == 0)
@@ -279,7 +283,7 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            System.Console.WriteLine(cityPeople + " " + cityBums + " st=" + students.Count + " r=" + researchers + " f=" + factoryWorkers);
+            System.Console.WriteLine(cityPeople + " " + cityBums + " st=" + students.Count +" teacher=" + schoolTeachers+ "r=" + researchers + " f=" + factoryWorkers);
             time++;
             updateCity();
             updateFactory();
