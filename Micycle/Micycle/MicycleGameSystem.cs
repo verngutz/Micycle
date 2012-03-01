@@ -126,6 +126,7 @@ namespace Micycle
 
             factoryWorkerWage = 10;
             researcherWage = 10;
+            educationBudget = 10;
             educationLevel = 90;
             max_educationLevel = 100;
 
@@ -172,62 +173,70 @@ namespace Micycle
 
         public void SchoolUpButtonAction()
         {
-            //TO-DO: Add action code here.
+            educationBudget += 10;
         }
 
         public void SchoolDownButtonAction()
         {
-            //TO-DO: Add action code here.
+            educationBudget -= 10;
         }
 
         public void SchoolLeftButtonAction()
         {
-            //TO-DO: Add action code here.
+            if (researchers < researcherCapacity && schoolTeachers > 0)
+            {
+                researchers++;
+                schoolTeachers--;
+                Signal(ref SendMouseFromSchoolToRnd);
+            }
+            
         }
 
         public void SchoolRightButtonAction()
         {
-            //TO-DO: Add action code here.
+            schoolTeachers++;
+            researchers--;
+            Signal(ref SendMouseFromRndToSchool);
         }
 
         public void FactoryUpButtonAction()
         {
-            //TO-DO: Add action code here.
+            factoryWorkerWage++;
         }
 
         public void FactoryDownButtonAction()
         {
-            //TO-DO: Add action code here.
+            factoryWorkerWage--;
         }
 
         public void FactoryLeftButtonAction()
         {
-            //TO-DO: Add action code here.
+            factoryWorkerCapacity--;
         }
 
         public void FactoryRightButtonAction()
         {
-            //TO-DO: Add action code here.
+            factoryWorkerCapacity++;
         }
 
         public void RndUpButtonAction()
         {
-            //TO-DO: Add action code here.
+            researcherWage++;
         }
 
         public void RndDownButtonAction()
         {
-            //TO-DO: Add action code here.
+            researcherWage--;
         }
 
         public void RndLeftButtonAction()
         {
-            //TO-DO: Add action code here.
+            researcherCapacity--;
         }
 
         public void RndRightButtonAction()
         {
-            //TO-DO: Add action code here.
+            researcherCapacity++;
         }
 
         public string printStats()
