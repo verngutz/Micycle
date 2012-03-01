@@ -58,23 +58,25 @@ namespace Micycle
         private List<StudentWrapper> students;
 
         public int SendMouseFromCityToSchool = 0;
-        public int MouseHasReachedCityFromSchool = 0;
-        public int SendMouseFromCityToFactory = 0;
-        public int MouseHasReachedCityFromFactory = 0;
-        public int SendMouseFromCityToRnd = 0;
-        public int MouseHasReachedCityFromRnd = 0;
-        public int SendMouseFromSchoolToCity = 0;
         public int MouseHasReachedSchoolFromCity = 0;
-        public int SendMouseFromSchoolToFactory = 0;
-        public int MouseHasReachedSchoolFromFactory = 0;
-        public int SendMouseFromSchoolToRnd = 0;
-        public int MouseHasReachedSchoolFromRnd = 0;
-        public int SendMouseFromRndToCity = 0;
-        public int MouseHasReachedRndFromCity = 0;
-        public int SendRobotFromRndToFactory = 0;
-        public int RobotHasReachedRndFromFactory = 0;
-        public int SendMouseFromFactoryToCity = 0;
+        public int SendMouseFromCityToFactory = 0;
         public int MouseHasReachedFactoryFromCity = 0;
+        public int SendMouseFromCityToRnd = 0;
+        public int MouseHasReachedRndFromCity = 0;
+        public int SendMouseFromSchoolToCity = 0;
+        public int MouseHasReachedCityFromSchool = 0;
+        public int SendMouseFromSchoolToFactory = 0;
+        public int MouseHasReachedFactoryFromSchool = 0;
+        public int SendMouseFromSchoolToRnd = 0;
+        public int MouseHasReachedRndFromSchool = 0;
+        public int SendMouseFromRndToCity = 0;
+        public int MouseHasReachedCityFromRnd = 0;
+        public int SendMouseFromRndToSchool = 0;
+        public int MouseHasReachedSchoolFromRnd = 0;
+        public int SendRobotFromRndToFactory = 0;
+        public int RobotHasReachedFactoryFromRnd = 0;
+        public int SendMouseFromFactoryToCity = 0;
+        public int MouseHasReachedCityFromFactory = 0;
 
         public void Signal(ref int sema)
         {
@@ -94,7 +96,6 @@ namespace Micycle
         public MicycleGameSystem(Micycle game)
             : base(game)
         {
-
             birthRate = 0.2f;
             deathRate = 0.1f;
             researchRate = 0.5f;

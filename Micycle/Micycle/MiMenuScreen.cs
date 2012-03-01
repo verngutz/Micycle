@@ -10,13 +10,33 @@ namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
+        private const int NEW_GAME_BUTTON_X = 130;
+        private const int NEW_GAME_BUTTON_Y = 500;
+        private const int NEW_GAME_BUTTON_WIDTH = 640;
+        private const int NEW_GAME_BUTTON_HEIGHT = 240;
+        private const float NEW_GAME_BUTTON_SCALE = 0.4f;
+        private const float NEW_GAME_BUTTON_ORIGIN_X = NEW_GAME_BUTTON_X - NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_WIDTH / 2;
+        private const float NEW_GAME_BUTTON_ORIGIN_Y = NEW_GAME_BUTTON_Y - NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_HEIGHT / 2;
+
+        private const int QUIT_GAME_BUTTON_X = 420;
+        private const int QUIT_GAME_BUTTON_Y = 500;
+        private const int QUIT_GAME_BUTTON_WIDTH = 640;
+        private const int QUIT_GAME_BUTTON_HEIGHT = 240;
+        private const float QUIT_GAME_BUTTON_SCALE = 0.4f;
+        private const float QUIT_GAME_BUTTON_ORIGIN_X = QUIT_GAME_BUTTON_X - QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_WIDTH / 2;
+        private const float QUIT_GAME_BUTTON_ORIGIN_Y = QUIT_GAME_BUTTON_Y - QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_HEIGHT / 2;
+
         private MiGameScreen gameScreen;
 
         private Texture2D background;
 
-        private MiAnimatingComponent cursor;
-        private MiAnimatingComponent newGameButtonGraphic;
-        private MiAnimatingComponent quitGameButtonGraphic;
+        private MiAnimatingComponent newGameButtonBase;
+        private MiAnimatingComponent newGameButtonHover;
+        private MiAnimatingComponent newGameButtonClick;
+
+        private MiAnimatingComponent quitGameButtonBase;
+        private MiAnimatingComponent quitGameButtonHover;
+        private MiAnimatingComponent quitGameButtonClick;
 
         private MiButton newGameButton;
         private MiButton quitGameButton;
@@ -28,12 +48,6 @@ namespace Micycle
             // Game Screen
             //
             gameScreen = new MiGameScreen(game);
-
-            //
-            // Cursor
-            //
-            cursor = new MiAnimatingComponent(game, 300, 350);
-            cursor.Visible = false;
 
             //
             // New Game Button
@@ -49,7 +63,13 @@ namespace Micycle
                     gameScreen.Initialize();
                     return null;
                 });
-            newGameButtonGraphic = new MiAnimatingComponent(game, -100, 350);
+            newGameButtonBase = new MiAnimatingComponent(game, NEW_GAME_BUTTON_X, NEW_GAME_BUTTON_Y, NEW_GAME_BUTTON_SCALE, 0, 0, 0);
+            newGameButtonHover = new MiAnimatingComponent(game, NEW_GAME_BUTTON_X, NEW_GAME_BUTTON_Y, NEW_GAME_BUTTON_SCALE, 0, 0, 0, 0);
+            newGameButtonClick = new MiAnimatingComponent(game, NEW_GAME_BUTTON_X, NEW_GAME_BUTTON_Y, NEW_GAME_BUTTON_SCALE, 0, NEW_GAME_BUTTON_ORIGIN_X, NEW_GAME_BUTTON_ORIGIN_Y, 0);
+            newGameButtonHover.AlphaChangeEnabled = true;
+            newGameButtonClick.AlphaChangeEnabled = true;
+            newGameButtonClick.MoveEnabled = true;
+            newGameButtonClick.ScaleEnabled = true;
 
             //
             // Quit Game Button
@@ -61,7 +81,13 @@ namespace Micycle
                     Game.Exit();
                     return null;
                 });
-            quitGameButtonGraphic = new MiAnimatingComponent(game, -100, 460);
+            quitGameButtonBase = new MiAnimatingComponent(game, QUIT_GAME_BUTTON_X, QUIT_GAME_BUTTON_Y, QUIT_GAME_BUTTON_SCALE, 0, 0, 0);
+            quitGameButtonHover = new MiAnimatingComponent(game, QUIT_GAME_BUTTON_X, QUIT_GAME_BUTTON_Y, QUIT_GAME_BUTTON_SCALE, 0, 0, 0, 0);
+            quitGameButtonClick = new MiAnimatingComponent(game, QUIT_GAME_BUTTON_X, QUIT_GAME_BUTTON_Y, QUIT_GAME_BUTTON_SCALE, 0, QUIT_GAME_BUTTON_ORIGIN_X, QUIT_GAME_BUTTON_ORIGIN_Y, 0);
+            quitGameButtonHover.AlphaChangeEnabled = true;
+            quitGameButtonClick.AlphaChangeEnabled = true;
+            quitGameButtonClick.MoveEnabled = true;
+            quitGameButtonClick.ScaleEnabled = true;
 
             ActiveButton = newGameButton;
         }
@@ -69,15 +95,11 @@ namespace Micycle
         public override IEnumerator<int> EntrySequence()
         {
             entrySequenceMutex = true;
-            newGameButtonGraphic.MoveEnabled = true;
-            quitGameButtonGraphic.MoveEnabled = true;
-            newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, 300));
-            quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.MoveTimer + 50, 400));
-            yield return 50;
-            cursor.Visible = true;
-            cursor.MoveEnabled = false;
-            newGameButtonGraphic.MoveEnabled = false;
-            quitGameButtonGraphic.MoveEnabled = false;
+            newGameButtonHover.AlphaOverTime.Keys.Clear();
+            newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer, 0));
+            newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 40, 255));
+            newGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Oscillate;
+            yield return 0;
             entrySequenceMutex = false;
         }
 
@@ -90,20 +112,49 @@ namespace Micycle
             else
             {
                 exitSequenceMutex = true;
-                cursor.Visible = false;
-                newGameButtonGraphic.MoveEnabled = true;
-                quitGameButtonGraphic.MoveEnabled = true;
-                newGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonGraphic.MoveTimer + 50, -100));
-                quitGameButtonGraphic.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonGraphic.MoveTimer + 50, -100));
-                yield return 50;
-                newGameButtonGraphic.MoveEnabled = false;
-                quitGameButtonGraphic.MoveEnabled = false;
+                if (ActiveButton == newGameButton)
+                {
+                    newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 40, 255));
+                    newGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Constant;
+                    newGameButtonClick.AlphaOverTime.Keys.Clear();
+                    newGameButtonClick.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer, 0));
+                    newGameButtonClick.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 40, 255));
+                    newGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer, NEW_GAME_BUTTON_X));
+                    newGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer, NEW_GAME_BUTTON_Y));
+                    newGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer + 100, NEW_GAME_BUTTON_ORIGIN_X));
+                    newGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer + 100, NEW_GAME_BUTTON_ORIGIN_Y));
+                    newGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(newGameButtonClick.ScaleTimer, NEW_GAME_BUTTON_SCALE));
+                    newGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(newGameButtonClick.ScaleTimer + 100, NEW_GAME_BUTTON_SCALE * 4));
+                }
+                else if (ActiveButton == quitGameButton)
+                {
+                    quitGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer + 40, 255));
+                    quitGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Constant;
+                    quitGameButtonClick.AlphaOverTime.Keys.Clear();
+                    quitGameButtonClick.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer, 255));
+                    quitGameButtonClick.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer + 40, 255));
+                    quitGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer, QUIT_GAME_BUTTON_X));
+                    quitGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer, QUIT_GAME_BUTTON_Y));
+                    quitGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer + 100, QUIT_GAME_BUTTON_ORIGIN_X));
+                    quitGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer + 100, QUIT_GAME_BUTTON_ORIGIN_Y));
+                    quitGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(quitGameButtonClick.ScaleTimer, QUIT_GAME_BUTTON_SCALE));
+                    quitGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(quitGameButtonClick.ScaleTimer + 100, QUIT_GAME_BUTTON_SCALE * 4));
+                }
+                yield return 100;
                 ActiveButton.Pressed();
+                newGameButtonClick.AlphaOverTime.Keys.Clear();
+                quitGameButtonClick.AlphaOverTime.Keys.Clear();
+                newGameButtonClick.XPositionOverTime.Keys.Clear();
+                newGameButtonClick.YPositionOverTime.Keys.Clear();
+                quitGameButtonClick.XPositionOverTime.Keys.Clear();
+                quitGameButtonClick.YPositionOverTime.Keys.Clear();
+                newGameButtonClick.ScalingOverTime.Keys.Clear();
+                quitGameButtonClick.ScalingOverTime.Keys.Clear();
                 exitSequenceMutex = false;
             }
         }
 
-        public override IEnumerator<int> Upped()
+        public override IEnumerator<int> Lefted()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
@@ -111,16 +162,18 @@ namespace Micycle
             else if (ActiveButton == quitGameButton)
             {
                 ActiveButton = null;
-                cursor.MoveEnabled = true;
-                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, newGameButtonGraphic.Position.X));
-                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, newGameButtonGraphic.Position.Y));
-                yield return 20;
-                cursor.MoveEnabled = false;
+                quitGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer + 40, 0));
+                quitGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Constant;
+                newGameButtonHover.AlphaOverTime.Keys.Clear();
+                newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer, 0));
+                newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 40, 255));
+                newGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Oscillate;
                 ActiveButton = newGameButton;
+                yield return 0;
             }
         }
 
-        public override IEnumerator<int> Downed()
+        public override IEnumerator<int> Righted()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
@@ -128,40 +181,54 @@ namespace Micycle
             else if (ActiveButton == newGameButton)
             {
                 ActiveButton = null;
-                cursor.MoveEnabled = true;
-                cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, quitGameButtonGraphic.Position.X));
-                cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, quitGameButtonGraphic.Position.Y));
-                yield return 20;
-                cursor.MoveEnabled = false;
+                newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 40, 0));
+                newGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Constant;
+                quitGameButtonHover.AlphaOverTime.Keys.Clear();
+                quitGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer, 0));
+                quitGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer + 40, 255));
+                quitGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Oscillate;
                 ActiveButton = quitGameButton;
+                yield return 40;
             }
         }
 
         public override void LoadContent()
         {
-            background = Game.Content.Load<Texture2D>("MenuScreen");
-            newGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
-            quitGameButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
-            cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
+            background = Game.Content.Load<Texture2D>("MenuScreen\\SCREEN");
+
+            newGameButtonBase.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\START\\BUTTON"), 0);
+            newGameButtonHover.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\START\\HOVER_INDICATOR"), 0);
+            newGameButtonClick.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\START\\CLICK_INDICATOR"), 0);
+
+            quitGameButtonBase.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\EXIT\\BUTTON"), 0);
+            quitGameButtonHover.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\EXIT\\HOVER_INDICATOR"), 0);
+            quitGameButtonClick.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\EXIT\\CLICKED_INDICATOR"), 0);
+
             gameScreen.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            newGameButtonGraphic.Update(gameTime);
-            quitGameButtonGraphic.Update(gameTime);
-            cursor.Update(gameTime);
+            newGameButtonBase.Update(gameTime);
+            newGameButtonHover.Update(gameTime);
+            newGameButtonClick.Update(gameTime);
+
+            quitGameButtonBase.Update(gameTime);
+            quitGameButtonHover.Update(gameTime);
+            quitGameButtonClick.Update(gameTime);
         }
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
             Game.SpriteBatch.Draw(background, MiResolution.BoundingRectangle, Color.White);
 
-            newGameButtonGraphic.Draw(gameTime);
-            quitGameButtonGraphic.Draw(gameTime);
+            newGameButtonBase.Draw(gameTime);
+            newGameButtonHover.Draw(gameTime);
+            newGameButtonClick.Draw(gameTime);
 
-            if(cursor.Visible)
-                cursor.Draw(gameTime);
+            quitGameButtonBase.Draw(gameTime);
+            quitGameButtonHover.Draw(gameTime);
+            quitGameButtonClick.Draw(gameTime);
         }
     }
 }

@@ -18,9 +18,13 @@ namespace Micycle
         private MiButton goToMainMenuButton;
         private MiButton quitGameButton;
 
-        public MiInGameMenu(Micycle game)
+        private MicycleGameSystem system;
+
+        public MiInGameMenu(Micycle game, MicycleGameSystem system)
             : base(game)
         {
+            this.system = system;
+
             //
             // Cursor
             //
@@ -36,6 +40,7 @@ namespace Micycle
                 {
                     Game.ToUpdate.Pop();
                     Game.ToDraw.RemoveLast();
+                    system.Enabled = true;
                     return null;
                 });
             resumeButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);

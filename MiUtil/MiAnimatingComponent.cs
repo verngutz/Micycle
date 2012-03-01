@@ -22,13 +22,15 @@ namespace MiUtil
         public Curve YPositionOverTime { get; set; }
         public Curve ScalingOverTime { get; set; }
         public Curve RotationOverTime { get; set; }
-        public Curve RotationPointXOverTime { get; set; }
-        public Curve RotationPointYOverTime { get; set; }
+        public Curve OriginXOverTime { get; set; }
+        public Curve OriginYOverTime { get; set; }
+        public Curve AlphaOverTime { get; set; }
 
         public bool MoveEnabled { get; set; }
         public bool ScaleEnabled { get; set; }
         public bool RotateEnabled { get; set; }
-        public bool RotateAxisChangeEnabled { get; set; }
+        public bool OriginChangeEnabled { get; set; }
+        public bool AlphaChangeEnabled { get; set; }
 
         private ulong moveTimer;
         public ulong MoveTimer { get { return moveTimer; } }
@@ -39,8 +41,11 @@ namespace MiUtil
         private ulong rotateTimer;
         public ulong RotateTimer { get { return rotateTimer; } }
 
-        private ulong rotateAxisChangeTimer;
-        public ulong RotateAxisChangeTimer { get { return rotateAxisChangeTimer; } }
+        private ulong originChangeTimer;
+        public ulong OriginChangeTimer { get { return originChangeTimer; } }
+
+        private ulong alphaChangeTimer;
+        public ulong AlphaChangeTimer { get { return alphaChangeTimer; } }
 
         private Vector2 position;
         public Vector2 Position
@@ -49,15 +54,25 @@ namespace MiUtil
             set { position = value; }
         }
 
-        private Vector2 rotationPoint;
+        private Vector2 origin;
         private float scale;
         private float rotation;
+
+        private Color color;
+        public Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
 
         public MiAnimatingComponent(MiGame game) : this(game, 0, 0, 1, 0, 0, 0) { }
 
         public MiAnimatingComponent(MiGame game, float default_x, float default_y) : this(game, default_x, default_y, 1, 0, 0, 0) { }
 
-        public MiAnimatingComponent(MiGame game, float default_x, float default_y, float default_scale, float default_rotate, float rotation_x, float rotation_y)
+        public MiAnimatingComponent(MiGame game, float default_x, float default_y, float default_scale, float default_rotate, float origin_x, float origin_y)
+            : this(game, default_x, default_y, default_scale, default_rotate, origin_x, origin_y, 255) { }
+
+        public MiAnimatingComponent(MiGame game, float default_x, float default_y, float default_scale, float default_rotate, float origin_x, float origin_y, byte alpha)
             : base(game)
         {
             spriteQueue = new Queue<KeyValuePair<Texture2D, int>>();
@@ -68,7 +83,7 @@ namespace MiUtil
             position = new Vector2(default_x, default_y);
             scale = default_scale;
             rotation = default_rotate;
-            rotationPoint = new Vector2(rotation_x, rotation_y);
+            origin = new Vector2(origin_x, origin_y);
 
             XPositionOverTime = new Curve();
             XPositionOverTime.Keys.Add(new CurveKey(0, default_x));
@@ -82,11 +97,16 @@ namespace MiUtil
             RotationOverTime = new Curve();
             RotationOverTime.Keys.Add(new CurveKey(0, default_rotate));
 
-            RotationPointXOverTime = new Curve();
-            RotationPointXOverTime.Keys.Add(new CurveKey(0, rotation_x));
+            OriginXOverTime = new Curve();
+            OriginXOverTime.Keys.Add(new CurveKey(0, origin_x));
 
-            RotationPointYOverTime = new Curve();
-            RotationPointYOverTime.Keys.Add(new CurveKey(0, rotation_y));
+            OriginYOverTime = new Curve();
+            OriginYOverTime.Keys.Add(new CurveKey(0, origin_y));
+
+            AlphaOverTime = new Curve();
+            AlphaOverTime.Keys.Add(new CurveKey(0, alpha));
+            color = Color.White;
+            color.A = alpha;
         }
 
         /// <summary>
@@ -111,20 +131,26 @@ namespace MiUtil
             if (ScaleEnabled)
             {
                 scaleTimer++;
-                scale = ScalingOverTime.Evaluate(MoveTimer);
+                scale = ScalingOverTime.Evaluate(ScaleTimer);
             }
 
             if (RotateEnabled)
             {
                 rotateTimer++;
-                rotation = RotationOverTime.Evaluate(MoveTimer);
+                rotation = RotationOverTime.Evaluate(RotateTimer);
             }
 
-            if(RotateAxisChangeEnabled)
+            if(OriginChangeEnabled)
             {
-                rotateAxisChangeTimer++;
-                rotationPoint.X = RotationPointXOverTime.Evaluate(MoveTimer);
-                rotationPoint.Y = RotationPointYOverTime.Evaluate(MoveTimer);
+                originChangeTimer++;
+                origin.X = OriginXOverTime.Evaluate(OriginChangeTimer);
+                origin.Y = OriginYOverTime.Evaluate(OriginChangeTimer);
+            }
+
+            if (AlphaChangeEnabled)
+            {
+                alphaChangeTimer++;
+                color.A = (byte)AlphaOverTime.Evaluate(AlphaChangeTimer);
             }
 
             if (SpriteQueueEnabled)
@@ -142,7 +168,7 @@ namespace MiUtil
 
         public override void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Draw(spriteQueue.Peek().Key, position, null, Color.White, rotation, rotationPoint, scale, SpriteEffects.None, 0);
+            Game.SpriteBatch.Draw(spriteQueue.Peek().Key, position, null, Color, rotation, origin, scale, SpriteEffects.None, 0);
         }
     }
 }
