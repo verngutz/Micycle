@@ -20,12 +20,7 @@ namespace MiUtil
 
         public virtual IEnumerator<int> EntrySequence() { yield return 0; }
 
-        public virtual IEnumerator<int> Upped()
-        {
-            if (entrySequenceMutex || exitSequenceMutex)
-                yield break;
-        }
-
+        public virtual IEnumerator<int> Upped() { yield return 0; }
         public virtual IEnumerator<int> Downed() { yield return 0; }
         public virtual IEnumerator<int> Lefted() { yield return 0; }
         public virtual IEnumerator<int> Righted() { yield return 0; }

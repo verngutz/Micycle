@@ -9,50 +9,50 @@ namespace Micycle
 {
     public abstract class MiBuildingMenu : MiScreen
     {
-        private static int centerX;
-        private static int centerY;
+        private static float centerX;
+        private static float centerY;
 
         private const int RADIUS = 100;
 
         private const int UP_BUTTON_WIDTH = 100;
         private const int UP_BUTTON_HEIGHT = 75;
         private const float UP_BUTTON_SCALE = 0.5f;
-        private static int UP_BUTTON_CENTER_X { get { return centerX; } }
-        private static int UP_BUTTON_CENTER_Y { get { return centerY - RADIUS; } }
-        private static int UP_BUTTON_X { get { return UP_BUTTON_CENTER_X - (int)(UP_BUTTON_SCALE * UP_BUTTON_WIDTH / 2); } }
-        private static int UP_BUTTON_Y { get { return UP_BUTTON_CENTER_Y - (int)(UP_BUTTON_SCALE * UP_BUTTON_HEIGHT / 2); } }
+        private static float UP_BUTTON_CENTER_X { get { return centerX; } }
+        private static float UP_BUTTON_CENTER_Y { get { return centerY - RADIUS; } }
+        private static float UP_BUTTON_X { get { return UP_BUTTON_CENTER_X - UP_BUTTON_SCALE * UP_BUTTON_WIDTH / 2; } }
+        private static float UP_BUTTON_Y { get { return UP_BUTTON_CENTER_Y - UP_BUTTON_SCALE * UP_BUTTON_HEIGHT / 2; } }
 
         private const int DOWN_BUTTON_WIDTH = 100;
         private const int DOWN_BUTTON_HEIGHT = 75;
         private const float DOWN_BUTTON_SCALE = 0.5f;
-        private static int DOWN_BUTTON_CENTER_X { get { return centerX; } }
-        private static int DOWN_BUTTON_CENTER_Y { get { return centerY + RADIUS; } }
-        private static int DOWN_BUTTON_X { get { return DOWN_BUTTON_CENTER_X - (int)(DOWN_BUTTON_SCALE * DOWN_BUTTON_WIDTH / 2); } }
-        private static int DOWN_BUTTON_Y { get { return DOWN_BUTTON_CENTER_Y - (int)(DOWN_BUTTON_SCALE * DOWN_BUTTON_HEIGHT / 2); } }  
+        private static float DOWN_BUTTON_CENTER_X { get { return centerX; } }
+        private static float DOWN_BUTTON_CENTER_Y { get { return centerY + RADIUS; } }
+        private static float DOWN_BUTTON_X { get { return DOWN_BUTTON_CENTER_X - DOWN_BUTTON_SCALE * DOWN_BUTTON_WIDTH / 2; } }
+        private static float DOWN_BUTTON_Y { get { return DOWN_BUTTON_CENTER_Y - DOWN_BUTTON_SCALE * DOWN_BUTTON_HEIGHT / 2; } }  
 
         private const int LEFT_BUTTON_WIDTH = 100;
         private const int LEFT_BUTTON_HEIGHT = 75;
         private const float LEFT_BUTTON_SCALE = 0.5f;
-        private static int LEFT_BUTTON_CENTER_X { get { return centerX - RADIUS; } }
-        private static int LEFT_BUTTON_CENTER_Y { get { return centerY; } }
-        private static int LEFT_BUTTON_X { get { return LEFT_BUTTON_CENTER_X - (int)(LEFT_BUTTON_SCALE * LEFT_BUTTON_WIDTH / 2); } }
-        private static int LEFT_BUTTON_Y { get { return LEFT_BUTTON_CENTER_Y - (int)(LEFT_BUTTON_SCALE * LEFT_BUTTON_HEIGHT / 2); } }
+        private static float LEFT_BUTTON_CENTER_X { get { return centerX - RADIUS; } }
+        private static float LEFT_BUTTON_CENTER_Y { get { return centerY; } }
+        private static float LEFT_BUTTON_X { get { return LEFT_BUTTON_CENTER_X - LEFT_BUTTON_SCALE * LEFT_BUTTON_WIDTH / 2; } }
+        private static float LEFT_BUTTON_Y { get { return LEFT_BUTTON_CENTER_Y - LEFT_BUTTON_SCALE * LEFT_BUTTON_HEIGHT / 2; } }
 
         private const int RIGHT_BUTTON_WIDTH = 100;
         private const int RIGHT_BUTTON_HEIGHT = 75;
         private const float RIGHT_BUTTON_SCALE = 0.5f;
-        private static int RIGHT_BUTTON_CENTER_X { get { return centerX + RADIUS; } }
-        private static int RIGHT_BUTTON_CENTER_Y { get { return centerY; } }
-        private static int RIGHT_BUTTON_X { get { return RIGHT_BUTTON_CENTER_X - (int)(RIGHT_BUTTON_SCALE * RIGHT_BUTTON_WIDTH / 2); } }
-        private static int RIGHT_BUTTON_Y { get { return RIGHT_BUTTON_CENTER_Y - (int)(RIGHT_BUTTON_SCALE * RIGHT_BUTTON_HEIGHT / 2); } }
+        private static float RIGHT_BUTTON_CENTER_X { get { return centerX + RADIUS; } }
+        private static float RIGHT_BUTTON_CENTER_Y { get { return centerY; } }
+        private static float RIGHT_BUTTON_X { get { return RIGHT_BUTTON_CENTER_X - RIGHT_BUTTON_SCALE * RIGHT_BUTTON_WIDTH / 2; } }
+        private static float RIGHT_BUTTON_Y { get { return RIGHT_BUTTON_CENTER_Y - RIGHT_BUTTON_SCALE * RIGHT_BUTTON_HEIGHT / 2; } }
 
         private const int CANCEL_BUTTON_WIDTH = 100;
         private const int CANCEL_BUTTON_HEIGHT = 75;
         private const float CANCEL_BUTTON_SCALE = 0.5f;
-        private static int CANCEL_BUTTON_CENTER_X { get { return centerX; } }
-        private static int CANCEL_BUTTON_CENTER_Y { get { return centerY; } }
-        private static int CANCEL_BUTTON_X { get { return CANCEL_BUTTON_CENTER_X - (int)(CANCEL_BUTTON_SCALE * CANCEL_BUTTON_WIDTH / 2); } }
-        private static int CANCEL_BUTTON_Y { get { return CANCEL_BUTTON_CENTER_Y - (int)(CANCEL_BUTTON_SCALE * CANCEL_BUTTON_HEIGHT / 2); } }
+        private static float CANCEL_BUTTON_CENTER_X { get { return centerX; } }
+        private static float CANCEL_BUTTON_CENTER_Y { get { return centerY; } }
+        private static float CANCEL_BUTTON_X { get { return CANCEL_BUTTON_CENTER_X - CANCEL_BUTTON_SCALE * CANCEL_BUTTON_WIDTH / 2; } }
+        private static float CANCEL_BUTTON_Y { get { return CANCEL_BUTTON_CENTER_Y - CANCEL_BUTTON_SCALE * CANCEL_BUTTON_HEIGHT / 2; } }
 
         protected MiAnimatingComponent cursor;
         protected MiAnimatingComponent upButtonGraphic;
@@ -62,12 +62,20 @@ namespace Micycle
         protected MiAnimatingComponent cancelButtonGraphic;
 
         protected MiButton upButton;
+        public MiButton UpButton { get { return upButton; } }
+
         protected MiButton downButton;
+        public MiButton DownButton { get { return downButton; } }
+
         protected MiButton leftButton;
+        public MiButton LeftButton { get { return leftButton; } }
+
         protected MiButton rightButton;
+        public MiButton RightButton { get { return rightButton; } }
+
         private MiButton cancelButton;
 
-        public MiBuildingMenu(Micycle game, int center_x, int center_y)
+        public MiBuildingMenu(Micycle game, float center_x, float center_y)
             : base(game)
         {
             centerX = center_x;

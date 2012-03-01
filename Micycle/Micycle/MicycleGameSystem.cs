@@ -29,56 +29,67 @@ namespace Micycle
         private float cityMoney;
         private float ownerMoney;
         private float researchPoints;
-        
 
-        private bool sendMouseFromCityToSchool;
-        public bool SendMouseFromCityToSchool { get { return sendMouseFromCityToSchool; } }
-        private bool sendMouseFromCityToFactory;
-        public bool SendMouseFromCityToFactory { get { return sendMouseFromCityToFactory; } }
-        private bool sendMouseFromCityToRnd;
-        public bool SendMouseFromCityToRnd { get { return sendMouseFromCityToRnd; } }
+        private float birthRate, deathRate;
+        private float factoryRetirementRate;
+        private float rndRetirementRate;
 
-        private bool sendMouseFromSchoolToCity;
-        public bool SendMouseFromSchoolToCity { get { return sendMouseFromSchoolToCity; } }
-        private bool sendMouseFromSchoolToFactory;
-        public bool SendMouseFromSchoolToFactory { get { return sendMouseFromSchoolToFactory; } }
-        private bool sendMouseFromSchoolToRnd;
-        public bool SendMouseFromSchoolToRnd { get { return sendMouseFromSchoolToRnd; } }
+        private float researchRate;
 
-        private bool sendMouseFromRndToCity;
-        public bool SendMouseFromRndToCity { get { return sendMouseFromRndToCity; } }
-        private bool sendRobotFromRndToFactory;
-        public bool SendRobotFromRndToFactory { get { return sendRobotFromRndToFactory; } }
+        private float bumToRndRate;
+        private float bumToFactoryRate;
 
-        private bool sendMouseFromFactoryToCity;
-        public bool SendMouseFromFactoryToCity { get { return sendMouseFromFactoryToCity; } }
+        private float cityPeopleBirthBias;
+        private float studentsBirthBias;
+        private float researchersBirthBias;
+        private float factoryWorkersBirthBias;
+        private float bumsBirthBias;
 
-        float birthRate, deathRate;
-        float factoryRetirementRate;
-        float rndRetirementRate;
+        private int costOfLiving;
+        private int year;
+        private int month;
+        private int schoolSendRate;
+        private int studyTime;
+        private int INCOME_PER_WORKER = 30;
 
-        float researchRate;
-
-        float bumToRndRate;
-        float bumToFactoryRate;
-
-        float cityPeopleBirthBias;
-        float studentsBirthBias;
-        float researchersBirthBias;
-        float factoryWorkersBirthBias;
-        float bumsBirthBias;
-
-        int costOfLiving;
-        int year;
-        int month;
-        int schoolSendRate;
-        int studyTime;
-        int INCOME_PER_WORKER = 30;
-
-        int educationLevel;
-        int max_educationLevel;
+        private int educationLevel;
+        private int max_educationLevel;
 
         private List<StudentWrapper> students;
+
+        public int SendMouseFromCityToSchool = 0;
+        public int MouseHasReachedCityFromSchool = 0;
+        public int SendMouseFromCityToFactory = 0;
+        public int MouseHasReachedCityFromFactory = 0;
+        public int SendMouseFromCityToRnd = 0;
+        public int MouseHasReachedCityFromRnd = 0;
+        public int SendMouseFromSchoolToCity = 0;
+        public int MouseHasReachedSchoolFromCity = 0;
+        public int SendMouseFromSchoolToFactory = 0;
+        public int MouseHasReachedSchoolFromFactory = 0;
+        public int SendMouseFromSchoolToRnd = 0;
+        public int MouseHasReachedSchoolFromRnd = 0;
+        public int SendMouseFromRndToCity = 0;
+        public int MouseHasReachedRndFromCity = 0;
+        public int SendRobotFromRndToFactory = 0;
+        public int RobotHasReachedRndFromFactory = 0;
+        public int SendMouseFromFactoryToCity = 0;
+        public int MouseHasReachedFactoryFromCity = 0;
+
+        public void Signal(ref int sema)
+        {
+            sema++;
+        }
+
+        public bool Wait(ref int sema)
+        {
+            if (sema > 0)
+            {
+                sema--;
+                return true;
+            }
+            return false;
+        }
 
         public MicycleGameSystem(Micycle game)
             : base(game)
@@ -156,9 +167,73 @@ namespace Micycle
             if (researcherCapacity < 0) researcherCapacity = 0;
         }
 
+        public void SchoolUpButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void SchoolDownButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void SchoolLeftButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void SchoolRightButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void FactoryUpButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void FactoryDownButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void FactoryLeftButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void FactoryRightButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void RndUpButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void RndDownButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void RndLeftButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public void RndRightButtonAction()
+        {
+            //TO-DO: Add action code here.
+        }
+
+        public string printStats()
+        {
+            //TO-DO: Return a string containing all the necessay game information for the player
+            return "";
+        }
         
-        
-        public void updateCity()
+        private void updateCity()
         {
             //update city population
             //update the bums
@@ -173,10 +248,8 @@ namespace Micycle
             }
         }
 
-        public void updateFactory()
+        private void updateFactory()
         {
-            sendMouseFromFactoryToCity = false;
-
             if (time % month == 0)
             {
                 ownerMoney += INCOME_PER_WORKER * factoryWorkers;
@@ -187,23 +260,19 @@ namespace Micycle
                 int toRetire = (int)Math.Ceiling(factoryRetirementRate * factoryWorkers);
                 if (toRetire > 0)
                 {
-                    sendMouseFromFactoryToCity = true;
+                    Signal(ref SendMouseFromFactoryToCity);
                     cityBums += toRetire;
                     factoryWorkers -= toRetire;
                 }
             }
         }
 
-        public void updateSchool()
+        private void updateSchool()
         {
             if( time%year == 0 )
                 ownerMoney -= educationBudget;
 
             List<StudentWrapper> toRemove = new List<StudentWrapper>();
-
-            sendMouseFromSchoolToCity = false;
-            sendMouseFromSchoolToFactory = false;
-            sendMouseFromSchoolToRnd = false;
 
             foreach (StudentWrapper st in students)
             {
@@ -223,7 +292,7 @@ namespace Micycle
             
         }
 
-        public void graduateStudent()
+        private void graduateStudent()
         {
             //do whatever needed when student leaves school
             double num = rnd.NextDouble();
@@ -236,7 +305,7 @@ namespace Micycle
             if (num >= 0 && num <= researcherPull && researcherCapacity > researchers)
             {
                 //send to researchCenter
-                sendMouseFromSchoolToRnd = true;
+                Signal(ref SendMouseFromSchoolToRnd);
                 researchers++;
                 return;
             }
@@ -244,20 +313,19 @@ namespace Micycle
             else if (num > researcherPull && num <= researcherPull + factoryWorkerPull && factoryWorkerCapacity > factoryWorkers)
             {
                 //send to factory
-                sendMouseFromSchoolToFactory = true;
+                Signal(ref SendMouseFromSchoolToFactory);
                 factoryWorkers++;
                 return;
             }
 
 
             //send to bum
-            sendMouseFromSchoolToCity = true;
+            Signal(ref SendMouseFromSchoolToCity);
             cityBums++;
         }
 
-        public void updateResearchCenter()
+        private void updateResearchCenter()
         {
-            sendMouseFromRndToCity = false;
             if (time % month == 0)
             {
                 ownerMoney -= researcherWage * researchers;
@@ -269,7 +337,7 @@ namespace Micycle
                 int toRetire = (int)Math.Ceiling(rndRetirementRate * researchers);
                 if (toRetire > 0)
                 {
-                    sendMouseFromRndToCity = true;
+                    Signal(ref SendMouseFromRndToCity);
                     cityBums += toRetire;
                     researchers -= toRetire;
                 }
@@ -288,36 +356,24 @@ namespace Micycle
             if (cityPeople > 0 && time % schoolSendRate == 0 && students.Count < schoolCapacity )
             {
                 cityPeople--;
-                sendMouseFromCityToSchool = true;
+                Signal(ref SendMouseFromCityToSchool);
                 students.Add(new StudentWrapper(studyTime));
-            }
-            else
-            {
-                sendMouseFromCityToSchool = false;
             }
 
             double num = rnd.NextDouble();
             if (cityBums > 0 && researcherCapacity > researchers && num <= bumToRndRate)
             {
-                sendMouseFromCityToRnd = true;
+                Signal(ref SendMouseFromCityToRnd);
                 cityBums--;
                 researchers++;
-            }
-            else
-            {
-                sendMouseFromCityToRnd = false;
             }
 
             num = rnd.NextDouble();
             if (cityBums > 0 && factoryWorkerCapacity > factoryWorkers && num <= bumToFactoryRate)
             {
-                sendMouseFromCityToFactory = true;
+                Signal(ref SendMouseFromCityToFactory);
                 cityBums--;
                 factoryWorkers++;
-            }
-            else
-            {
-                sendMouseFromCityToFactory = false;
             }
             if (time % year == 0) time = 0;
         }
