@@ -17,7 +17,7 @@ namespace Micycle
         private int cityBums;
 
         private int factoryWorkerCapacity;
-        private int researcherCapacity;
+        //private int researcherCapacity;
         private int schoolCapacity;
         private int schoolFacultyCapacity;
 
@@ -48,6 +48,9 @@ namespace Micycle
         private float bumsBirthBias;
 
         private int costOfLiving;
+        private int factoryUpkeep;
+        private int rndUpkeep;
+
         private int year;
         private int month;
         private int schoolSendRate;
@@ -98,25 +101,24 @@ namespace Micycle
         public MicycleGameSystem(Micycle game)
             : base(game)
         {
-            birthRate = 0.2f;
+            birthRate = 1.5f;
             deathRate = 0.1f;
             researchRate = 0.5f;
             year = 1200;
             month = year / 12;
             schoolSendRate = month/5;
             studyTime = 200;
-            schoolCapacity = 5;
-            researcherCapacity = 45;
-            factoryWorkerCapacity = 45;
+            schoolCapacity = 25;
+            //researcherCapacity = 5;
+            factoryWorkerCapacity = 10;
 
             bumToFactoryRate = 0.02f;
             bumToRndRate = 0.02f;
 
-            factoryRetirementRate = 0.2f;
-            rndRetirementRate = 0.2f;
+            factoryRetirementRate = 0.02f;
+            rndRetirementRate = 0.02f;
 
             cityPeople = 400;
-
 
             cityPeopleBirthBias = 0f;
             studentsBirthBias = 0.1f;
@@ -124,15 +126,18 @@ namespace Micycle
             factoryWorkersBirthBias = 0.2f;
             bumsBirthBias = 0.5f;
 
-            factoryWorkerWage = 10;
+            factoryWorkerWage = 100;
             researcherWage = 10;
-            educationBudget = 10;
-            educationLevel = 90;
+            educationBudget = 100;
+            educationLevel = 0;
             max_educationLevel = 100;
 
             costOfLiving = 10;
+            factoryUpkeep = factoryWorkerCapacity;
+            rndUpkeep = 0;
 
             students = new List<StudentWrapper>();
+            schoolTeachers = 1;
         }
 
         private void AddEducationBudget(int dx) 
@@ -157,6 +162,7 @@ namespace Micycle
         {
             factoryWorkerCapacity += dx;
             if (factoryWorkerCapacity < 0) factoryWorkerCapacity = 0;
+            factoryUpkeep = factoryWorkerCapacity;
         }
 
         private void AddResearcherWage(int dx)
@@ -167,23 +173,24 @@ namespace Micycle
 
         private void AddResearcherCapacity(int dx)
         {
-            researcherCapacity += dx;
-            if (researcherCapacity < 0) researcherCapacity = 0;
+            //researcherCapacity += dx;
+            //if (researcherCapacity < 0) researcherCapacity = 0;
+            //rndUpkeep = researcherCapacity;
         }
 
         public void SchoolUpButtonAction()
         {
-            educationBudget += 10;
+            AddEducationBudget(10);
         }
 
         public void SchoolDownButtonAction()
         {
-            educationBudget -= 10;
+            AddEducationBudget(-10);
         }
 
         public void SchoolLeftButtonAction()
         {
-            if (researchers < researcherCapacity && schoolTeachers > 0)
+            if (schoolTeachers > 0)
             {
                 researchers++;
                 schoolTeachers--;
@@ -194,55 +201,74 @@ namespace Micycle
 
         public void SchoolRightButtonAction()
         {
-            schoolTeachers++;
-            researchers--;
-            Signal(ref SendMouseFromRndToSchool);
+            if (researchers > 0)
+            {
+                schoolTeachers++;
+                researchers--;
+                Signal(ref SendMouseFromRndToSchool);
+            }
         }
 
         public void FactoryUpButtonAction()
         {
-            factoryWorkerWage++;
+            AddWorkerWage(1);
         }
 
         public void FactoryDownButtonAction()
         {
-            factoryWorkerWage--;
+            AddWorkerWage(-1);
         }
 
         public void FactoryLeftButtonAction()
         {
-            factoryWorkerCapacity--;
+            AddWorkerCapacity(-1);
+            
+            if (factoryWorkerCapacity > factoryWorkers)
+            {
+                factoryWorkers--;
+                cityBums++;
+                Signal(ref SendMouseFromFactoryToCity);
+
+            }
         }
 
         public void FactoryRightButtonAction()
         {
-            factoryWorkerCapacity++;
+            AddWorkerCapacity(1);
+            
         }
 
         public void RndUpButtonAction()
         {
-            researcherWage++;
+            AddResearcherWage(1);
         }
 
         public void RndDownButtonAction()
         {
-            researcherWage--;
+            AddResearcherWage(-1);
         }
 
         public void RndLeftButtonAction()
         {
-            researcherCapacity--;
+            /*AddResearcherCapacity(-1);
+            if (researcherCapacity > researchers)
+            {
+                researchers--;
+                cityBums++;
+                Signal(ref SendMouseFromRndToCity);
+                
+            }*/
         }
 
         public void RndRightButtonAction()
         {
-            researcherCapacity++;
+            //AddResearcherCapacity(1);
         }
 
         public string printStats()
         {
             //TO-DO: Return a string containing all the necessay game information for the player
-            return String.Format("$: " + ownerMoney + " city$: " + cityMoney + "\nkids: " + cityPeople + " bums: "+ cityBums+ "\nstudents: " + students.Count + "/" + schoolCapacity + " teachers: " + schoolTeachers + " education budget: " + educationBudget + "\nfactory " + factoryWorkers + "/" + factoryWorkerCapacity + " factory wage: " + factoryWorkerWage + "\nrnd: " + researchers + "/" + researcherCapacity + " rnd budget: " + researcherWage);
+            return String.Format("$: " + ownerMoney + " city$: " + cityMoney + "\nkids: " + cityPeople + " bums: "+ cityBums+ "\nstudents: " + students.Count + "/" + schoolCapacity + " teachers: " + schoolTeachers + " education budget: " + educationBudget + "\nfactory " + factoryWorkers + "/" + factoryWorkerCapacity + " factory wage: " + factoryWorkerWage + "\nrnd: " + researchers +  " rnd budget: " + researcherWage);
         }
         
         private void updateCity()
@@ -264,15 +290,14 @@ namespace Micycle
         {
             if (time % month == 0)
             {
-                ownerMoney += INCOME_PER_WORKER * factoryWorkers;
-                cityMoney += factoryWorkerWage * factoryWorkers;
-            }
-            if (time % year == 0)
-            {
-                int toRetire = (int)Math.Ceiling(factoryRetirementRate * factoryWorkers);
+                ownerMoney += INCOME_PER_WORKER * factoryWorkers + factoryUpkeep;
+                cityMoney += factoryWorkerWage * factoryWorkers ;
+           
+                int toRetire = (int)Math.Round(factoryRetirementRate * factoryWorkers);
                 if (toRetire > 0)
                 {
-                    Signal(ref SendMouseFromFactoryToCity);
+                    for( int i = 0; i < toRetire; i++ )
+                        Signal(ref SendMouseFromFactoryToCity);
                     cityBums += toRetire;
                     factoryWorkers -= toRetire;
                 }
@@ -299,24 +324,44 @@ namespace Micycle
             {
                 students.Remove(st);
                 graduateStudent();
-            }
-
-            
+            }  
         }
 
         private void graduateStudent()
         {
             //do whatever needed when student leaves school
             double num = rnd.NextDouble();
-
-            double S = (float)educationLevel / max_educationLevel;
+            educationLevel = (int)(educationBudget * schoolTeachers / students.Count);
+            if (schoolTeachers > students.Count)
+                educationLevel = (int)educationBudget;
+            double S = (float)(educationLevel) / max_educationLevel;
 
             double researcherPull = (S * (researcherWage + educationLevel)) / 
                                 (researcherWage + factoryWorkerWage + educationLevel);
             double factoryWorkerPull = (S * (factoryWorkerWage)) / 
                                 (researcherWage + factoryWorkerWage + educationLevel);
 
-            if (num >= 0 && num <= researcherPull && researcherCapacity > researchers)
+            if (researcherWage == 0 && factoryWorkerWage != 0)
+            {
+                researcherPull = 0;
+                factoryWorkerPull = S;
+            }
+            else if (researcherWage != 0 && factoryWorkerWage == 0)
+            {
+                researcherPull = S;
+                factoryWorkerPull = 0;
+            }
+            else if( researcherWage == 0 && factoryWorkerWage == 0 )
+            {
+                researcherPull = 0;
+                factoryWorkerPull = 0;
+            }
+            else if (factoryWorkers == factoryWorkerCapacity)
+            {
+                factoryWorkerPull = 0;
+                researcherPull = S;
+            }
+            if (num >= 0 && num <= researcherPull /*&& researcherCapacity > (researchers+schoolTeachers) */)
             {
                 //send to researchCenter
                 Signal(ref SendMouseFromSchoolToRnd);
@@ -342,16 +387,15 @@ namespace Micycle
         {
             if (time % month == 0)
             {
-                ownerMoney -= researcherWage * (schoolTeachers+researchers);
+                ownerMoney -= researcherWage * (schoolTeachers+researchers) + rndUpkeep;
                 cityMoney += researcherWage * (schoolTeachers+researchers);
                 researchPoints += researchRate * researchers;
-            }
-            if (time % year == 0)
-            {
-                int toRetire = (int)Math.Ceiling(rndRetirementRate * researchers);
+            
+                int toRetire = (int)Math.Round(rndRetirementRate * researchers);
                 if (toRetire > 0)
                 {
-                    Signal(ref SendMouseFromRndToCity);
+                    for (int i = 0; i < toRetire; i++)
+                        Signal(ref SendMouseFromRndToCity);
                     cityBums += toRetire;
                     researchers -= toRetire;
                 }
@@ -375,7 +419,56 @@ namespace Micycle
             }
 
             double num = rnd.NextDouble();
-            if (cityBums > 0 && researcherCapacity > researchers && num <= bumToRndRate)
+            if (time%year == 0 && cityBums>0 && num <= bumToRndRate)
+            {
+                educationLevel = (int)(educationBudget * schoolTeachers / students.Count);
+                if (schoolTeachers > students.Count)
+                    educationLevel = (int)educationBudget;
+                double S = (float)bumToRndRate;
+
+                double researcherPull = (S * (researcherWage + educationLevel)) /
+                                    (researcherWage + factoryWorkerWage + educationLevel);
+                double factoryWorkerPull = (S * (factoryWorkerWage)) /
+                                    (researcherWage + factoryWorkerWage + educationLevel);
+
+                
+                if (researcherWage == 0 && factoryWorkerWage != 0)
+                {
+                    factoryWorkerPull = S;
+                }
+                else if (researcherWage != 0 && factoryWorkerWage == 0)
+                {
+                    researcherPull = S;
+                }
+                else if (researcherWage == 0 && factoryWorkerWage == 0)
+                {
+                    researcherPull = 0;
+                    factoryWorkerPull = 0;
+                }
+                else if (factoryWorkers == factoryWorkerCapacity)
+                {
+                    factoryWorkerPull = 0;
+                    researcherPull = S;
+                }
+
+                if (num >= 0 && num <= researcherPull /*&& researcherCapacity > (researchers+schoolTeachers) */)
+                {
+                    //send to researchCenter
+                    Signal(ref SendMouseFromSchoolToRnd);
+                    researchers++;
+                    return;
+                }
+
+                else if (num > researcherPull && num <= researcherPull + factoryWorkerPull && factoryWorkerCapacity > factoryWorkers)
+                {
+                    //send to factory
+                    Signal(ref SendMouseFromSchoolToFactory);
+                    factoryWorkers++;
+                    return;
+                }
+            }
+
+            if (time%year == 0 && cityBums > 0 && /*researcherCapacity > (researchers+schoolTeachers)&& */num <= bumToRndRate)
             {
                 Signal(ref SendMouseFromCityToRnd);
                 cityBums--;
@@ -383,7 +476,7 @@ namespace Micycle
             }
 
             num = rnd.NextDouble();
-            if (cityBums > 0 && factoryWorkerCapacity > factoryWorkers && num <= bumToFactoryRate)
+            if (time%year == 0 && cityBums > 0 && factoryWorkerCapacity > factoryWorkers && num <= bumToFactoryRate)
             {
                 Signal(ref SendMouseFromCityToFactory);
                 cityBums--;
