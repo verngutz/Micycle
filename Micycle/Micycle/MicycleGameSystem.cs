@@ -10,16 +10,14 @@ namespace Micycle
         public static Random rnd = new Random();
 
         private int cityPeople;
-        private int schoolStudents;
         private int schoolTeachers;
         private int researchers;
         private int factoryWorkers;
         private int cityBums;
 
         private int factoryWorkerCapacity;
-        //private int researcherCapacity;
         private int schoolCapacity;
-        private int schoolFacultyCapacity;
+      
 
 
         private float educationBudget;
@@ -175,9 +173,7 @@ namespace Micycle
 
         private void AddResearcherCapacity(int dx)
         {
-            //researcherCapacity += dx;
-            //if (researcherCapacity < 0) researcherCapacity = 0;
-            //rndUpkeep = researcherCapacity;
+            
         }
 
         public void SchoolUpButtonAction()
@@ -253,14 +249,7 @@ namespace Micycle
 
         public void RndLeftButtonAction()
         {
-            /*AddResearcherCapacity(-1);
-            if (researcherCapacity > researchers)
-            {
-                researchers--;
-                cityBums++;
-                Signal(ref SendMouseFromRndToCity);
-                
-            }*/
+            
         }
 
         public void RndRightButtonAction()
@@ -366,7 +355,7 @@ namespace Micycle
                 factoryWorkerPull = 0;
                 researcherPull = S;
             }
-            if (num >= 0 && num <= researcherPull /*&& researcherCapacity > (researchers+schoolTeachers) */)
+            if (num >= 0 && num <= researcherPull )
             {
                 //send to researchCenter
                 Signal(ref SchoolToRnd.SendFromAToB);
@@ -458,7 +447,7 @@ namespace Micycle
                     researcherPull = S;
                 }
 
-                if (num >= 0 && num <= researcherPull /*&& researcherCapacity > (researchers+schoolTeachers) */)
+                if (num >= 0 && num <= researcherPull)
                 {
                     //send to researchCenter
                     Signal(ref SchoolToRnd.SendFromAToB);
@@ -475,7 +464,7 @@ namespace Micycle
                 }
             }
 
-            if (time%year == 0 && cityBums > 0 && /*researcherCapacity > (researchers+schoolTeachers)&& */num <= bumToRndRate)
+            if (time%year == 0 && cityBums > 0 && num <= bumToRndRate)
             {
                 Signal(ref CityToRnd.SendFromAToB);
                 cityBums--;
