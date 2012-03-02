@@ -485,7 +485,6 @@ namespace Micycle
     class StudentWrapper
     {
         public int timeLeft;
-
         public StudentWrapper(int t) { timeLeft = t; }
     }
 }
