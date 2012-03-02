@@ -5,7 +5,7 @@ using System;
 
 namespace Micycle
 {
-    public class MicycleGameSystem : MiComponent
+    class MicycleGameSystem : MiComponent
     {
         public static Random rnd = new Random();
 
@@ -59,26 +59,16 @@ namespace Micycle
 
         private List<StudentWrapper> students;
 
-        public int SendMouseFromCityToSchool = 0;
-        public int MouseHasReachedSchoolFromCity = 0;
-        public int SendMouseFromCityToFactory = 0;
-        public int MouseHasReachedFactoryFromCity = 0;
-        public int SendMouseFromCityToRnd = 0;
-        public int MouseHasReachedRndFromCity = 0;
-        public int SendMouseFromSchoolToCity = 0;
-        public int MouseHasReachedCityFromSchool = 0;
-        public int SendMouseFromSchoolToFactory = 0;
-        public int MouseHasReachedFactoryFromSchool = 0;
-        public int SendMouseFromSchoolToRnd = 0;
-        public int MouseHasReachedRndFromSchool = 0;
-        public int SendMouseFromRndToCity = 0;
-        public int MouseHasReachedCityFromRnd = 0;
-        public int SendMouseFromRndToSchool = 0;
-        public int MouseHasReachedSchoolFromRnd = 0;
-        public int SendRobotFromRndToFactory = 0;
-        public int RobotHasReachedFactoryFromRnd = 0;
-        public int SendMouseFromFactoryToCity = 0;
-        public int MouseHasReachedCityFromFactory = 0;
+        public MiSemaphoreSet CityToSchool;
+        public MiSemaphoreSet CityToFactory;
+        public MiSemaphoreSet CityToRnd;
+        public MiSemaphoreSet SchoolToCity;
+        public MiSemaphoreSet SchoolToFactory;
+        public MiSemaphoreSet SchoolToRnd;
+        public MiSemaphoreSet RndToCity;
+        public MiSemaphoreSet RndToSchool;
+        public MiSemaphoreSet RndToFactory;
+        public MiSemaphoreSet FactoryToCity;
 
         public void Signal(ref int sema)
         {
@@ -133,6 +123,17 @@ namespace Micycle
             costOfLiving = 10;
 
             students = new List<StudentWrapper>();
+
+            CityToSchool = new MiSemaphoreSet();
+            CityToFactory = new MiSemaphoreSet();
+            CityToRnd = new MiSemaphoreSet();
+            SchoolToCity = new MiSemaphoreSet();
+            SchoolToFactory = new MiSemaphoreSet();
+            SchoolToRnd = new MiSemaphoreSet();
+            RndToCity = new MiSemaphoreSet();
+            RndToSchool = new MiSemaphoreSet();
+            RndToFactory = new MiSemaphoreSet();
+            FactoryToCity = new MiSemaphoreSet();
         }
 
         private void AddEducationBudget(int dx) 
@@ -187,7 +188,7 @@ namespace Micycle
             {
                 researchers++;
                 schoolTeachers--;
-                Signal(ref SendMouseFromSchoolToRnd);
+                Signal(ref SchoolToRnd.SendFromAToB);
             }
             
         }
@@ -196,7 +197,7 @@ namespace Micycle
         {
             schoolTeachers++;
             researchers--;
-            Signal(ref SendMouseFromRndToSchool);
+            Signal(ref RndToSchool.SendFromAToB);
         }
 
         public void FactoryUpButtonAction()
@@ -272,7 +273,7 @@ namespace Micycle
                 int toRetire = (int)Math.Ceiling(factoryRetirementRate * factoryWorkers);
                 if (toRetire > 0)
                 {
-                    Signal(ref SendMouseFromFactoryToCity);
+                    Signal(ref FactoryToCity.SendFromAToB);
                     cityBums += toRetire;
                     factoryWorkers -= toRetire;
                 }
@@ -319,7 +320,7 @@ namespace Micycle
             if (num >= 0 && num <= researcherPull && researcherCapacity > researchers)
             {
                 //send to researchCenter
-                Signal(ref SendMouseFromSchoolToRnd);
+                Signal(ref SchoolToRnd.SendFromAToB);
                 researchers++;
                 return;
             }
@@ -327,14 +328,14 @@ namespace Micycle
             else if (num > researcherPull && num <= researcherPull + factoryWorkerPull && factoryWorkerCapacity > factoryWorkers)
             {
                 //send to factory
-                Signal(ref SendMouseFromSchoolToFactory);
+                Signal(ref SchoolToFactory.SendFromAToB);
                 factoryWorkers++;
                 return;
             }
 
 
             //send to bum
-            Signal(ref SendMouseFromSchoolToCity);
+            Signal(ref SchoolToCity.SendFromAToB);
             cityBums++;
         }
 
@@ -351,7 +352,7 @@ namespace Micycle
                 int toRetire = (int)Math.Ceiling(rndRetirementRate * researchers);
                 if (toRetire > 0)
                 {
-                    Signal(ref SendMouseFromRndToCity);
+                    Signal(ref RndToCity.SendFromAToB);
                     cityBums += toRetire;
                     researchers -= toRetire;
                 }
@@ -370,14 +371,14 @@ namespace Micycle
             if (cityPeople > 0 && time % schoolSendRate == 0 && students.Count < schoolCapacity )
             {
                 cityPeople--;
-                Signal(ref SendMouseFromCityToSchool);
+                Signal(ref CityToSchool.SendFromAToB);
                 students.Add(new StudentWrapper(studyTime));
             }
 
             double num = rnd.NextDouble();
             if (cityBums > 0 && researcherCapacity > researchers && num <= bumToRndRate)
             {
-                Signal(ref SendMouseFromCityToRnd);
+                Signal(ref CityToRnd.SendFromAToB);
                 cityBums--;
                 researchers++;
             }
@@ -385,7 +386,7 @@ namespace Micycle
             num = rnd.NextDouble();
             if (cityBums > 0 && factoryWorkerCapacity > factoryWorkers && num <= bumToFactoryRate)
             {
-                Signal(ref SendMouseFromCityToFactory);
+                Signal(ref CityToFactory.SendFromAToB);
                 cityBums--;
                 factoryWorkers++;
             }

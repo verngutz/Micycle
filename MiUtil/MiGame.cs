@@ -82,7 +82,7 @@ namespace MiUtil
 #if DEBUG
             // Draw frame rate
             int frameRate = (int)(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
-            spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, 575), Color.Black);
+            spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, 575), Color.White);
             // End draw frame rate
 #endif
 

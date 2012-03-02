@@ -2,5 +2,5 @@
 
 namespace MiUtil
 {
-    public delegate IEnumerator<int> MiScript();
+    public delegate IEnumerator<ulong> MiScript();
 }

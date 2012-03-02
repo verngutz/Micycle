@@ -76,7 +76,7 @@ namespace Micycle
             goToMainMenuButtonGraphic = new MiAnimatingComponent(game, 200, -100, 1, 0, 0, 0);
         }
 
-        public override IEnumerator<int> EntrySequence()
+        public override IEnumerator<ulong> EntrySequence()
         {
             entrySequenceMutex = true;
             resumeButtonGraphic.MoveEnabled = true;
@@ -94,7 +94,7 @@ namespace Micycle
             entrySequenceMutex = false;
         }
 
-        public override IEnumerator<int> Pressed()
+        public override IEnumerator<ulong> Pressed()
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
@@ -122,7 +122,7 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Cancelled()
+        public override IEnumerator<ulong> Cancelled()
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
@@ -135,7 +135,7 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Upped()
+        public override IEnumerator<ulong> Upped()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
@@ -161,7 +161,7 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Downed()
+        public override IEnumerator<ulong> Downed()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield return 0;
