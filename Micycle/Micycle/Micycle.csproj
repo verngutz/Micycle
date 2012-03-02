@@ -122,6 +122,7 @@
     <Compile Include="MicycleInputHandler.cs" />
     <Compile Include="MiInGameMenu.cs" />
     <Compile Include="MiMenuScreen.cs" />
+    <Compile Include="MiMousePath.cs" />
     <Compile Include="MiRndMenu.cs" />
     <Compile Include="MiSchoolMenu.cs" />
     <Compile Include="MiSemaphoreSet.cs" />

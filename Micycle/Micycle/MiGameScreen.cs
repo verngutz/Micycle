@@ -21,6 +21,18 @@ namespace Micycle
         private const int SCHOOL_CENTER_Y = CENTER_Y;
         private const float SCHOOL_X = SCHOOL_CENTER_X - SCHOOL_WIDTH * SCHOOL_SCALE / 2;
         private const float SCHOOL_Y = SCHOOL_CENTER_Y - SCHOOL_HEIGHT * SCHOOL_SCALE / 2;
+        private const float SCHOOL_NORTH_EXIT_X = SCHOOL_CENTER_X - SCHOOL_WIDTH * SCHOOL_SCALE / 4;
+        private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_CENTER_Y - SCHOOL_HEIGHT * SCHOOL_SCALE / 2;
+        private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_CENTER_X + SCHOOL_WIDTH * SCHOOL_SCALE / 4;
+        private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_CENTER_Y - SCHOOL_HEIGHT * SCHOOL_SCALE / 2;
+        private const float SCHOOL_WEST_EXIT_X = SCHOOL_CENTER_X - SCHOOL_WIDTH * SCHOOL_SCALE / 2;
+        private const float SCHOOL_WEST_EXIT_Y = SCHOOL_CENTER_Y + SCHOOL_HEIGHT * SCHOOL_SCALE / 4;
+        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_CENTER_X - SCHOOL_WIDTH * SCHOOL_SCALE / 2;
+        private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_CENTER_Y - SCHOOL_HEIGHT * SCHOOL_SCALE / 4;
+        private const float SCHOOL_EAST_EXIT_X = SCHOOL_CENTER_X + SCHOOL_WIDTH * SCHOOL_SCALE / 2;
+        private const float SCHOOL_EAST_EXIT_Y = SCHOOL_CENTER_Y + SCHOOL_HEIGHT * SCHOOL_SCALE / 4;
+        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_CENTER_X + SCHOOL_WIDTH * SCHOOL_SCALE / 2;
+        private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_CENTER_Y - SCHOOL_HEIGHT * SCHOOL_SCALE / 4;
 
         private const int CITY_WIDTH = 188;
         private const int CITY_HEIGHT = 365;
@@ -30,6 +42,18 @@ namespace Micycle
         private static readonly float CITY_CENTER_Y = (float)(CENTER_Y + RADIUS * Math.Sin(CITY_THETA));
         private static readonly float CITY_X = CITY_CENTER_X - CITY_WIDTH * CITY_SCALE / 2;
         private static readonly float CITY_Y = CITY_CENTER_Y - CITY_HEIGHT * CITY_SCALE / 2;
+        private static readonly float CITY_SOUTH_EXIT_X = CITY_CENTER_X + CITY_WIDTH * CITY_SCALE / 4;
+        private static readonly float CITY_SOUTH_EXIT_Y = CITY_CENTER_Y + CITY_HEIGHT * CITY_SCALE / 2;
+        private static readonly float CITY_SOUTH_ENTRANCE_X = CITY_CENTER_X - CITY_WIDTH * CITY_SCALE / 4;
+        private static readonly float CITY_SOUTH_ENTRANCE_Y = CITY_CENTER_Y + CITY_HEIGHT * CITY_SCALE / 2;
+        private static readonly float CITY_WEST_EXIT_X = CITY_CENTER_X - CITY_WIDTH * CITY_SCALE / 2;
+        private static readonly float CITY_WEST_EXIT_Y = CITY_CENTER_Y + CITY_HEIGHT * CITY_SCALE / 4;
+        private static readonly float CITY_WEST_ENTRANCE_X = CITY_CENTER_X - CITY_WIDTH * CITY_SCALE / 2;
+        private static readonly float CITY_WEST_ENTRANCE_Y = CITY_CENTER_Y - CITY_HEIGHT * CITY_SCALE / 4;
+        private static readonly float CITY_EAST_EXIT_X = CITY_CENTER_X + CITY_WIDTH * CITY_SCALE / 2;
+        private static readonly float CITY_EAST_EXIT_Y = CITY_CENTER_Y + CITY_HEIGHT * CITY_SCALE / 4;
+        private static readonly float CITY_EAST_ENTRANCE_X = CITY_CENTER_X + CITY_WIDTH * CITY_SCALE / 2;
+        private static readonly float CITY_EAST_ENTRANCE_Y = CITY_CENTER_Y - CITY_HEIGHT * CITY_SCALE / 4;
 
         private const int RND_WIDTH = 188;
         private const int RND_HEIGHT = 365;
@@ -38,7 +62,15 @@ namespace Micycle
         private static readonly float RND_CENTER_X = (float)(CENTER_X + RADIUS * Math.Cos(RND_THETA));
         private static readonly float RND_CENTER_Y = (float)(CENTER_Y + RADIUS * Math.Sin(RND_THETA));
         private static readonly float RND_X = RND_CENTER_X - RND_WIDTH * RND_SCALE / 2;
-        private static readonly float RND_Y = RND_CENTER_Y - RND_HEIGHT * RND_SCALE / 2;
+        private static readonly float RND_Y = RND_CENTER_Y - RND_HEIGHT * RND_SCALE / 2; 
+        private static readonly float RND_NORTH_EXIT_X = RND_CENTER_X - RND_WIDTH * RND_SCALE / 4;
+        private static readonly float RND_NORTH_EXIT_Y = RND_CENTER_Y - RND_HEIGHT * RND_SCALE / 2;
+        private static readonly float RND_NORTH_ENTRANCE_X = RND_CENTER_X + RND_WIDTH * RND_SCALE / 4;
+        private static readonly float RND_NORTH_ENTRANCE_Y = RND_CENTER_Y - RND_HEIGHT * RND_SCALE / 2;
+        private static readonly float RND_WEST_EXIT_X = RND_CENTER_X - RND_WIDTH * RND_SCALE / 2;
+        private static readonly float RND_WEST_EXIT_Y = RND_CENTER_Y + RND_HEIGHT * RND_SCALE / 4;
+        private static readonly float RND_WEST_ENTRANCE_X = RND_CENTER_X - RND_WIDTH * RND_SCALE / 2;
+        private static readonly float RND_WEST_ENTRANCE_Y = RND_CENTER_Y - RND_HEIGHT * RND_SCALE / 4;
         
         private const int FACTORY_WIDTH = 188;
         private const int FACTORY_HEIGHT = 365;
@@ -48,6 +80,104 @@ namespace Micycle
         private static readonly float FACTORY_CENTER_Y = (float)(CENTER_Y + RADIUS * Math.Sin(FACTORY_THETA));
         private static readonly float FACTORY_X = FACTORY_CENTER_X - FACTORY_WIDTH * FACTORY_SCALE / 2;
         private static readonly float FACTORY_Y = FACTORY_CENTER_Y - FACTORY_HEIGHT * FACTORY_SCALE / 2;
+        private static readonly float FACTORY_NORTH_EXIT_X = FACTORY_CENTER_X - FACTORY_WIDTH * FACTORY_SCALE / 4;
+        private static readonly float FACTORY_NORTH_EXIT_Y = FACTORY_CENTER_Y - FACTORY_HEIGHT * FACTORY_SCALE / 2;
+        private static readonly float FACTORY_NORTH_ENTRANCE_X = FACTORY_CENTER_X + FACTORY_WIDTH * FACTORY_SCALE / 4;
+        private static readonly float FACTORY_NORTH_ENTRANCE_Y = FACTORY_CENTER_Y - FACTORY_HEIGHT * FACTORY_SCALE / 2;
+        private static readonly float FACTORY_EAST_EXIT_X = FACTORY_CENTER_X + FACTORY_WIDTH * FACTORY_SCALE / 2;
+        private static readonly float FACTORY_EAST_EXIT_Y = FACTORY_CENTER_Y + FACTORY_HEIGHT * FACTORY_SCALE / 4;
+        private static readonly float FACTORY_EAST_ENTRANCE_X = FACTORY_CENTER_X + FACTORY_WIDTH * FACTORY_SCALE / 2;
+        private static readonly float FACTORY_EAST_ENTRANCE_Y = FACTORY_CENTER_Y - FACTORY_HEIGHT * FACTORY_SCALE / 4;
+
+        private static readonly MiMousePath CITY_TO_SCHOOL = new MiMousePath(
+            CITY_CENTER_X, CITY_CENTER_Y,
+            CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y,
+            SCHOOL_CENTER_X, SCHOOL_CENTER_Y,
+            SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y,
+            CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y);
+
+        private static readonly MiMousePath CITY_TO_FACTORY = new MiMousePath(
+            CITY_CENTER_X, CITY_CENTER_Y,
+            CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y,
+            FACTORY_CENTER_X, FACTORY_CENTER_Y,
+            FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y,
+            CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y);
+
+        private static readonly MiMousePath CITY_TO_RND = new MiMousePath(
+            CITY_CENTER_X, CITY_CENTER_Y,
+            CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y,
+            RND_CENTER_X, RND_CENTER_Y,
+            RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y,
+            CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y);
+
+        private static readonly MiMousePath SCHOOL_TO_CITY = new MiMousePath(
+            SCHOOL_CENTER_X, SCHOOL_CENTER_Y,
+            SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y,
+            SCHOOL_CENTER_X, SCHOOL_CENTER_Y,
+            CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y,
+            SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y);
+
+        private static readonly MiMousePath SCHOOL_TO_FACTORY = new MiMousePath(
+            SCHOOL_CENTER_X, SCHOOL_CENTER_Y,
+            SCHOOL_WEST_EXIT_X, SCHOOL_WEST_EXIT_Y,
+            FACTORY_CENTER_X, FACTORY_CENTER_Y,
+            FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y,
+            CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y);
+
+        private static readonly MiMousePath SCHOOL_TO_RND = new MiMousePath(
+            SCHOOL_CENTER_X, SCHOOL_CENTER_Y,
+            SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y,
+            RND_CENTER_X, RND_CENTER_Y,
+            RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y,
+            CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y);
+
+        private static readonly MiMousePath RND_TO_CITY = new MiMousePath(
+            RND_CENTER_X, RND_CENTER_Y,
+            RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y,
+            RND_CENTER_X, RND_CENTER_Y,
+            CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y,
+            RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
+
+        private static readonly MiMousePath RND_TO_SCHOOL = new MiMousePath(
+            RND_CENTER_X, RND_CENTER_Y,
+            RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y,
+            SCHOOL_CENTER_X, SCHOOL_CENTER_Y,
+            SCHOOL_EAST_ENTRANCE_X, SCHOOL_EAST_ENTRANCE_Y,
+            RND_CENTER_X, RND_CENTER_Y,
+            SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y,
+            RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
+
+        private static readonly MiMousePath RND_TO_FACTORY = new MiMousePath(
+            RND_CENTER_X, RND_CENTER_Y,
+            RND_WEST_EXIT_X, RND_WEST_EXIT_Y,
+            FACTORY_CENTER_X, FACTORY_CENTER_Y,
+            FACTORY_EAST_ENTRANCE_X, FACTORY_EAST_ENTRANCE_Y,
+            RND_CENTER_X, RND_CENTER_Y,
+            FACTORY_EAST_EXIT_X, FACTORY_EAST_EXIT_Y,
+            RND_WEST_ENTRANCE_X, RND_WEST_ENTRANCE_Y);
+
+        private static readonly MiMousePath FACTORY_TO_CITY = new MiMousePath(
+            FACTORY_CENTER_X, FACTORY_CENTER_Y,
+            FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y,
+            CITY_CENTER_X, CITY_CENTER_Y,
+            CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y,
+            FACTORY_CENTER_X, FACTORY_CENTER_Y,
+            CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y,
+            FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y);
 
         private const int MOUSE_WIDTH = 50;
         private const int MOUSE_HEIGHT = 50;
@@ -220,18 +350,48 @@ namespace Micycle
             inGameMenu = new MiInGameMenu(game, system);
         }
 
-        private IEnumerator<ulong> SendMouse(float source_x, float source_y, float dest_x, float dest_y, MiSemaphoreSet sema)
+        private IEnumerator<ulong> SendMouse(MiMousePath path, MiSemaphoreSet sema)
         {
-            MiAnimatingComponent mouse = new MiAnimatingComponent(Game, source_x + MOUSE_X, source_y + MOUSE_Y, MOUSE_SCALE, 0, 0, 0);
+            MiAnimatingComponent mouse = new MiAnimatingComponent(Game, path.SourceX + MOUSE_X, path.SourceY + MOUSE_Y, MOUSE_SCALE, 0, 0, 0);
             mouse.AddTexture(mouseImage, 0);
-            mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, dest_x + MOUSE_X));
-            mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, dest_y + MOUSE_Y));
-            mouse.MoveEnabled = true;
             uint key = mouseKey++;
             mice.Add(key, mouse);
+            mouse.MoveEnabled = true;
+            mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.SourceExitX + MOUSE_X));
+            mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.SourceExitY + MOUSE_Y));
             yield return MOUSE_MOVETIME;
-            mice.Remove(key);
+            mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestAcceptEntranceX + MOUSE_X));
+            mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestAcceptEntranceY + MOUSE_Y));
+            yield return MOUSE_MOVETIME;
             system.Signal(ref sema.HasReachedB);
+            mouse.MoveEnabled = false;
+            while (true)
+            {
+                if (system.Wait(ref sema.AcceptIntoB))
+                {
+                    mouse.MoveEnabled = true;
+                    mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestAcceptX + MOUSE_X));
+                    mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestAcceptY + MOUSE_Y));
+                    yield return MOUSE_MOVETIME;
+                    break;
+                }
+                else if (system.Wait(ref sema.RejectFromB))
+                {
+                    mouse.MoveEnabled = true;
+                    mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestRejectExitX + MOUSE_X));
+                    mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestRejectExitY + MOUSE_Y));
+                    yield return MOUSE_MOVETIME;
+                    mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestRejectEntranceX + MOUSE_X));
+                    mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestRejectEntranceY + MOUSE_Y));
+                    yield return MOUSE_MOVETIME;
+                    mouse.XPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestRejectX + MOUSE_X));
+                    mouse.YPositionOverTime.Keys.Add(new CurveKey(mouse.MoveTimer + MOUSE_MOVETIME, path.DestRejectY + MOUSE_Y));
+                    yield return MOUSE_MOVETIME;
+                    break;
+                }
+                else yield return MOUSE_MOVETIME;
+            }
+            mice.Remove(key);
         }
 
         public override IEnumerator<ulong> Pressed()
@@ -340,70 +500,70 @@ namespace Micycle
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(CITY_CENTER_X, CITY_CENTER_Y, SCHOOL_CENTER_X, SCHOOL_CENTER_Y, system.CityToSchool);
+                            return SendMouse(CITY_TO_SCHOOL, system.CityToSchool);
                         }));
 
                 if (system.Wait(ref system.CityToFactory.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(CITY_CENTER_X, CITY_CENTER_Y, FACTORY_CENTER_X, FACTORY_CENTER_Y, system.CityToFactory);
+                            return SendMouse(CITY_TO_FACTORY, system.CityToFactory);
                         }));
 
                 if (system.Wait(ref system.CityToRnd.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(CITY_CENTER_X, CITY_CENTER_Y, RND_CENTER_X, RND_CENTER_Y, system.CityToRnd);
+                            return SendMouse(CITY_TO_RND, system.CityToRnd);
                         }));
 
                 if (system.Wait(ref system.SchoolToCity.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(SCHOOL_CENTER_X, SCHOOL_CENTER_Y, CITY_CENTER_X, CITY_CENTER_Y, system.SchoolToCity);
+                            return SendMouse(SCHOOL_TO_CITY, system.SchoolToCity);
                         }));
 
                 if (system.Wait(ref system.SchoolToFactory.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                           delegate
                           {
-                              return SendMouse(SCHOOL_CENTER_X, SCHOOL_CENTER_Y, FACTORY_CENTER_X, FACTORY_CENTER_Y, system.SchoolToFactory);
+                              return SendMouse(SCHOOL_TO_FACTORY, system.SchoolToFactory);
                           }));
 
                 if (system.Wait(ref system.SchoolToRnd.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(SCHOOL_CENTER_X, SCHOOL_CENTER_Y, RND_CENTER_X, RND_CENTER_Y, system.SchoolToRnd);
+                            return SendMouse(SCHOOL_TO_RND, system.SchoolToRnd);
                         }));
 
                 if (system.Wait(ref system.FactoryToCity.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(FACTORY_CENTER_X, FACTORY_CENTER_Y, CITY_CENTER_X, CITY_CENTER_Y, system.FactoryToCity);
+                            return SendMouse(FACTORY_TO_CITY, system.FactoryToCity);
                         }));
 
                 if (system.Wait(ref system.RndToCity.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(RND_CENTER_X, RND_CENTER_Y, CITY_CENTER_X, CITY_CENTER_Y, system.RndToCity);
+                            return SendMouse(RND_TO_CITY, system.RndToCity);
                         }));
 
                 if (system.Wait(ref system.RndToSchool.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(RND_CENTER_X, RND_CENTER_Y, SCHOOL_CENTER_X, SCHOOL_CENTER_Y, system.RndToSchool);
+                            return SendMouse(RND_TO_SCHOOL, system.RndToSchool);
                         }));
 
                 if (system.Wait(ref system.RndToFactory.SendFromAToB))
                     Game.ScriptEngine.ExecuteScript(new MiScript(
                         delegate
                         {
-                            return SendMouse(RND_CENTER_X, RND_CENTER_Y, FACTORY_CENTER_X, FACTORY_CENTER_Y, system.RndToFactory);
+                            return SendMouse(RND_TO_FACTORY, system.RndToFactory);
                         }));
             }
         }
