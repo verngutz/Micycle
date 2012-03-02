@@ -19,32 +19,32 @@ namespace Micycle
         private const float UP_BUTTON_SCALE = 0.5f;
         private static float UP_BUTTON_CENTER_X { get { return centerX; } }
         private static float UP_BUTTON_CENTER_Y { get { return centerY - RADIUS; } }
-        private static float UP_BUTTON_X { get { return UP_BUTTON_CENTER_X - UP_BUTTON_SCALE * UP_BUTTON_WIDTH / 2; } }
-        private static float UP_BUTTON_Y { get { return UP_BUTTON_CENTER_Y - UP_BUTTON_SCALE * UP_BUTTON_HEIGHT / 2; } }
+        protected static float UP_BUTTON_X { get { return UP_BUTTON_CENTER_X - UP_BUTTON_SCALE * UP_BUTTON_WIDTH / 2; } }
+        protected static float UP_BUTTON_Y { get { return UP_BUTTON_CENTER_Y - UP_BUTTON_SCALE * UP_BUTTON_HEIGHT / 2; } }
 
         private const int DOWN_BUTTON_WIDTH = 100;
         private const int DOWN_BUTTON_HEIGHT = 75;
         private const float DOWN_BUTTON_SCALE = 0.5f;
         private static float DOWN_BUTTON_CENTER_X { get { return centerX; } }
         private static float DOWN_BUTTON_CENTER_Y { get { return centerY + RADIUS; } }
-        private static float DOWN_BUTTON_X { get { return DOWN_BUTTON_CENTER_X - DOWN_BUTTON_SCALE * DOWN_BUTTON_WIDTH / 2; } }
-        private static float DOWN_BUTTON_Y { get { return DOWN_BUTTON_CENTER_Y - DOWN_BUTTON_SCALE * DOWN_BUTTON_HEIGHT / 2; } }  
+        protected static float DOWN_BUTTON_X { get { return DOWN_BUTTON_CENTER_X - DOWN_BUTTON_SCALE * DOWN_BUTTON_WIDTH / 2; } }
+        protected static float DOWN_BUTTON_Y { get { return DOWN_BUTTON_CENTER_Y - DOWN_BUTTON_SCALE * DOWN_BUTTON_HEIGHT / 2; } }  
 
         private const int LEFT_BUTTON_WIDTH = 100;
         private const int LEFT_BUTTON_HEIGHT = 75;
         private const float LEFT_BUTTON_SCALE = 0.5f;
         private static float LEFT_BUTTON_CENTER_X { get { return centerX - RADIUS; } }
         private static float LEFT_BUTTON_CENTER_Y { get { return centerY; } }
-        private static float LEFT_BUTTON_X { get { return LEFT_BUTTON_CENTER_X - LEFT_BUTTON_SCALE * LEFT_BUTTON_WIDTH / 2; } }
-        private static float LEFT_BUTTON_Y { get { return LEFT_BUTTON_CENTER_Y - LEFT_BUTTON_SCALE * LEFT_BUTTON_HEIGHT / 2; } }
+        protected static float LEFT_BUTTON_X { get { return LEFT_BUTTON_CENTER_X - LEFT_BUTTON_SCALE * LEFT_BUTTON_WIDTH / 2; } }
+        protected static float LEFT_BUTTON_Y { get { return LEFT_BUTTON_CENTER_Y - LEFT_BUTTON_SCALE * LEFT_BUTTON_HEIGHT / 2; } }
 
         private const int RIGHT_BUTTON_WIDTH = 100;
         private const int RIGHT_BUTTON_HEIGHT = 75;
         private const float RIGHT_BUTTON_SCALE = 0.5f;
         private static float RIGHT_BUTTON_CENTER_X { get { return centerX + RADIUS; } }
         private static float RIGHT_BUTTON_CENTER_Y { get { return centerY; } }
-        private static float RIGHT_BUTTON_X { get { return RIGHT_BUTTON_CENTER_X - RIGHT_BUTTON_SCALE * RIGHT_BUTTON_WIDTH / 2; } }
-        private static float RIGHT_BUTTON_Y { get { return RIGHT_BUTTON_CENTER_Y - RIGHT_BUTTON_SCALE * RIGHT_BUTTON_HEIGHT / 2; } }
+        protected static float RIGHT_BUTTON_X { get { return RIGHT_BUTTON_CENTER_X - RIGHT_BUTTON_SCALE * RIGHT_BUTTON_WIDTH / 2; } }
+        protected static float RIGHT_BUTTON_Y { get { return RIGHT_BUTTON_CENTER_Y - RIGHT_BUTTON_SCALE * RIGHT_BUTTON_HEIGHT / 2; } }
 
         private const int CANCEL_BUTTON_WIDTH = 100;
         private const int CANCEL_BUTTON_HEIGHT = 75;

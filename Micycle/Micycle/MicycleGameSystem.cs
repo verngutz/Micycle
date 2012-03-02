@@ -242,7 +242,7 @@ namespace Micycle
         public string printStats()
         {
             //TO-DO: Return a string containing all the necessay game information for the player
-            return "";
+            return String.Format("$: " + ownerMoney + " city$: " + cityMoney + "\nkids: " + cityPeople + " bums: "+ cityBums+ "\nstudents: " + students.Count + "/" + schoolCapacity + " teachers: " + schoolTeachers + " education budget: " + educationBudget + "\nfactory " + factoryWorkers + "/" + factoryWorkerCapacity + " factory wage: " + factoryWorkerWage + "\nrnd: " + researchers + "/" + researcherCapacity + " rnd budget: " + researcherWage);
         }
         
         private void updateCity()

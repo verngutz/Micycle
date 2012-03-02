@@ -30,8 +30,8 @@ namespace Micycle
             }
             else
             {
-                controllerState[MicycleControls.A] = (ButtonState)keyboardState[Keys.A];
-                controllerState[MicycleControls.B] = (ButtonState)keyboardState[Keys.B];
+                controllerState[MicycleControls.A] = (ButtonState)keyboardState[Keys.Space];
+                controllerState[MicycleControls.B] = (ButtonState)keyboardState[Keys.LeftShift];
                 controllerState[MicycleControls.LEFT] = (ButtonState)keyboardState[Keys.Left];
                 controllerState[MicycleControls.RIGHT] = (ButtonState)keyboardState[Keys.Right];
                 controllerState[MicycleControls.UP] = (ButtonState)keyboardState[Keys.Up];
