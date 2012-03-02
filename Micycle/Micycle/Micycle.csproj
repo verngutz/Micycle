@@ -124,6 +124,7 @@
     <Compile Include="MiMenuScreen.cs" />
     <Compile Include="MiRndMenu.cs" />
     <Compile Include="MiSchoolMenu.cs" />
+    <Compile Include="MiSemaphoreSet.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

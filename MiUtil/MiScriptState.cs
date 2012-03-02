@@ -8,7 +8,7 @@ namespace MiUtil
     {
         private double sleepTime;
         private MiScript script;
-        private IEnumerator<int> scriptEnumerator;
+        private IEnumerator<ulong> scriptEnumerator;
 
         public MiScriptState(MiScript script)
         {

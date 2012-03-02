@@ -15,16 +15,16 @@ namespace Micycle
         private const int NEW_GAME_BUTTON_WIDTH = 640;
         private const int NEW_GAME_BUTTON_HEIGHT = 240;
         private const float NEW_GAME_BUTTON_SCALE = 0.4f;
-        private const float NEW_GAME_BUTTON_ORIGIN_X = NEW_GAME_BUTTON_X - NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_WIDTH / 2;
-        private const float NEW_GAME_BUTTON_ORIGIN_Y = NEW_GAME_BUTTON_Y - NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_HEIGHT / 2;
+        private const float NEW_GAME_BUTTON_ORIGIN_X = NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_WIDTH / 2;
+        private const float NEW_GAME_BUTTON_ORIGIN_Y = NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_HEIGHT / 2;
 
         private const int QUIT_GAME_BUTTON_X = 420;
         private const int QUIT_GAME_BUTTON_Y = 500;
         private const int QUIT_GAME_BUTTON_WIDTH = 640;
         private const int QUIT_GAME_BUTTON_HEIGHT = 240;
         private const float QUIT_GAME_BUTTON_SCALE = 0.4f;
-        private const float QUIT_GAME_BUTTON_ORIGIN_X = QUIT_GAME_BUTTON_X - QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_WIDTH / 2;
-        private const float QUIT_GAME_BUTTON_ORIGIN_Y = QUIT_GAME_BUTTON_Y - QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_HEIGHT / 2;
+        private const float QUIT_GAME_BUTTON_ORIGIN_X = QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_WIDTH / 2;
+        private const float QUIT_GAME_BUTTON_ORIGIN_Y = QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_HEIGHT / 2;
 
         private MiGameScreen gameScreen;
 
@@ -92,7 +92,7 @@ namespace Micycle
             ActiveButton = newGameButton;
         }
 
-        public override IEnumerator<int> EntrySequence()
+        public override IEnumerator<ulong> EntrySequence()
         {
             entrySequenceMutex = true;
             newGameButtonHover.AlphaOverTime.Keys.Clear();
@@ -103,8 +103,9 @@ namespace Micycle
             entrySequenceMutex = false;
         }
 
-        public override IEnumerator<int> Pressed()
+        public override IEnumerator<ulong> Pressed()
         {
+            ulong yieldVal = 60;
             if (entrySequenceMutex || exitSequenceMutex)
             {
                 yield break;
@@ -121,10 +122,10 @@ namespace Micycle
                     newGameButtonClick.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 40, 255));
                     newGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer, NEW_GAME_BUTTON_X));
                     newGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer, NEW_GAME_BUTTON_Y));
-                    newGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer + 100, NEW_GAME_BUTTON_ORIGIN_X));
-                    newGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer + 100, NEW_GAME_BUTTON_ORIGIN_Y));
+                    newGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer + yieldVal, NEW_GAME_BUTTON_X - 3 * NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_WIDTH / 2));
+                    newGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(newGameButtonClick.MoveTimer + yieldVal, NEW_GAME_BUTTON_Y - 3 * NEW_GAME_BUTTON_SCALE * NEW_GAME_BUTTON_HEIGHT / 2));
                     newGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(newGameButtonClick.ScaleTimer, NEW_GAME_BUTTON_SCALE));
-                    newGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(newGameButtonClick.ScaleTimer + 100, NEW_GAME_BUTTON_SCALE * 4));
+                    newGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(newGameButtonClick.ScaleTimer + yieldVal, NEW_GAME_BUTTON_SCALE * 4));
                 }
                 else if (ActiveButton == quitGameButton)
                 {
@@ -135,12 +136,12 @@ namespace Micycle
                     quitGameButtonClick.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer + 40, 255));
                     quitGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer, QUIT_GAME_BUTTON_X));
                     quitGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer, QUIT_GAME_BUTTON_Y));
-                    quitGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer + 100, QUIT_GAME_BUTTON_ORIGIN_X));
-                    quitGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer + 100, QUIT_GAME_BUTTON_ORIGIN_Y));
+                    quitGameButtonClick.XPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer + yieldVal, QUIT_GAME_BUTTON_X - 3 * QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_WIDTH / 2));
+                    quitGameButtonClick.YPositionOverTime.Keys.Add(new CurveKey(quitGameButtonClick.MoveTimer + yieldVal, QUIT_GAME_BUTTON_Y - 3 * QUIT_GAME_BUTTON_SCALE * QUIT_GAME_BUTTON_HEIGHT / 2));
                     quitGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(quitGameButtonClick.ScaleTimer, QUIT_GAME_BUTTON_SCALE));
-                    quitGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(quitGameButtonClick.ScaleTimer + 100, QUIT_GAME_BUTTON_SCALE * 4));
+                    quitGameButtonClick.ScalingOverTime.Keys.Add(new CurveKey(quitGameButtonClick.ScaleTimer + yieldVal, QUIT_GAME_BUTTON_SCALE * 4));
                 }
-                yield return 100;
+                yield return yieldVal;
                 ActiveButton.Pressed();
                 newGameButtonClick.AlphaOverTime.Keys.Clear();
                 quitGameButtonClick.AlphaOverTime.Keys.Clear();
@@ -154,7 +155,7 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Lefted()
+        public override IEnumerator<ulong> Lefted()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
@@ -173,7 +174,7 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Righted()
+        public override IEnumerator<ulong> Righted()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;

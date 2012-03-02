@@ -104,7 +104,7 @@ namespace Micycle
             ActiveButton = cancelButton;
         }
 
-        public override IEnumerator<int> Pressed()
+        public override IEnumerator<ulong> Pressed()
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
@@ -118,7 +118,7 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Cancelled()
+        public override IEnumerator<ulong> Cancelled()
         {
             if (entrySequenceMutex || exitSequenceMutex)
             {
@@ -131,111 +131,103 @@ namespace Micycle
             }
         }
 
-        public override IEnumerator<int> Upped()
+        public override IEnumerator<ulong> Upped()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
 
             else if (ActiveButton == cancelButton || ActiveButton == leftButton || ActiveButton == rightButton)
             {
-                ActiveButton = null;
+                ActiveButton = upButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, upButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, upButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = upButton;
             }
             else if (ActiveButton == downButton)
             {
-                ActiveButton = null;
+                ActiveButton = cancelButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = cancelButton;
             }
         }
 
-        public override IEnumerator<int> Downed()
+        public override IEnumerator<ulong> Downed()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
 
             else if (ActiveButton == cancelButton || ActiveButton == leftButton || ActiveButton == rightButton)
             {
-                ActiveButton = null;
+                ActiveButton = downButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, downButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, downButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = downButton;
             }
             else if (ActiveButton == upButton)
             {
-                ActiveButton = null;
+                ActiveButton = cancelButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = cancelButton;
             }
         }
 
-        public override IEnumerator<int> Lefted()
+        public override IEnumerator<ulong> Lefted()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
 
             else if (ActiveButton == cancelButton || ActiveButton == upButton || ActiveButton == downButton)
             {
-                ActiveButton = null;
+                ActiveButton = leftButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, leftButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, leftButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = leftButton;
             }
             else if (ActiveButton == rightButton)
             {
-                ActiveButton = null;
+                ActiveButton = cancelButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = cancelButton;
             }
         }
 
-        public override IEnumerator<int> Righted()
+        public override IEnumerator<ulong> Righted()
         {
             if (entrySequenceMutex || exitSequenceMutex)
                 yield break;
 
             else if (ActiveButton == cancelButton || ActiveButton == upButton || ActiveButton == downButton)
             {
-                ActiveButton = null;
+                ActiveButton = rightButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, rightButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, rightButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = rightButton;
             }
             else if (ActiveButton == leftButton)
             {
-                ActiveButton = null;
+                ActiveButton = cancelButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, cancelButtonGraphic.Position.Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = cancelButton;
             }
         }
 
