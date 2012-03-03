@@ -38,8 +38,9 @@ namespace Micycle
         private float rndRetirementRate;
         private float researchRate;
         private int rndUpkeep;
-
-        
+        private int robots;
+        private int robotEfficiency;
+        private int robotCost;
 
         private int factoryWorkers;
         private int factoryWorkerCapacity;
@@ -47,7 +48,8 @@ namespace Micycle
         private float factoryRetirementRate;
         private int factoryUpkeep;
         private int REVENUE_PER_WORKER;
-
+        private int factoryDoorWait;
+        private int factoryDoorWaitLimit;
 
         private float cityPeopleBirthBias;
         private float studentsBirthBias;
@@ -117,6 +119,9 @@ namespace Micycle
             rndRetirementRate = 0.02f;
             researcherWage = 10;
             rndUpkeep = 0;
+            robots = 0 ;
+            robotEfficiency = 3;
+            robotCost = 200;
 
             //factory stats
             factoryWorkers = 0;
@@ -125,6 +130,8 @@ namespace Micycle
             factoryWorkerWage = 30;
             REVENUE_PER_WORKER = 60;
             factoryUpkeep = factoryWorkerCapacity;
+            factoryDoorWait = 0;
+            factoryDoorWaitLimit = 30;
 
             //birth control
             cityPeopleBirthBias = 0f;
@@ -183,6 +190,22 @@ namespace Micycle
                     Signal(ref FactoryToCity.SendFromAToB);
                 }
                 factoryWorkers -= toRetire;
+            }
+        }
+
+        public void AddRobots(int dx)
+        {
+            if (dx > 0)
+            {
+                for (int i = 0; i < dx; i++)
+                    if ((robots + RndToFactory.SendFromAToB + RndToFactory.HasReachedB + 1) * robotEfficiency < factoryWorkerCapacity)
+                    {
+                        Signal(ref RndToFactory.SendFromAToB);
+                    }
+            }
+            else
+            {
+
             }
         }
 
@@ -306,14 +329,18 @@ namespace Micycle
 
         public void RndRightButtonAction()
         {
-            //AddResearcherCapacity(1);
+            if (researchPoints > robotCost)
+            {
+                researchPoints -= robotCost;
+                AddRobots(1);
+            }
         }
 
         public string printStats()
         {
             //TO-DO: Return a string containing all the necessay game information for the player
             return String.Format("year: " + yearCtr +" $: " + ownerMoney + " city$: " + cityMoney + "\nkids: " + cityPeople + " bums: "+ cityBums+ "\nstudents: " + students.Count + "/" + schoolCapacity + " teachers: " + schoolTeachers + " education budget: " + educationBudget + 
-                "\nfactory " + factoryWorkers + "/" + factoryWorkerCapacity + " factory wage: " + factoryWorkerWage + 
+                "\nfactory: " + factoryWorkers + "("+robots+")/" + factoryWorkerCapacity + " factory wage: " + factoryWorkerWage + 
                 "\nrnd: " + researchers +  " rnd budget: " + researcherWage + " tech points: " + researchPoints);
         }
         
@@ -345,7 +372,7 @@ namespace Micycle
 
             if (time % month == 0)
             {
-                ownerMoney += (REVENUE_PER_WORKER - factoryWorkerWage) * factoryWorkers ;
+                ownerMoney += (REVENUE_PER_WORKER - factoryWorkerWage) * factoryWorkers  + robots*REVENUE_PER_WORKER;
                 ownerMoney -= factoryUpkeep;
                 cityMoney += factoryWorkerWage * factoryWorkers ;
            
@@ -476,12 +503,23 @@ namespace Micycle
                 cityBums++;
             }
 
-            if ( factoryWorkers < factoryWorkerCapacity && Wait(ref SchoolToFactory.HasReachedB) )
+            if ((factoryWorkers + robots * robotEfficiency) < factoryWorkerCapacity && Wait(ref SchoolToFactory.HasReachedB))
             {
                 Signal(ref SchoolToFactory.AcceptIntoB);
                 factoryWorkers++;    
             }
-
+            else if (Wait(ref SchoolToFactory.HasReachedB))
+            {
+                factoryDoorWait++;
+                if (factoryDoorWait == factoryDoorWaitLimit)
+                {
+                    Signal(ref SchoolToFactory.RejectFromB);
+                }
+                else
+                {
+                    Signal(ref SchoolToFactory.HasReachedB);
+                }
+            }
             if (Wait(ref SchoolToRnd.HasReachedB))
             {
                 Signal(ref SchoolToRnd.AcceptIntoB);
@@ -494,7 +532,7 @@ namespace Micycle
                 students.Add(new StudentWrapper(studyTime));
             }
 
-            if (factoryWorkers < factoryWorkerCapacity &&  Wait(ref CityToFactory.HasReachedB))
+            if ((factoryWorkers+robots*robotEfficiency) < factoryWorkerCapacity &&  Wait(ref CityToFactory.HasReachedB))
             {
                 Signal(ref CityToFactory.AcceptIntoB);
                 factoryWorkers++;  
@@ -522,6 +560,20 @@ namespace Micycle
             {
                 Signal(ref FactoryToCity.AcceptIntoB);
                 cityBums++;
+            }
+            if (Wait(ref RndToFactory.HasReachedB))
+            {
+                Signal(ref RndToFactory.AcceptIntoB);
+                robots++;
+                int delta = (robots * robotEfficiency) + factoryWorkers - factoryWorkerCapacity;
+
+                if (delta > 0)
+                {
+                    for (int i = 0; i < delta; i++)
+                        Signal(ref FactoryToCity.SendFromAToB);
+                    factoryWorkers -= delta;
+                    if (factoryWorkers < 0) factoryWorkers = 0;
+                }
             }
             time++;
             updateCity();
@@ -578,6 +630,7 @@ namespace Micycle
                 {
                     //send to researchCenter
                     Signal(ref CityToRnd.SendFromAToB);
+                    cityBums--;
                     return;
                 }
 
@@ -585,6 +638,7 @@ namespace Micycle
                 {
                     //send to factory
                     Signal(ref CityToFactory.SendFromAToB);
+                    cityBums--;
                     return;
                 }
             }
