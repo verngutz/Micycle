@@ -26,5 +26,6 @@ namespace MiUtil
         public virtual IEnumerator<ulong> Righted() { yield return 0; }
         public virtual IEnumerator<ulong> Pressed() { yield return 0; }
         public virtual IEnumerator<ulong> Cancelled() { yield return 0; }
+        public virtual IEnumerator<ulong> Escaped() { yield return 0; }
     }
 }

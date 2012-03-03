@@ -64,6 +64,11 @@ namespace Micycle
             goToMainMenuButton.Pressed += new MiScript(
                 delegate
                 {
+                    if (Game.ToUpdate.Peek() is MiBuildingMenu)
+                    {
+                        Game.ToUpdate.Pop();
+                        Game.ToDraw.RemoveLast();
+                    }
                     Game.ToUpdate.Pop();
                     Game.ToUpdate.Pop();
                     Game.ToDraw.RemoveLast();
@@ -120,6 +125,11 @@ namespace Micycle
                 ActiveButton.Pressed();
                 exitSequenceMutex = false;
             }
+        }
+
+        public override IEnumerator<ulong> Escaped()
+        {
+            return Cancelled();
         }
 
         public override IEnumerator<ulong> Cancelled()

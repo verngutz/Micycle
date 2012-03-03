@@ -58,6 +58,7 @@ namespace Micycle
                 {
                     Game.ToUpdate.Pop();
                     Game.ToDraw.RemoveLast();
+                    gameScreen.Reset();
                     Game.ToUpdate.Push(gameScreen);
                     Game.ToDraw.AddLast(gameScreen);
                     gameScreen.Initialize();
