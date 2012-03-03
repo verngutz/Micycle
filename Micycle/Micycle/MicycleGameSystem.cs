@@ -86,7 +86,7 @@ namespace Micycle
             : base(game)
         {
 
-            year = 1200;
+            year = 2400;
             month = year / 12;
             ownerMoney = 5000;
 
@@ -335,7 +335,7 @@ namespace Micycle
                 ownerMoney -= factoryUpkeep;
                 cityMoney += factoryWorkerWage * factoryWorkers ;
            
-                int toRetire = (int)Math.Round(factoryRetirementRate * factoryWorkers);
+                int toRetire = (int)Math.Ceiling(factoryRetirementRate * factoryWorkers);
                 if (toRetire > 0)
                 {
 
@@ -383,7 +383,7 @@ namespace Micycle
             double researcherPull = (S * (researcherWage + educationLevel/10 )) / 
                                 (researcherWage + factoryWorkerWage + educationLevel/10 );
             double factoryWorkerPull = (S * (factoryWorkerWage)) / 
-                                (researcherWage + factoryWorkerWage + educationLevel/10 );
+                                (researcherWage + factoryWorkerWage + educationLevel/10);
 
             if (researcherWage == 0 && factoryWorkerWage != 0)
             {
@@ -441,7 +441,7 @@ namespace Micycle
                 cityMoney += researcherWage * (schoolTeachers+researchers);
                 researchPoints += researchRate * researchers;
             
-                int toRetire = (int)Math.Round(rndRetirementRate * researchers);
+                int toRetire = (int)Math.Ceiling(rndRetirementRate * researchers);
                 if (toRetire > 0)
                 {
 
