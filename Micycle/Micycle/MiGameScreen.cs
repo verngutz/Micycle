@@ -212,6 +212,12 @@ namespace Micycle
         public MiGameScreen(Micycle game) : base(game) 
         {
             //
+            // Game System
+            //
+            system = new MicycleGameSystem(game);
+            inGameMenu = new MiInGameMenu(game, system);
+
+            //
             // City
             //
             city = new MiAnimatingComponent(game, CITY_X, CITY_Y, CITY_SCALE, 0, 0, 0);
@@ -229,7 +235,7 @@ namespace Micycle
                     Game.ToDraw.AddLast(schoolMenu);
                     return null;
                 });
-            schoolMenu = new MiSchoolMenu(game, SCHOOL_CENTER_X, SCHOOL_CENTER_Y);
+            schoolMenu = new MiSchoolMenu(game, SCHOOL_CENTER_X, SCHOOL_CENTER_Y, system, inGameMenu);
             schoolMenu.UpButton.Pressed += new MiScript(
                 delegate
                 {
@@ -267,7 +273,7 @@ namespace Micycle
                     Game.ToDraw.AddLast(rndMenu);
                     return null;
                 });
-            rndMenu = new MiRndMenu(game, RND_CENTER_X, RND_CENTER_Y);
+            rndMenu = new MiRndMenu(game, RND_CENTER_X, RND_CENTER_Y, system, inGameMenu);
             rndMenu.UpButton.Pressed += new MiScript(
                 delegate
                 {
@@ -305,7 +311,7 @@ namespace Micycle
                     Game.ToDraw.AddLast(factoryMenu);
                     return null;
                 });
-            factoryMenu = new MiFactoryMenu(game, FACTORY_CENTER_X, FACTORY_CENTER_Y);
+            factoryMenu = new MiFactoryMenu(game, FACTORY_CENTER_X, FACTORY_CENTER_Y, system, inGameMenu);
             factoryMenu.UpButton.Pressed += new MiScript(
                 delegate
                 {
@@ -341,13 +347,13 @@ namespace Micycle
             // Mice
             //
             mice = new Dictionary<uint, MiAnimatingComponent>();
+        }
 
-            //
-            // Game System
-            //
-            system = new MicycleGameSystem(game);
-
-            inGameMenu = new MiInGameMenu(game, system);
+        public void Reset()
+        {
+            mice = new Dictionary<uint, MiAnimatingComponent>();
+            ActiveButton = schoolButton;
+            system.Reset();
         }
 
         private IEnumerator<ulong> SendMouse(MiMousePath path, MiSemaphoreSet sema)
@@ -400,7 +406,7 @@ namespace Micycle
             yield return 0;
         }
 
-        public override IEnumerator<ulong> Cancelled()
+        public override IEnumerator<ulong> Escaped()
         {
             system.Enabled = false;
             Game.ToUpdate.Push(inGameMenu);

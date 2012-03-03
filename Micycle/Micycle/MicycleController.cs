@@ -20,6 +20,7 @@ namespace Micycle
                 controllerState[MicycleControls.RIGHT] = gamePadState.DPad.Right;
                 controllerState[MicycleControls.UP] = gamePadState.DPad.Up;
                 controllerState[MicycleControls.DOWN] = gamePadState.DPad.Down;
+                controllerState[MicycleControls.START] = gamePadState.Buttons.Start;
 
                 Vector2 ts_direction = gamePadState.ThumbSticks.Left;
                 if (ts_direction.X > 0) controllerState[MicycleControls.RIGHT] = ButtonState.Pressed;
@@ -36,6 +37,7 @@ namespace Micycle
                 controllerState[MicycleControls.RIGHT] = (ButtonState)keyboardState[Keys.Right];
                 controllerState[MicycleControls.UP] = (ButtonState)keyboardState[Keys.Up];
                 controllerState[MicycleControls.DOWN] = (ButtonState)keyboardState[Keys.Down];
+                controllerState[MicycleControls.START] = (ButtonState)keyboardState[Keys.Escape];
             }
             return controllerState;
         }
