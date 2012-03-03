@@ -16,12 +16,21 @@ namespace Micycle
         private float bumToWorkRate;
         private int costOfLiving;
         private float numKidsSendRate;
+        private int schoolSendRate;
 
         private float ownerMoney;
+        private int time;
+        private int yearCtr;
+        private int year;
+        private int month;
 
         private int schoolTeachers;
         private int schoolCapacity;
         private float educationBudget;
+        private int studyTime;
+        private int educationLevel;
+        private int max_educationLevel;
+        private List<StudentWrapper> students;
 
         private int researchers;
         private float researcherWage;
@@ -30,30 +39,21 @@ namespace Micycle
         private float researchRate;
         private int rndUpkeep;
 
+        
+
         private int factoryWorkers;
         private int factoryWorkerCapacity;
         private float factoryWorkerWage;
         private float factoryRetirementRate;
         private int factoryUpkeep;
+        private int REVENUE_PER_WORKER;
+
 
         private float cityPeopleBirthBias;
         private float studentsBirthBias;
         private float researchersBirthBias;
         private float factoryWorkersBirthBias;
         private float bumsBirthBias;
-
-        private int time;
-        private int yearCtr;
-        private int year;
-        private int month;
-        private int schoolSendRate;
-        private int studyTime;
-
-        private int REVENUE_PER_WORKER;
-        private int educationLevel;
-        private int max_educationLevel;
-
-        private List<StudentWrapper> students;
 
         public MiSemaphoreSet CityToSchool;
         public MiSemaphoreSet CityToFactory;
@@ -82,16 +82,17 @@ namespace Micycle
             return false;
         }
 
-        public MicycleGameSystem(Micycle game)
-            : base(game)
+        public void init()
         {
-
+            time = 0;
             year = 2400;
+            yearCtr = 0;
             month = year / 12;
             ownerMoney = 5000;
 
             //city stats
             cityPeople = 400;
+            cityBums = 0;
             cityMoney = 5000;
             costOfLiving = 10;
             birthRate = 1.5f;
@@ -110,12 +111,15 @@ namespace Micycle
             max_educationLevel = 100;
 
             //research center stats
+            researchPoints = 0;
+            researchers = 0;
             researchRate = 0.5f;
             rndRetirementRate = 0.02f;
             researcherWage = 10;
             rndUpkeep = 0;
 
             //factory stats
+            factoryWorkers = 0;
             factoryWorkerCapacity = 10;
             factoryRetirementRate = 0.02f;
             factoryWorkerWage = 30;
@@ -141,7 +145,17 @@ namespace Micycle
             RndToFactory = new MiSemaphoreSet();
             FactoryToCity = new MiSemaphoreSet();
         }
+        public MicycleGameSystem(Micycle game)
+            : base(game)
+        {
 
+            init();
+        }
+
+        public void Reset()
+        {
+            init();
+        }
         private void AddEducationBudget(int dx) 
         {
             educationBudget += dx;
