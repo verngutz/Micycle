@@ -135,7 +135,7 @@ namespace MiUtil
             // and clear that
             // This way we are gonna have black bars if aspect ratio requires it and
             // the clear color on the rest
-            //device.GraphicsDevice.Clear(Color.CornflowerBlue);
+            device.GraphicsDevice.Clear(Color.CornflowerBlue);
         }
 
         private static void RecreateScaleMatrix()

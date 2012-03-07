@@ -167,15 +167,15 @@ namespace Micycle
                 hover.AlphaChangeEnabled = true;
                 hover.AlphaOverTime.Keys.Add(new CurveKey(hover.AlphaChangeTimer + 20, 0));
                 click.AlphaChangeEnabled = true;
-                click.AlphaOverTime.Keys.Add(new CurveKey(click.AlphaChangeTimer + 40, 0));
+                click.AlphaOverTime.Keys.Add(new CurveKey(click.AlphaChangeTimer + 20, 0));
                 click.ScaleEnabled = true;
-                click.ScalingOverTime.Keys.Add(new CurveKey(click.ScaleTimer + 40, scale * 20));
-                click.ScalingOverTime.Keys.Add(new CurveKey(click.ScaleTimer + 60, scale));
+                click.ScalingOverTime.Keys.Add(new CurveKey(click.ScaleTimer + 20, scale * 20));
+                click.ScalingOverTime.Keys.Add(new CurveKey(click.ScaleTimer + 40, scale));
                 yield return 20;
                 background.AlphaChangeEnabled = false;
                 thisbase.AlphaChangeEnabled = false;
                 otherbase.AlphaChangeEnabled = false;
-                yield return 60;
+                yield return 40;
                 click.AlphaChangeEnabled = false;
                 click.ScaleEnabled = false;
                 ActiveButton.Pressed();
@@ -251,6 +251,7 @@ namespace Micycle
 
         public override void Draw(Microsoft.Xna.Framework.GameTime gameTime)
         {
+            Game.GraphicsDevice.Clear(Color.Black);
             background.Draw(gameTime);
 
             newGameButtonBase.Draw(gameTime);

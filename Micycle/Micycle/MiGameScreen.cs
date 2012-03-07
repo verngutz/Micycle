@@ -32,18 +32,18 @@ namespace Micycle
         private const int SCHOOL_Y = CENTER_Y;
         private const float SCHOOL_ORIGIN_X = SCHOOL_WIDTH / 2;
         private const float SCHOOL_ORIGIN_Y = SCHOOL_HEIGHT / 2;
-        private const float SCHOOL_NORTH_EXIT_X = SCHOOL_X - SCHOOL_WIDTH / 4;
-        private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_Y - SCHOOL_HEIGHT / 2;
-        private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_X + SCHOOL_WIDTH / 4;
-        private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_Y - SCHOOL_HEIGHT / 2;
-        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - SCHOOL_WIDTH / 2;
-        private const float SCHOOL_WEST_EXIT_Y = SCHOOL_Y + SCHOOL_HEIGHT / 4;
-        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - SCHOOL_WIDTH / 2;
-        private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_Y - SCHOOL_HEIGHT / 4;
-        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + SCHOOL_WIDTH / 2;
-        private const float SCHOOL_EAST_EXIT_Y = SCHOOL_Y + SCHOOL_HEIGHT / 4;
-        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + SCHOOL_WIDTH / 2;
-        private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - SCHOOL_HEIGHT / 4;
+        private const float SCHOOL_NORTH_EXIT_X = SCHOOL_X - SCHOOL_SCALE * SCHOOL_WIDTH / 4;
+        private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 2;
+        private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_X + SCHOOL_SCALE * SCHOOL_WIDTH / 4;
+        private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 2;
+        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - SCHOOL_SCALE * SCHOOL_WIDTH / 2;
+        private const float SCHOOL_WEST_EXIT_Y = SCHOOL_Y + SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
+        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - SCHOOL_SCALE * SCHOOL_WIDTH / 2;
+        private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
+        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + SCHOOL_SCALE * SCHOOL_WIDTH / 2;
+        private const float SCHOOL_EAST_EXIT_Y = SCHOOL_Y + SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
+        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + SCHOOL_SCALE * SCHOOL_WIDTH / 2;
+        private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
 
         private const int CITY_WIDTH = 188;
         private const int CITY_HEIGHT = 365;
@@ -53,18 +53,18 @@ namespace Micycle
         private static readonly float CITY_Y = (float)(CENTER_Y + RADIUS * Math.Sin(CITY_THETA));
         private static readonly float CITY_ORIGIN_X = CITY_WIDTH / 2;
         private static readonly float CITY_ORIGIN_Y = CITY_HEIGHT / 2;
-        private static readonly float CITY_SOUTH_EXIT_X = CITY_X + CITY_WIDTH / 4;
-        private static readonly float CITY_SOUTH_EXIT_Y = CITY_Y + CITY_HEIGHT / 2;
-        private static readonly float CITY_SOUTH_ENTRANCE_X = CITY_X - CITY_WIDTH / 4;
-        private static readonly float CITY_SOUTH_ENTRANCE_Y = CITY_Y + CITY_HEIGHT / 2;
-        private static readonly float CITY_WEST_EXIT_X = CITY_X - CITY_WIDTH / 2;
-        private static readonly float CITY_WEST_EXIT_Y = CITY_Y + CITY_HEIGHT / 4;
-        private static readonly float CITY_WEST_ENTRANCE_X = CITY_X - CITY_WIDTH / 2;
-        private static readonly float CITY_WEST_ENTRANCE_Y = CITY_Y - CITY_HEIGHT / 4;
-        private static readonly float CITY_EAST_EXIT_X = CITY_X + CITY_WIDTH / 2;
-        private static readonly float CITY_EAST_EXIT_Y = CITY_Y + CITY_HEIGHT / 4;
-        private static readonly float CITY_EAST_ENTRANCE_X = CITY_X + CITY_WIDTH / 2;
-        private static readonly float CITY_EAST_ENTRANCE_Y = CITY_Y - CITY_HEIGHT / 4;
+        private static readonly float CITY_SOUTH_EXIT_X = CITY_X + CITY_SCALE * CITY_WIDTH / 4;
+        private static readonly float CITY_SOUTH_EXIT_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 2;
+        private static readonly float CITY_SOUTH_ENTRANCE_X = CITY_X - CITY_SCALE * CITY_WIDTH / 4;
+        private static readonly float CITY_SOUTH_ENTRANCE_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 2;
+        private static readonly float CITY_WEST_EXIT_X = CITY_X - CITY_SCALE * CITY_WIDTH / 2;
+        private static readonly float CITY_WEST_EXIT_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 4;
+        private static readonly float CITY_WEST_ENTRANCE_X = CITY_X - CITY_SCALE * CITY_WIDTH / 2;
+        private static readonly float CITY_WEST_ENTRANCE_Y = CITY_Y - CITY_SCALE * CITY_HEIGHT / 4;
+        private static readonly float CITY_EAST_EXIT_X = CITY_X + CITY_SCALE * CITY_WIDTH / 2;
+        private static readonly float CITY_EAST_EXIT_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 4;
+        private static readonly float CITY_EAST_ENTRANCE_X = CITY_X + CITY_SCALE * CITY_WIDTH / 2;
+        private static readonly float CITY_EAST_ENTRANCE_Y = CITY_Y - CITY_SCALE * CITY_HEIGHT / 4;
 
         private const int RND_WIDTH = 188;
         private const int RND_HEIGHT = 365;
@@ -73,15 +73,15 @@ namespace Micycle
         private static readonly float RND_X = (float)(CENTER_X + RADIUS * Math.Cos(RND_THETA));
         private static readonly float RND_Y = (float)(CENTER_Y + RADIUS * Math.Sin(RND_THETA));
         private static readonly float RND_ORIGIN_X = RND_WIDTH / 2;
-        private static readonly float RND_ORIGIN_Y = RND_HEIGHT / 2; 
-        private static readonly float RND_NORTH_EXIT_X = RND_X - RND_WIDTH / 4;
-        private static readonly float RND_NORTH_EXIT_Y = RND_Y - RND_HEIGHT / 2;
-        private static readonly float RND_NORTH_ENTRANCE_X = RND_X + RND_WIDTH / 4;
-        private static readonly float RND_NORTH_ENTRANCE_Y = RND_Y - RND_HEIGHT / 2;
-        private static readonly float RND_WEST_EXIT_X = RND_X - RND_WIDTH / 2;
-        private static readonly float RND_WEST_EXIT_Y = RND_Y + RND_HEIGHT / 4;
-        private static readonly float RND_WEST_ENTRANCE_X = RND_X - RND_WIDTH / 2;
-        private static readonly float RND_WEST_ENTRANCE_Y = RND_Y - RND_HEIGHT / 4;
+        private static readonly float RND_ORIGIN_Y = RND_HEIGHT / 2;
+        private static readonly float RND_NORTH_EXIT_X = RND_X - RND_SCALE * RND_WIDTH / 4;
+        private static readonly float RND_NORTH_EXIT_Y = RND_Y - RND_SCALE * RND_HEIGHT / 2;
+        private static readonly float RND_NORTH_ENTRANCE_X = RND_X + RND_SCALE * RND_WIDTH / 4;
+        private static readonly float RND_NORTH_ENTRANCE_Y = RND_Y - RND_SCALE * RND_HEIGHT / 2;
+        private static readonly float RND_WEST_EXIT_X = RND_X - RND_SCALE * RND_WIDTH / 2;
+        private static readonly float RND_WEST_EXIT_Y = RND_Y + RND_SCALE * RND_HEIGHT / 4;
+        private static readonly float RND_WEST_ENTRANCE_X = RND_X - RND_SCALE * RND_WIDTH / 2;
+        private static readonly float RND_WEST_ENTRANCE_Y = RND_Y - RND_SCALE * RND_HEIGHT / 4;
         
         private const int FACTORY_WIDTH = 188;
         private const int FACTORY_HEIGHT = 365;
@@ -91,29 +91,29 @@ namespace Micycle
         private static readonly float FACTORY_Y = (float)(CENTER_Y + RADIUS * Math.Sin(FACTORY_THETA));
         private static readonly float FACTORY_ORIGIN_X = FACTORY_WIDTH / 2;
         private static readonly float FACTORY_ORIGIN_Y = FACTORY_HEIGHT / 2;
-        private static readonly float FACTORY_NORTH_EXIT_X = FACTORY_X - FACTORY_WIDTH / 4;
-        private static readonly float FACTORY_NORTH_EXIT_Y = FACTORY_Y - FACTORY_HEIGHT / 2;
-        private static readonly float FACTORY_NORTH_ENTRANCE_X = FACTORY_X + FACTORY_WIDTH / 4;
-        private static readonly float FACTORY_NORTH_ENTRANCE_Y = FACTORY_Y - FACTORY_HEIGHT / 2;
-        private static readonly float FACTORY_EAST_EXIT_X = FACTORY_X + FACTORY_WIDTH / 2;
-        private static readonly float FACTORY_EAST_EXIT_Y = FACTORY_Y + FACTORY_HEIGHT / 4;
-        private static readonly float FACTORY_EAST_ENTRANCE_X = FACTORY_X + FACTORY_WIDTH / 2;
-        private static readonly float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y - FACTORY_HEIGHT / 4;
+        private static readonly float FACTORY_NORTH_EXIT_X = FACTORY_X - FACTORY_SCALE * FACTORY_WIDTH / 4;
+        private static readonly float FACTORY_NORTH_EXIT_Y = FACTORY_Y - FACTORY_SCALE * FACTORY_HEIGHT / 2;
+        private static readonly float FACTORY_NORTH_ENTRANCE_X = FACTORY_X + FACTORY_SCALE * FACTORY_WIDTH / 4;
+        private static readonly float FACTORY_NORTH_ENTRANCE_Y = FACTORY_Y - FACTORY_SCALE * FACTORY_HEIGHT / 2;
+        private static readonly float FACTORY_EAST_EXIT_X = FACTORY_X + FACTORY_SCALE * FACTORY_WIDTH / 2;
+        private static readonly float FACTORY_EAST_EXIT_Y = FACTORY_Y + FACTORY_SCALE * FACTORY_HEIGHT / 4;
+        private static readonly float FACTORY_EAST_ENTRANCE_X = FACTORY_X + FACTORY_SCALE * FACTORY_WIDTH / 2;
+        private static readonly float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y - FACTORY_SCALE * FACTORY_HEIGHT / 4;
 
         #endregion
 
         #region Loose Paths
 
-        private static readonly MiMousePath CITY_TO_SCHOOL = new MiMousePath(CITY_X + 10, CITY_Y, CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y, SCHOOL_X + 10, SCHOOL_Y + 10, CITY_X, CITY_Y, SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y);
+        private static readonly MiMousePath CITY_TO_SCHOOL = new MiMousePath(CITY_X + 10, CITY_Y, CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y, SCHOOL_X + 10, SCHOOL_Y, CITY_X, CITY_Y, SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y);
         private static readonly MiMousePath CITY_TO_FACTORY = new MiMousePath(CITY_X, CITY_Y, CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y, FACTORY_X, FACTORY_Y, CITY_X, CITY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y);
         private static readonly MiMousePath CITY_TO_RND = new MiMousePath(CITY_X, CITY_Y, CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y, RND_X, RND_Y, CITY_X, CITY_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y);
-        private static readonly MiMousePath SCHOOL_TO_CITY = new MiMousePath(SCHOOL_X - 10, SCHOOL_Y - 10, SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y, CITY_X - 10, CITY_Y - 10, SCHOOL_X, SCHOOL_Y, CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y);
+        private static readonly MiMousePath SCHOOL_TO_CITY = new MiMousePath(SCHOOL_X - 10, SCHOOL_Y, SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y, CITY_X - 10, CITY_Y, SCHOOL_X, SCHOOL_Y, CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y);
         private static readonly MiMousePath SCHOOL_TO_FACTORY = new MiMousePath(SCHOOL_X, SCHOOL_Y, SCHOOL_WEST_EXIT_X, SCHOOL_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y, FACTORY_X, FACTORY_Y, CITY_X, CITY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y);
         private static readonly MiMousePath SCHOOL_TO_RND = new MiMousePath(SCHOOL_X, SCHOOL_Y, SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y, RND_X, RND_Y, CITY_X, CITY_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y);
-        private static readonly MiMousePath RND_TO_CITY = new MiMousePath(RND_X, RND_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y, CITY_X, CITY_Y, RND_X, RND_Y, CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
+        private static readonly MiMousePath RND_TO_CITY = new MiMousePath(RND_X, RND_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y, CITY_X + 20, CITY_Y, RND_X, RND_Y, CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
         private static readonly MiMousePath RND_TO_SCHOOL = new MiMousePath(RND_X, RND_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, SCHOOL_EAST_ENTRANCE_X, SCHOOL_EAST_ENTRANCE_Y, SCHOOL_X, SCHOOL_Y, RND_X, RND_Y, SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
         private static readonly MiMousePath RND_TO_FACTORY = new MiMousePath(RND_X, RND_Y, RND_WEST_EXIT_X, RND_WEST_EXIT_Y, FACTORY_EAST_ENTRANCE_X, FACTORY_EAST_ENTRANCE_Y, FACTORY_X, FACTORY_Y, RND_X, RND_Y, FACTORY_EAST_EXIT_X, FACTORY_EAST_EXIT_Y, RND_WEST_ENTRANCE_X, RND_WEST_ENTRANCE_Y);
-        private static readonly MiMousePath FACTORY_TO_CITY = new MiMousePath(FACTORY_X, FACTORY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y, CITY_X, CITY_Y, FACTORY_X, FACTORY_Y, CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y);
+        private static readonly MiMousePath FACTORY_TO_CITY = new MiMousePath(FACTORY_X, FACTORY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y, CITY_X - 20, CITY_Y, FACTORY_X, FACTORY_Y, CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y);
 
         #endregion
 
@@ -125,7 +125,7 @@ namespace Micycle
         private const float MOUSE_MASS = 2;
         private const float MOUSE_FRICTION = 0.5f;
         private const ushort MOUSE_MOVETIME = 20;
-        private const int DESTINATION_REACHED_LAXITY = 625;
+        private const int DESTINATION_REACHED_LAXITY = 225;
         private const int MOUSE_MOVE_FORCE = 50;
         private Texture2D mouseImage;
         private List<Body> mice;
@@ -326,6 +326,13 @@ namespace Micycle
                 yield return MOUSE_MOVETIME;
             }
             mouseBody.ResetDynamics();
+            nextGoal = new Vector2(path.WaitQueueHeadX, path.WiatQueueHeadY) - MiResolution.Center;
+            while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+            {
+                mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                yield return MOUSE_MOVETIME;
+            }
+            mouseBody.ResetDynamics();
             system.Signal(ref sema.HasReachedB);
             while (true)
             {
@@ -343,7 +350,7 @@ namespace Micycle
                 else if (system.Wait(ref sema.RejectFromB))
                 {
                     System.Console.WriteLine("Rejected");
-                    mouseBody.IgnoreCollisionWith(backgroundBody);
+                    //mouseBody.IgnoreCollisionWith(backgroundBody);
                     nextGoal = new Vector2(path.RejectWaitQueueTailX, path.RejectWaitQueueTailY) - MiResolution.Center;
                     while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
                     {
@@ -351,7 +358,7 @@ namespace Micycle
                         yield return MOUSE_MOVETIME;
                     }
                     mouseBody.ResetDynamics();
-                    mouseBody.RestoreCollisionWith(backgroundBody);
+                    //mouseBody.RestoreCollisionWith(backgroundBody);
                     nextGoal = new Vector2(path.RejectWaitQueueHeadX, path.RejectWaitQueueHeadY) - MiResolution.Center;
                     while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
                     {
@@ -448,14 +455,11 @@ namespace Micycle
 
         public override void LoadContent()
         {
+            /**
             background = Game.Content.Load<Texture2D>("gamebackground");
             uint[] backgroundData = new uint[background.Width * background.Height];
             background.GetData(backgroundData);
             Vertices backgroundVertices = PolygonTools.CreatePolygon(backgroundData, background.Width, false);
-            /**
-            Vector2 backgroundCentroid = -backgroundVertices.GetCentroid();
-            backgroundVertices.Translate(ref backgroundCentroid);
-             */
             backgroundVertices = SimplifyTools.ReduceByDistance(backgroundVertices, 4);
             List<Vertices> convexBackgroundVertices = BayazitDecomposer.ConvexPartition(backgroundVertices);
             backgroundBody = BodyFactory.CreateCompoundPolygon(world, convexBackgroundVertices, 1, -MiResolution.Center);
@@ -463,6 +467,7 @@ namespace Micycle
             backgroundBody.Enabled = true;
             foreach (Vertices v in convexBackgroundVertices)
                 backgroundBody.CreateFixture(new PolygonShape(v, 1));
+            */
 
             school.AddTexture(Game.Content.Load<Texture2D>("School"), 0);
             city.AddTexture(Game.Content.Load<Texture2D>("City"), 0);
@@ -573,7 +578,7 @@ namespace Micycle
             rnd.Draw(gameTime);
             factory.Draw(gameTime);
 
-            Game.SpriteBatch.Draw(background, backgroundBody.Position + 2 * MiResolution.Center, null, Color.White, backgroundBody.Rotation, MiResolution.Center, 1, SpriteEffects.None, 0);
+            //Game.SpriteBatch.Draw(background, backgroundBody.Position + 2 * MiResolution.Center, null, Color.White, backgroundBody.Rotation, MiResolution.Center, 1, SpriteEffects.None, 0);
             foreach (Body mouse in mice)
                 Game.SpriteBatch.Draw(mouseImage, mouse.Position + MiResolution.Center, null, Color.White, mouse.Rotation, MOUSE_ORIGIN, MOUSE_SCALE, SpriteEffects.None, 0);
              

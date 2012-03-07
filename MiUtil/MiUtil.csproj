@@ -105,7 +105,6 @@
     <Compile Include="MiController.cs" />
     <Compile Include="MiControllerState.cs" />
     <Compile Include="MiInputHandler.cs" />
-    <Compile Include="MiPhysicalComponent.cs" />
     <Compile Include="MiResolution.cs" />
     <Compile Include="MiScreen.cs" />
     <Compile Include="MiScript.cs" />

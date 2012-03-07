@@ -97,13 +97,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gamebackground.png">
-      <Name>gamebackground</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="MenuScreen\START\BUTTON.png">
       <Name>BUTTON</Name>
       <Importer>TextureImporter</Importer>
