@@ -39,13 +39,15 @@ namespace MiUtil
 
         public static Viewport InnerViewPort { get { return innerViewport; } }
 
+        private static Vector2 center;
+        public static Vector2 Center { get { return center; } }
+
         public static void Init(ref GraphicsDeviceManager device)
         {
             MiResolution.device = device;
             dirtyMatrix = true;
             ApplyResolutionSettings();
         }
-
 
         public static Matrix GetTransformationMatrix()
         {
@@ -60,6 +62,7 @@ namespace MiUtil
             width = new_width;
             height = new_height;
             boundingRectangle = new Rectangle(0, 0, new_width, new_height);
+            center = new Vector2(Width / 2, Height / 2);
             ApplyResolutionSettings();
         }
 

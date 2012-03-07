@@ -26,6 +26,12 @@ namespace MiUtil
         private MiScriptEngine scriptEngine;
         public MiScriptEngine ScriptEngine { get { return scriptEngine; } }
 
+#if DEBUG
+        private int frameCounter;
+        private int frameRate;
+        private TimeSpan elapsedTime = TimeSpan.Zero;
+#endif
+
         public MiGame()
             : base()
         {
@@ -69,8 +75,19 @@ namespace MiUtil
             foreach (MiScreen screen in ToUpdate)
                 screen.Update(gameTime);
 
+#if DEBUG
+            elapsedTime += gameTime.ElapsedGameTime;
+
+            if (elapsedTime <= TimeSpan.FromSeconds(1)) return;
+
+            elapsedTime -= TimeSpan.FromSeconds(1);
+            frameRate = frameCounter;
+            frameCounter = 0;
+#endif
+
             base.Update(gameTime);
         }
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -80,10 +97,8 @@ namespace MiUtil
             foreach (MiScreen screen in ToDraw)
                 screen.Draw(gameTime);
 #if DEBUG
-            // Draw frame rate
-            int frameRate = (int)(1 / (float)gameTime.ElapsedGameTime.TotalSeconds);
+            frameCounter++;
             spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, 575), Color.White);
-            // End draw frame rate
 #endif
 
             SpriteBatch.End();

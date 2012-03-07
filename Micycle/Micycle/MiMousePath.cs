@@ -6,48 +6,48 @@
         private float sourceY;
         private float sourceExitX;
         private float sourceExitY;
-        private float destAcceptX;
-        private float destAcceptY;
-        private float destAcceptEntranceX;
-        private float destAcceptEntranceY;
-        private float destRejectX;
-        private float destRejectY;
-        private float destRejectExitX;
-        private float destRejectExitY;
-        private float destRejectEntranceX;
-        private float destRejectEntranceY;
+        private float waitQueueHeadX;
+        private float waitQueueHeadY;
+        private float acceptDestX;
+        private float acceptDestY;
+        private float rejectWaitQueueTailX;
+        private float rejectWaitQueueTailY;
+        private float rejectWaitQueueHeadX;
+        private float rejectWaitQueueHeadY;
+        private float rejectDestX;
+        private float rejectDestY;
 
         public float SourceX { get { return sourceX; } }
         public float SourceY { get { return sourceY; } }
         public float SourceExitX { get { return sourceExitX; } }
         public float SourceExitY { get { return sourceExitY; } }
-        public float DestAcceptX { get { return destAcceptX; } }
-        public float DestAcceptY { get { return destAcceptY; } }
-        public float DestAcceptEntranceX { get { return destAcceptEntranceX; } }
-        public float DestAcceptEntranceY { get { return destAcceptEntranceY; } }
-        public float DestRejectX { get { return destRejectX; } }
-        public float DestRejectY { get { return destRejectY; } }
-        public float DestRejectExitX { get { return destRejectExitX; } }
-        public float DestRejectExitY { get { return destRejectExitY; } }
-        public float DestRejectEntranceX { get { return destRejectEntranceX; } }
-        public float DestRejectEntranceY { get { return destRejectEntranceY; } }
+        public float WaitQueueHeadX { get { return waitQueueHeadX; } }
+        public float WiatQueueHeadY { get { return waitQueueHeadY; } }
+        public float AcceptDestX { get { return acceptDestX; } }
+        public float AcceptDestY { get { return acceptDestY; } }
+        public float RejectDestX { get { return rejectDestX; } }
+        public float RejectDestY { get { return rejectDestY; } }
+        public float RejectWaitQueueTailX { get { return rejectWaitQueueTailX; } }
+        public float RejectWaitQueueTailY { get { return rejectWaitQueueTailY; } }
+        public float RejectWaitQueueHeadX { get { return rejectWaitQueueHeadX; } }
+        public float RejectWaitQueueHeadY { get { return rejectWaitQueueHeadY; } }
 
-        public MiMousePath(float source_x, float source_y, float source_exit_x, float source_exit_y, float dest_accept_x, float dest_accept_y, float dest_accept_entrance_x, float dest_accept_entrance_y, float dest_reject_x, float dest_reject_y, float dest_reject_exit_x, float dest_reject_exit_y, float dest_reject_entrance_x, float dest_reject_entrance_y)
+        public MiMousePath(float source_x, float source_y, float source_exit_x, float source_exit_y, float wait_queue_head_x, float wait_queue_head_y, float accept_dest_x, float accept_dest_y, float reject_dest_x, float reject_dest_y, float reject_wait_queue_tail_x, float reject_wait_queue_tail_y, float reject_wait_queue_head_x, float reject_wait_queue_head_y)
         {
             sourceX = source_x;
             sourceY = source_y;
             sourceExitX = source_exit_x;
             sourceExitY = source_exit_y;
-            destAcceptX = dest_accept_x;
-            destAcceptY = dest_accept_y;
-            destAcceptEntranceX = dest_accept_entrance_x;
-            destAcceptEntranceY = dest_accept_entrance_y;
-            destRejectX = dest_reject_x;
-            destRejectY = dest_reject_y;
-            destRejectExitX = dest_reject_exit_x;
-            destRejectExitY = dest_reject_exit_y;
-            destRejectEntranceX = dest_reject_entrance_x;
-            destRejectEntranceY = dest_reject_entrance_y;
+            waitQueueHeadX = wait_queue_head_x;
+            waitQueueHeadY = wait_queue_head_y;
+            acceptDestX = accept_dest_x;
+            acceptDestY = accept_dest_y;
+            rejectDestX = reject_dest_x;
+            rejectDestY = reject_dest_y;
+            rejectWaitQueueTailX = reject_wait_queue_tail_x;
+            rejectWaitQueueTailY = reject_wait_queue_tail_y;
+            rejectWaitQueueHeadX = reject_wait_queue_head_x;
+            rejectWaitQueueHeadY = reject_wait_queue_head_y;
         }
     }
 }

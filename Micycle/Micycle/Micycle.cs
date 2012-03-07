@@ -25,7 +25,7 @@ namespace Micycle
         protected override void Initialize()
         {
             // Set the game resolution
-            MiResolution.SetVirtualResolution(1200, 900);
+            MiResolution.SetVirtualResolution(800, 600);
             MiResolution.SetResolution(800, 600);
 
             // Initialize Input Handler
