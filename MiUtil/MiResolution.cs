@@ -62,7 +62,6 @@ namespace MiUtil
             width = new_width;
             height = new_height;
             boundingRectangle = new Rectangle(0, 0, new_width, new_height);
-            center = new Vector2(Width / 2, Height / 2);
             ApplyResolutionSettings();
         }
 
@@ -76,6 +75,7 @@ namespace MiUtil
         {
             virtualWidth = Width;
             virtualHeight = Height;
+            center = new Vector2(Width / 2, Height / 2);
             dirtyMatrix = true;
         }
 
@@ -127,9 +127,9 @@ namespace MiUtil
         public static void BeginDraw()
         {
             // Start by reseting viewport to (0,0,1,1)
-            FullViewport();
+            // FullViewport();
             // Clear to Black
-            device.GraphicsDevice.Clear(Color.Black);
+            // device.GraphicsDevice.Clear(Color.Black);
             // Calculate Proper Viewport according to Aspect Ratio
             ResetViewport();
             // and clear that

@@ -9,7 +9,6 @@ namespace MiUtil
 {
     public abstract class MiGame : Game
     {
-        
         protected GraphicsDeviceManager graphics;
         protected SpriteBatch spriteBatch;
         public SpriteBatch SpriteBatch { get { return spriteBatch; } }
@@ -93,13 +92,13 @@ namespace MiUtil
         {
             MiResolution.BeginDraw();
 
-            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, MiResolution.GetTransformationMatrix());
 
             foreach (MiScreen screen in ToDraw)
                 screen.Draw(gameTime);
 #if DEBUG
             frameCounter++;
-            spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, 575), Color.White);
+            spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, MiResolution.VirtualHeight - 25), Color.White);
 #endif
 
             SpriteBatch.End();

@@ -22,7 +22,7 @@
         public float SourceExitX { get { return sourceExitX; } }
         public float SourceExitY { get { return sourceExitY; } }
         public float WaitQueueHeadX { get { return waitQueueHeadX; } }
-        public float WiatQueueHeadY { get { return waitQueueHeadY; } }
+        public float WaitQueueHeadY { get { return waitQueueHeadY; } }
         public float AcceptDestX { get { return acceptDestX; } }
         public float AcceptDestY { get { return acceptDestY; } }
         public float RejectDestX { get { return rejectDestX; } }

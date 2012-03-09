@@ -3,16 +3,18 @@
     class MiSemaphoreSet
     {
         public int SendFromAToB;
-        public int HasReachedB;
-        public int AcceptIntoB;
-        public int RejectFromB;
+        public int HasReachedWaitQueueTail;
+        public int HasReachedWaitQueueHead;
+        public int Accept;
+        public int Reject;
 
         public MiSemaphoreSet()
         {
             SendFromAToB = 0;
-            HasReachedB = 0;
-            AcceptIntoB = 0;
-            RejectFromB = 0;
+            HasReachedWaitQueueTail = 0;
+            HasReachedWaitQueueHead = 0;
+            Accept = 0;
+            Reject = 0;
         }
     }
 }

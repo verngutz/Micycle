@@ -10,21 +10,21 @@ namespace Micycle
 {
     class MiMenuScreen : MiScreen
     {
-        private const float BACKGROUND_SCALE = 0.67f;
+        private const float BACKGROUND_SCALE = 1f;
 
-        private const int NEW_GAME_BUTTON_X = 258;
-        private const int NEW_GAME_BUTTON_Y = 548;
+        private const int NEW_GAME_BUTTON_X = 400;
+        private const int NEW_GAME_BUTTON_Y = 800;
         private const int NEW_GAME_BUTTON_WIDTH = 640;
         private const int NEW_GAME_BUTTON_HEIGHT = 240;
-        private const float NEW_GAME_BUTTON_SCALE = 0.4f;
+        private const float NEW_GAME_BUTTON_SCALE = 0.6f;
         private const float NEW_GAME_BUTTON_ORIGIN_X = NEW_GAME_BUTTON_WIDTH / 2;
         private const float NEW_GAME_BUTTON_ORIGIN_Y = NEW_GAME_BUTTON_HEIGHT / 2;
 
-        private const int QUIT_GAME_BUTTON_X = 558;
-        private const int QUIT_GAME_BUTTON_Y = 548;
+        private const int QUIT_GAME_BUTTON_X = 800;
+        private const int QUIT_GAME_BUTTON_Y = 800;
         private const int QUIT_GAME_BUTTON_WIDTH = 640;
         private const int QUIT_GAME_BUTTON_HEIGHT = 240;
-        private const float QUIT_GAME_BUTTON_SCALE = 0.4f;
+        private const float QUIT_GAME_BUTTON_SCALE = 0.6f;
         private const float QUIT_GAME_BUTTON_ORIGIN_X = QUIT_GAME_BUTTON_WIDTH / 2;
         private const float QUIT_GAME_BUTTON_ORIGIN_Y = QUIT_GAME_BUTTON_HEIGHT / 2;
 

@@ -13,6 +13,11 @@ using FarseerPhysics.Common;
 using FarseerPhysics.Common.Decomposition;
 using FarseerPhysics.Common.PolygonManipulation;
 
+#if DEBUG
+using FarseerPhysics.DebugViews;
+using FarseerPhysics.SamplesFramework;
+#endif
+
 using MiUtil;
 
 namespace Micycle
@@ -21,9 +26,9 @@ namespace Micycle
     {
         #region Coordinates Constants
 
-        private const int CENTER_X = 400;
-        private const int CENTER_Y = 300;
-        private const int RADIUS = 250;
+        private const int CENTER_X = 600;
+        private const int CENTER_Y = 450;
+        private const int RADIUS = 350;
 
         private const int SCHOOL_WIDTH = 188;
         private const int SCHOOL_HEIGHT = 365;
@@ -32,88 +37,193 @@ namespace Micycle
         private const int SCHOOL_Y = CENTER_Y;
         private const float SCHOOL_ORIGIN_X = SCHOOL_WIDTH / 2;
         private const float SCHOOL_ORIGIN_Y = SCHOOL_HEIGHT / 2;
-        private const float SCHOOL_NORTH_EXIT_X = SCHOOL_X - SCHOOL_SCALE * SCHOOL_WIDTH / 4;
-        private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 2;
-        private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_X + SCHOOL_SCALE * SCHOOL_WIDTH / 4;
-        private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 2;
-        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - SCHOOL_SCALE * SCHOOL_WIDTH / 2;
-        private const float SCHOOL_WEST_EXIT_Y = SCHOOL_Y + SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
-        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - SCHOOL_SCALE * SCHOOL_WIDTH / 2;
-        private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
-        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + SCHOOL_SCALE * SCHOOL_WIDTH / 2;
-        private const float SCHOOL_EAST_EXIT_Y = SCHOOL_Y + SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
-        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + SCHOOL_SCALE * SCHOOL_WIDTH / 2;
-        private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - SCHOOL_SCALE * SCHOOL_HEIGHT / 4;
+        private const float SCHOOL_NORTH_EXIT_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_WEST_EXIT_Y = SCHOOL_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_EAST_EXIT_Y = SCHOOL_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
 
         private const int CITY_WIDTH = 188;
         private const int CITY_HEIGHT = 365;
         private const float CITY_SCALE = 0.5f;
-        private const double CITY_THETA = 3 * Math.PI / 2;
-        private static readonly float CITY_X = (float)(CENTER_X + RADIUS * Math.Cos(CITY_THETA));
-        private static readonly float CITY_Y = (float)(CENTER_Y + RADIUS * Math.Sin(CITY_THETA));
-        private static readonly float CITY_ORIGIN_X = CITY_WIDTH / 2;
-        private static readonly float CITY_ORIGIN_Y = CITY_HEIGHT / 2;
-        private static readonly float CITY_SOUTH_EXIT_X = CITY_X + CITY_SCALE * CITY_WIDTH / 4;
-        private static readonly float CITY_SOUTH_EXIT_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 2;
-        private static readonly float CITY_SOUTH_ENTRANCE_X = CITY_X - CITY_SCALE * CITY_WIDTH / 4;
-        private static readonly float CITY_SOUTH_ENTRANCE_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 2;
-        private static readonly float CITY_WEST_EXIT_X = CITY_X - CITY_SCALE * CITY_WIDTH / 2;
-        private static readonly float CITY_WEST_EXIT_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 4;
-        private static readonly float CITY_WEST_ENTRANCE_X = CITY_X - CITY_SCALE * CITY_WIDTH / 2;
-        private static readonly float CITY_WEST_ENTRANCE_Y = CITY_Y - CITY_SCALE * CITY_HEIGHT / 4;
-        private static readonly float CITY_EAST_EXIT_X = CITY_X + CITY_SCALE * CITY_WIDTH / 2;
-        private static readonly float CITY_EAST_EXIT_Y = CITY_Y + CITY_SCALE * CITY_HEIGHT / 4;
-        private static readonly float CITY_EAST_ENTRANCE_X = CITY_X + CITY_SCALE * CITY_WIDTH / 2;
-        private static readonly float CITY_EAST_ENTRANCE_Y = CITY_Y - CITY_SCALE * CITY_HEIGHT / 4;
+        private const int CITY_X = CENTER_X;
+        private const int CITY_Y = CENTER_Y - 300;
+        private const float CITY_ORIGIN_X = CITY_WIDTH / 2;
+        private const float CITY_ORIGIN_Y = CITY_HEIGHT / 2;
+        private const float CITY_SOUTH_EXIT_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float CITY_SOUTH_EXIT_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float CITY_SOUTH_ENTRANCE_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float CITY_SOUTH_ENTRANCE_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float CITY_WEST_EXIT_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float CITY_WEST_EXIT_Y = CITY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float CITY_WEST_ENTRANCE_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float CITY_WEST_ENTRANCE_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float CITY_EAST_EXIT_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float CITY_EAST_EXIT_Y = CITY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float CITY_EAST_ENTRANCE_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float CITY_EAST_ENTRANCE_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
 
         private const int RND_WIDTH = 188;
         private const int RND_HEIGHT = 365;
         private const float RND_SCALE = 0.5f;
-        private const double RND_THETA = 1 * Math.PI / 6;
-        private static readonly float RND_X = (float)(CENTER_X + RADIUS * Math.Cos(RND_THETA));
-        private static readonly float RND_Y = (float)(CENTER_Y + RADIUS * Math.Sin(RND_THETA));
-        private static readonly float RND_ORIGIN_X = RND_WIDTH / 2;
-        private static readonly float RND_ORIGIN_Y = RND_HEIGHT / 2;
-        private static readonly float RND_NORTH_EXIT_X = RND_X - RND_SCALE * RND_WIDTH / 4;
-        private static readonly float RND_NORTH_EXIT_Y = RND_Y - RND_SCALE * RND_HEIGHT / 2;
-        private static readonly float RND_NORTH_ENTRANCE_X = RND_X + RND_SCALE * RND_WIDTH / 4;
-        private static readonly float RND_NORTH_ENTRANCE_Y = RND_Y - RND_SCALE * RND_HEIGHT / 2;
-        private static readonly float RND_WEST_EXIT_X = RND_X - RND_SCALE * RND_WIDTH / 2;
-        private static readonly float RND_WEST_EXIT_Y = RND_Y + RND_SCALE * RND_HEIGHT / 4;
-        private static readonly float RND_WEST_ENTRANCE_X = RND_X - RND_SCALE * RND_WIDTH / 2;
-        private static readonly float RND_WEST_ENTRANCE_Y = RND_Y - RND_SCALE * RND_HEIGHT / 4;
+        private const int RND_X = CENTER_X + 300;
+        private const int RND_Y = CENTER_Y + 225;
+        private const float RND_ORIGIN_X = RND_WIDTH / 2;
+        private const float RND_ORIGIN_Y = RND_HEIGHT / 2;
+        private const float RND_EAST_EXIT_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 + 40;
+        private const float RND_EAST_EXIT_Y = RND_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float RND_EAST_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 + 40;
+        private const float RND_EAST_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float RND_WEST_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float RND_WEST_EXIT_Y = RND_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float RND_WEST_ENTRANCE_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float RND_WEST_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float RND_SOUTH_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float RND_SOUTH_EXIT_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float RND_SOUTH_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float RND_SOUTH_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         
         private const int FACTORY_WIDTH = 188;
         private const int FACTORY_HEIGHT = 365;
         private const float FACTORY_SCALE = 0.5f;
-        private const double FACTORY_THETA = 5 * Math.PI / 6;
-        private static readonly float FACTORY_X = (float)(CENTER_X + RADIUS * Math.Cos(FACTORY_THETA));
-        private static readonly float FACTORY_Y = (float)(CENTER_Y + RADIUS * Math.Sin(FACTORY_THETA));
-        private static readonly float FACTORY_ORIGIN_X = FACTORY_WIDTH / 2;
-        private static readonly float FACTORY_ORIGIN_Y = FACTORY_HEIGHT / 2;
-        private static readonly float FACTORY_NORTH_EXIT_X = FACTORY_X - FACTORY_SCALE * FACTORY_WIDTH / 4;
-        private static readonly float FACTORY_NORTH_EXIT_Y = FACTORY_Y - FACTORY_SCALE * FACTORY_HEIGHT / 2;
-        private static readonly float FACTORY_NORTH_ENTRANCE_X = FACTORY_X + FACTORY_SCALE * FACTORY_WIDTH / 4;
-        private static readonly float FACTORY_NORTH_ENTRANCE_Y = FACTORY_Y - FACTORY_SCALE * FACTORY_HEIGHT / 2;
-        private static readonly float FACTORY_EAST_EXIT_X = FACTORY_X + FACTORY_SCALE * FACTORY_WIDTH / 2;
-        private static readonly float FACTORY_EAST_EXIT_Y = FACTORY_Y + FACTORY_SCALE * FACTORY_HEIGHT / 4;
-        private static readonly float FACTORY_EAST_ENTRANCE_X = FACTORY_X + FACTORY_SCALE * FACTORY_WIDTH / 2;
-        private static readonly float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y - FACTORY_SCALE * FACTORY_HEIGHT / 4;
+        private const int FACTORY_X = CENTER_X - 300;
+        private const int FACTORY_Y = CENTER_Y + 225;
+        private const float FACTORY_ORIGIN_X = FACTORY_WIDTH / 2;
+        private const float FACTORY_ORIGIN_Y = FACTORY_HEIGHT / 2;
+        private const float FACTORY_WEST_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 - 40;
+        private const float FACTORY_WEST_EXIT_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float FACTORY_WEST_ENTRANCE_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 - 40;
+        private const float FACTORY_WEST_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float FACTORY_EAST_EXIT_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float FACTORY_EAST_EXIT_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float FACTORY_EAST_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
+        private const float FACTORY_SOUTH_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float FACTORY_SOUTH_EXIT_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float FACTORY_SOUTH_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
+        private const float FACTORY_SOUTH_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
 
         #endregion
 
         #region Loose Paths
 
-        private static readonly MiMousePath CITY_TO_SCHOOL = new MiMousePath(CITY_X + 10, CITY_Y, CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y, SCHOOL_X + 10, SCHOOL_Y, CITY_X, CITY_Y, SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y);
-        private static readonly MiMousePath CITY_TO_FACTORY = new MiMousePath(CITY_X, CITY_Y, CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y, FACTORY_X, FACTORY_Y, CITY_X, CITY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y);
-        private static readonly MiMousePath CITY_TO_RND = new MiMousePath(CITY_X, CITY_Y, CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y, RND_X, RND_Y, CITY_X, CITY_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y);
-        private static readonly MiMousePath SCHOOL_TO_CITY = new MiMousePath(SCHOOL_X - 10, SCHOOL_Y, SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y, CITY_X - 10, CITY_Y, SCHOOL_X, SCHOOL_Y, CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y);
-        private static readonly MiMousePath SCHOOL_TO_FACTORY = new MiMousePath(SCHOOL_X, SCHOOL_Y, SCHOOL_WEST_EXIT_X, SCHOOL_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y, FACTORY_X, FACTORY_Y, CITY_X, CITY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y);
-        private static readonly MiMousePath SCHOOL_TO_RND = new MiMousePath(SCHOOL_X, SCHOOL_Y, SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y, RND_X, RND_Y, CITY_X, CITY_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y);
-        private static readonly MiMousePath RND_TO_CITY = new MiMousePath(RND_X, RND_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y, CITY_X + 20, CITY_Y, RND_X, RND_Y, CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
-        private static readonly MiMousePath RND_TO_SCHOOL = new MiMousePath(RND_X, RND_Y, RND_NORTH_EXIT_X, RND_NORTH_EXIT_Y, SCHOOL_EAST_ENTRANCE_X, SCHOOL_EAST_ENTRANCE_Y, SCHOOL_X, SCHOOL_Y, RND_X, RND_Y, SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y, RND_NORTH_ENTRANCE_X, RND_NORTH_ENTRANCE_Y);
-        private static readonly MiMousePath RND_TO_FACTORY = new MiMousePath(RND_X, RND_Y, RND_WEST_EXIT_X, RND_WEST_EXIT_Y, FACTORY_EAST_ENTRANCE_X, FACTORY_EAST_ENTRANCE_Y, FACTORY_X, FACTORY_Y, RND_X, RND_Y, FACTORY_EAST_EXIT_X, FACTORY_EAST_EXIT_Y, RND_WEST_ENTRANCE_X, RND_WEST_ENTRANCE_Y);
-        private static readonly MiMousePath FACTORY_TO_CITY = new MiMousePath(FACTORY_X, FACTORY_Y, FACTORY_NORTH_EXIT_X, FACTORY_NORTH_EXIT_Y, CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y, CITY_X - 20, CITY_Y, FACTORY_X, FACTORY_Y, CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, FACTORY_NORTH_ENTRANCE_X, FACTORY_NORTH_ENTRANCE_Y);
+        private const int QUADRANT_RADIUS = 15;
+        private static readonly MiMousePath CITY_TO_SCHOOL = new MiMousePath
+        (
+            CITY_X + QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS, 
+            CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, 
+            SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y,
+            SCHOOL_X + QUADRANT_RADIUS, SCHOOL_Y - QUADRANT_RADIUS,
+            CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS, 
+            SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, 
+            CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath CITY_TO_FACTORY = new MiMousePath
+        (
+            CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS, 
+            CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, 
+            FACTORY_WEST_ENTRANCE_X, FACTORY_WEST_ENTRANCE_Y,
+            FACTORY_X - QUADRANT_RADIUS, FACTORY_Y - QUADRANT_RADIUS,
+            CITY_X - QUADRANT_RADIUS, CITY_Y - QUADRANT_RADIUS, 
+            FACTORY_WEST_EXIT_X, FACTORY_WEST_EXIT_Y, 
+            CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath CITY_TO_RND = new MiMousePath
+        (
+            CITY_X + QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS, 
+            CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, 
+            RND_EAST_ENTRANCE_X, RND_EAST_ENTRANCE_Y,
+            RND_X + QUADRANT_RADIUS, RND_Y - QUADRANT_RADIUS,
+            CITY_X + QUADRANT_RADIUS, CITY_Y - QUADRANT_RADIUS, 
+            RND_EAST_EXIT_X, RND_EAST_EXIT_Y, 
+            CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath SCHOOL_TO_CITY = new MiMousePath
+        (
+            SCHOOL_X - QUADRANT_RADIUS, SCHOOL_Y - QUADRANT_RADIUS, 
+            SCHOOL_NORTH_EXIT_X, SCHOOL_NORTH_EXIT_Y, 
+            CITY_SOUTH_ENTRANCE_X, CITY_SOUTH_ENTRANCE_Y,
+            CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS,
+            SCHOOL_X + QUADRANT_RADIUS, SCHOOL_Y + QUADRANT_RADIUS, 
+            CITY_SOUTH_EXIT_X, CITY_SOUTH_EXIT_Y, 
+            SCHOOL_NORTH_ENTRANCE_X, SCHOOL_NORTH_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath SCHOOL_TO_FACTORY = new MiMousePath
+        (
+            SCHOOL_X - QUADRANT_RADIUS, SCHOOL_Y + QUADRANT_RADIUS, 
+            SCHOOL_WEST_EXIT_X, SCHOOL_WEST_EXIT_Y, 
+            FACTORY_EAST_ENTRANCE_X, FACTORY_EAST_ENTRANCE_Y,
+            FACTORY_X + QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS,
+            CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS, 
+            FACTORY_WEST_EXIT_X, FACTORY_WEST_EXIT_Y, 
+            CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath SCHOOL_TO_RND = new MiMousePath
+        (
+            SCHOOL_X + QUADRANT_RADIUS, SCHOOL_Y + QUADRANT_RADIUS, 
+            SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y, 
+            RND_WEST_ENTRANCE_X, RND_WEST_ENTRANCE_Y,
+            RND_X - QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS,
+            CITY_X + QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS, 
+            RND_EAST_EXIT_X, RND_EAST_EXIT_Y, 
+            CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath RND_TO_CITY = new MiMousePath
+        (
+            RND_X + QUADRANT_RADIUS, RND_Y - QUADRANT_RADIUS, 
+            RND_EAST_EXIT_X, RND_EAST_EXIT_Y, 
+            CITY_EAST_ENTRANCE_X, CITY_EAST_ENTRANCE_Y,
+            CITY_X + QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS,
+            RND_X + QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS, 
+            CITY_EAST_EXIT_X, CITY_EAST_EXIT_Y, 
+            RND_EAST_ENTRANCE_X, RND_EAST_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath RND_TO_SCHOOL = new MiMousePath
+        (
+            RND_X - QUADRANT_RADIUS, RND_Y - QUADRANT_RADIUS, 
+            RND_WEST_EXIT_X, RND_WEST_EXIT_Y, 
+            SCHOOL_EAST_ENTRANCE_X, SCHOOL_EAST_ENTRANCE_Y,
+            SCHOOL_X + QUADRANT_RADIUS, SCHOOL_Y - QUADRANT_RADIUS,
+            RND_X - QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS,
+            SCHOOL_EAST_EXIT_X, SCHOOL_EAST_EXIT_Y, 
+            RND_WEST_ENTRANCE_X, RND_WEST_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath RND_TO_FACTORY = new MiMousePath
+        (
+            RND_X - QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS, 
+            RND_SOUTH_EXIT_X, RND_SOUTH_EXIT_Y, 
+            FACTORY_SOUTH_ENTRANCE_X, FACTORY_SOUTH_ENTRANCE_Y,
+            FACTORY_X + QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS,
+            RND_X + QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS, 
+            FACTORY_SOUTH_EXIT_X, FACTORY_SOUTH_EXIT_Y, 
+            RND_SOUTH_ENTRANCE_X, RND_SOUTH_ENTRANCE_Y
+        );
+
+        private static readonly MiMousePath FACTORY_TO_CITY = new MiMousePath
+        (
+            FACTORY_X - QUADRANT_RADIUS, FACTORY_Y - QUADRANT_RADIUS, 
+            FACTORY_WEST_EXIT_X, FACTORY_WEST_EXIT_Y, 
+            CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y,
+            CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS,
+            FACTORY_X - QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS, 
+            CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y, 
+            FACTORY_WEST_ENTRANCE_X, FACTORY_WEST_ENTRANCE_Y
+        );
 
         #endregion
 
@@ -122,10 +232,11 @@ namespace Micycle
         private const int MOUSE_R = 25;
         private static readonly Vector2 MOUSE_ORIGIN = new Vector2(MOUSE_R, MOUSE_R);
         private const float MOUSE_SCALE = 0.25f;
+        private const int MOUSE_UNCROWDEDNESS = 2;
         private const float MOUSE_MASS = 2;
         private const float MOUSE_FRICTION = 0.5f;
         private const ushort MOUSE_MOVETIME = 20;
-        private const int DESTINATION_REACHED_LAXITY = 225;
+        private const int DESTINATION_REACHED_LAXITY = 8;
         private const int MOUSE_MOVE_FORCE = 50;
         private Texture2D mouseImage;
         private List<Body> mice;
@@ -141,10 +252,71 @@ namespace Micycle
 
         #endregion
 
-        #region Background
+        #region Collision Map
 
-        private Texture2D background;
-        private Body backgroundBody;
+        private const int COLLISION_TEXTURE_WIDTH = 300;
+        private const int COLLISION_TEXTURE_HEIGHT = 300;
+        private const float COLLISION_TEXTURE_SCALE = 0.25f;
+        private static readonly Vector2 COLLISION_TEXTURE_ORIGIN = new Vector2(COLLISION_TEXTURE_WIDTH / 2, COLLISION_TEXTURE_HEIGHT / 2);
+        private const int COLLISION_TEXTURE_KINDS = 9;
+        private static readonly string[] COLLISION_TEXTURE_KIND_NAMES = 
+        { 
+            "RoadCollision\\BLOCKED", 
+            "RoadCollision\\BUILDING_IN", 
+            "RoadCollision\\STRAIGHT",
+            "RoadCollision\\STRAIGHT",
+            "RoadCollision\\CORNER", 
+            "RoadCollision\\CORNER", 
+            "RoadCollision\\CORNER", 
+            "RoadCollision\\CORNER", 
+            "RoadCollision\\BUILDING_CORNER", 
+        };
+        private Texture2D[] collisionTextures;
+
+        private const int COLLISION_MAP_WIDTH = 13;
+        private const int COLLISION_MAP_HEIGHT = 11;
+        private const float COLLISION_MAP_X_OFFSET = 2;
+        private const float COLLISION_MAP_Y_OFFSET = 1;
+        private const int O = -1;
+        private const int M = 0;
+        private const int X = 1;
+        private const int I = 2;
+        private const int _ = 3;
+        private const int r = 4;
+        private const int L = 5;
+        private const int J = 6;
+        private const int T = 7;
+        private static readonly int[][] COLLISION_BODIES_TEXTURE_KIND_MAP =
+        {
+            new int[] { O, M, M, M, M, M, M, M, M, M, M, M, O },
+            new int[] { M, r, _, _, _, _, X, _, _, _, _, T, M },
+            new int[] { M, I, M, M, M, M, I, M, M, M, M, I, M },
+            new int[] { M, I, M, O, O, M, I, M, O, O, M, I, M },
+            new int[] { M, I, M, M, M, M, I, M, M, M, M, I, M },
+            new int[] { M, I, M, r, _, _, X, _, _, T, M, I, M },
+            new int[] { M, I, M, I, M, M, M, M, M, I, M, I, M },
+            new int[] { M, I, M, I, M, O, O, O, M, I, M, I, M },
+            new int[] { M, L, X, J, M, M, M, M, M, L, X, J, M },
+            new int[] { O, M, L, _, _, _, _, _, _, _, J, M, O },
+            new int[] { O, O, M, M, M, M, M, M, M, M, M, O, O }
+        };
+        private static readonly Dictionary<int, float> COLLISION_BODIES_ROTATION_MAP = new Dictionary<int,float>()
+        {
+            { O, 0 },
+            { M, 0 },
+            { X, 0 },
+            { I, (float)Math.PI * 1/2 },
+            { _, 0 },
+            { r, 0 },
+            { L, (float)Math.PI * 3/2 },
+            { J, (float)Math.PI },
+            { T, (float)Math.PI * 1/2 }
+        };
+
+        private List<Texture2D> collisionBodiesTextures;
+        private static List<Vector2> collisionBodiesPositions;
+        private static List<float> collisionBodiesRotations;
+        private List<Body> collisionBodies;
 
         #endregion
 
@@ -167,6 +339,11 @@ namespace Micycle
         private MicycleGameSystem system;
         private MiScriptEngine inGameScripts;
         private World world;
+
+#if DEBUG
+        private DebugViewXNA debugView;
+        private Camera2D camera;
+#endif
 
         public MiGameScreen(Micycle game) : base(game)
         {
@@ -306,7 +483,10 @@ namespace Micycle
 
         public void Reset()
         {
+            foreach (Body mouse in mice)
+                world.RemoveBody(mouse);
             mice.Clear();
+            inGameScripts = new MiScriptEngine(Game);
             ActiveButton = schoolButton;
             system.Reset();
             system.Enabled = true;
@@ -314,63 +494,64 @@ namespace Micycle
 
         private IEnumerator<ulong> SendMouse(MiMousePath path, MiSemaphoreSet sema)
         {
-            Body mouseBody = BodyFactory.CreateCircle(world, MOUSE_R * MOUSE_SCALE, MOUSE_MASS, new Vector2(path.SourceX, path.SourceY) - MiResolution.Center);
+            Body mouseBody = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(MOUSE_R * MOUSE_SCALE), MOUSE_MASS, ConvertUnits.ToSimUnits(new Vector2(path.SourceX, path.SourceY) - MiResolution.Center));
             mouseBody.BodyType = BodyType.Dynamic;
             mouseBody.Friction = MOUSE_FRICTION;
-            mouseBody.CreateFixture(new CircleShape(MOUSE_R * MOUSE_SCALE, MOUSE_MASS));
+            mouseBody.CreateFixture(new CircleShape(ConvertUnits.ToSimUnits(MOUSE_R * MOUSE_SCALE + MOUSE_UNCROWDEDNESS), MOUSE_MASS));
             mice.Add(mouseBody);
-            Vector2 nextGoal = new Vector2(path.SourceExitX, path.SourceExitY) - MiResolution.Center;
-            while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+            Vector2 nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.SourceExitX, path.SourceExitY) - MiResolution.Center);
+            while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
             {
-                mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                mouseBody.LinearVelocity = ConvertUnits.ToSimUnits(MOUSE_MOVE_FORCE) * Vector2.Normalize(nextGoal - mouseBody.Position);
                 yield return MOUSE_MOVETIME;
             }
             mouseBody.ResetDynamics();
-            nextGoal = new Vector2(path.WaitQueueHeadX, path.WiatQueueHeadY) - MiResolution.Center;
-            while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+            system.Signal(ref sema.HasReachedWaitQueueTail);
+            nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.WaitQueueHeadX, path.WaitQueueHeadY) - MiResolution.Center);
+            while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
             {
-                mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                mouseBody.LinearVelocity = ConvertUnits.ToSimUnits(MOUSE_MOVE_FORCE) * Vector2.Normalize(nextGoal - mouseBody.Position);
                 yield return MOUSE_MOVETIME;
             }
             mouseBody.ResetDynamics();
-            system.Signal(ref sema.HasReachedB);
+            system.Signal(ref sema.HasReachedWaitQueueHead);
             while (true)
             {
-                if (system.Wait(ref sema.AcceptIntoB))
+                if (system.Wait(ref sema.Accept))
                 {
-                    nextGoal = new Vector2(path.AcceptDestX, path.AcceptDestY) - MiResolution.Center;
-                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+                    nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.AcceptDestX, path.AcceptDestY) - MiResolution.Center);
+                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
                     {
-                        mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                        mouseBody.LinearVelocity = ConvertUnits.ToSimUnits(MOUSE_MOVE_FORCE) * Vector2.Normalize(nextGoal - mouseBody.Position);
                         yield return MOUSE_MOVETIME;
                     }
                     mouseBody.ResetDynamics();
                     break;
                 }
-                else if (system.Wait(ref sema.RejectFromB))
+                else if (system.Wait(ref sema.Reject))
                 {
                     System.Console.WriteLine("Rejected");
-                    //mouseBody.IgnoreCollisionWith(backgroundBody);
-                    nextGoal = new Vector2(path.RejectWaitQueueTailX, path.RejectWaitQueueTailY) - MiResolution.Center;
-                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+                    // mouseBody.IgnoreCollisionWith(backgroundBody);
+                    nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.RejectWaitQueueTailX, path.RejectWaitQueueTailY) - MiResolution.Center);
+                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
                     {
-                        mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                        mouseBody.LinearVelocity = ConvertUnits.ToSimUnits(MOUSE_MOVE_FORCE) * Vector2.Normalize(nextGoal - mouseBody.Position);
                         yield return MOUSE_MOVETIME;
                     }
                     mouseBody.ResetDynamics();
-                    //mouseBody.RestoreCollisionWith(backgroundBody);
-                    nextGoal = new Vector2(path.RejectWaitQueueHeadX, path.RejectWaitQueueHeadY) - MiResolution.Center;
-                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+                    // mouseBody.RestoreCollisionWith(backgroundBody);
+                    nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.RejectWaitQueueHeadX, path.RejectWaitQueueHeadY) - MiResolution.Center);
+                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
                     {
-                        mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                        mouseBody.LinearVelocity = ConvertUnits.ToSimUnits(MOUSE_MOVE_FORCE) * Vector2.Normalize(nextGoal - mouseBody.Position);
                         yield return MOUSE_MOVETIME;
                     }
                     mouseBody.ResetDynamics();
                     yield return MOUSE_MOVETIME;
-                    nextGoal = new Vector2(path.RejectDestX, path.RejectDestY) - MiResolution.Center;
-                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > DESTINATION_REACHED_LAXITY)
+                    nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.RejectDestX, path.RejectDestY) - MiResolution.Center);
+                    while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
                     {
-                        mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(nextGoal - mouseBody.Position);
+                        mouseBody.LinearVelocity = ConvertUnits.ToSimUnits(MOUSE_MOVE_FORCE) * Vector2.Normalize(nextGoal - mouseBody.Position);
                         yield return MOUSE_MOVETIME;
                     }
                     mouseBody.ResetDynamics();
@@ -379,8 +560,9 @@ namespace Micycle
                 }
                 else yield return MOUSE_MOVETIME;
             }
-            world.RemoveBody(mouseBody);
+             */
             mice.Remove(mouseBody);
+            world.RemoveBody(mouseBody);
         }
 
         public override IEnumerator<ulong> Pressed()
@@ -401,13 +583,12 @@ namespace Micycle
         {
             if (ActiveButton == factoryButton || ActiveButton == rndButton)
             {
-                ActiveButton = null;
+                ActiveButton = schoolButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, SCHOOL_X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, SCHOOL_Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = schoolButton;
             }
         }
 
@@ -415,13 +596,12 @@ namespace Micycle
         {
             if (ActiveButton == schoolButton)
             {
-                ActiveButton = null;
+                ActiveButton = factoryButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, FACTORY_X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, FACTORY_Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = factoryButton;
             }
         }
 
@@ -429,13 +609,12 @@ namespace Micycle
         {
             if (ActiveButton == schoolButton || ActiveButton == rndButton)
             {
-                ActiveButton = null;
+                ActiveButton = factoryButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, FACTORY_X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, FACTORY_Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = factoryButton;
             }
         }
 
@@ -443,31 +622,73 @@ namespace Micycle
         {
             if (ActiveButton == schoolButton || ActiveButton == factoryButton)
             {
-                ActiveButton = null;
+                ActiveButton = rndButton;
                 cursor.MoveEnabled = true;
                 cursor.XPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, RND_X));
                 cursor.YPositionOverTime.Keys.Add(new CurveKey(cursor.MoveTimer + 20, RND_Y));
                 yield return 20;
                 cursor.MoveEnabled = false;
-                ActiveButton = rndButton;
             }
         }
 
         public override void LoadContent()
         {
-            /**
-            background = Game.Content.Load<Texture2D>("gamebackground");
-            uint[] backgroundData = new uint[background.Width * background.Height];
-            background.GetData(backgroundData);
-            Vertices backgroundVertices = PolygonTools.CreatePolygon(backgroundData, background.Width, false);
-            backgroundVertices = SimplifyTools.ReduceByDistance(backgroundVertices, 4);
-            List<Vertices> convexBackgroundVertices = BayazitDecomposer.ConvexPartition(backgroundVertices);
-            backgroundBody = BodyFactory.CreateCompoundPolygon(world, convexBackgroundVertices, 1, -MiResolution.Center);
-            backgroundBody.BodyType = BodyType.Static;
-            backgroundBody.Enabled = true;
-            foreach (Vertices v in convexBackgroundVertices)
-                backgroundBody.CreateFixture(new PolygonShape(v, 1));
-            */
+
+#if DEBUG
+            debugView = new DebugViewXNA(world);
+            debugView.AppendFlags(DebugViewFlags.Shape);
+            debugView.AppendFlags(DebugViewFlags.PolygonPoints);
+            debugView.LoadContent(Game.GraphicsDevice, Game.Content);
+            camera = new Camera2D(Game.GraphicsDevice);
+#endif
+
+            collisionTextures = new Texture2D[COLLISION_TEXTURE_KINDS];
+            for (int i = 0; i < COLLISION_TEXTURE_KINDS; i++)
+                collisionTextures[i] = Game.Content.Load<Texture2D>(COLLISION_TEXTURE_KIND_NAMES[i]);
+
+            collisionBodiesTextures = new List<Texture2D>();
+            for (int i = 0; i < COLLISION_MAP_WIDTH; i++)
+                for (int j = 0; j < COLLISION_MAP_HEIGHT; j++)
+                    if (COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != O)
+                        collisionBodiesTextures.Add(collisionTextures[COLLISION_BODIES_TEXTURE_KIND_MAP[j][i]]);
+
+            collisionBodiesPositions = new List<Vector2>();
+            for (int i = 0; i < COLLISION_MAP_WIDTH; i++)
+                for (int j = 0; j < COLLISION_MAP_HEIGHT; j++)
+                    if (COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != O)
+                        collisionBodiesPositions.Add(new Vector2((i + COLLISION_MAP_X_OFFSET) * COLLISION_TEXTURE_WIDTH * COLLISION_TEXTURE_SCALE, (j + COLLISION_MAP_Y_OFFSET) * COLLISION_TEXTURE_HEIGHT * COLLISION_TEXTURE_SCALE));
+
+            collisionBodiesRotations = new List<float>();
+            for (int i = 0; i < COLLISION_MAP_WIDTH; i++)
+                for (int j = 0; j < COLLISION_MAP_HEIGHT; j++)
+                    if (COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != O)
+                    {
+                        float rotation;
+                        COLLISION_BODIES_ROTATION_MAP.TryGetValue(COLLISION_BODIES_TEXTURE_KIND_MAP[j][i], out rotation);
+                        collisionBodiesRotations.Add(rotation);
+                    }
+
+            collisionBodies = new List<Body>();
+            for(int i = 0; i < collisionBodiesTextures.Count; i++)
+            {
+                Texture2D collisionTexture = collisionBodiesTextures[i];
+                uint[] collisionData = new uint[collisionTexture.Width * collisionTexture.Height];
+                collisionTexture.GetData(collisionData);
+                Vertices collisionVertices = PolygonTools.CreatePolygon(collisionData, collisionTexture.Width, false);
+                Vector2 centroid = new Vector2(-150, -150);
+                collisionVertices.Translate(centroid);
+                collisionVertices = SimplifyTools.ReduceByDistance(collisionVertices, 4);
+                Vector2 scale = ConvertUnits.ToSimUnits(new Vector2(COLLISION_TEXTURE_SCALE, COLLISION_TEXTURE_SCALE));
+                collisionVertices.Scale(ref scale);
+                List<Vertices> decomposedVertices = BayazitDecomposer.ConvexPartition(collisionVertices);
+                Body collisionBody = BodyFactory.CreateCompoundPolygon(world, decomposedVertices, 1, ConvertUnits.ToSimUnits(collisionBodiesPositions[i] - MiResolution.Center));
+                collisionBody.BodyType = BodyType.Static;
+                collisionBody.Enabled = true;
+                foreach (Vertices v in decomposedVertices)
+                    collisionBody.CreateFixture(new PolygonShape(v, 1));
+                collisionBody.SetTransform(collisionBody.Position, collisionBodiesRotations[i]);
+                collisionBodies.Add(collisionBody);
+            }
 
             school.AddTexture(Game.Content.Load<Texture2D>("School"), 0);
             city.AddTexture(Game.Content.Load<Texture2D>("City"), 0);
@@ -486,6 +707,10 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
+#if DEBUG
+            camera.Update(gameTime);
+#endif
+
             school.Update(gameTime);
             city.Update(gameTime);
             rnd.Update(gameTime);
@@ -495,6 +720,7 @@ namespace Micycle
             if (system.Enabled)
             {
                 system.Update(gameTime);
+                world.Step((float)gameTime.ElapsedGameTime.TotalSeconds);
                 inGameScripts.Update(gameTime);
 
                 if (system.Wait(ref system.CityToSchool.SendFromAToB))
@@ -566,24 +792,34 @@ namespace Micycle
                         {
                             return SendMouse(RND_TO_FACTORY, system.RndToFactory);
                         }));
-
-                world.Step(Math.Min((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f, (1f / 30f)));
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
+            /**
             school.Draw(gameTime);
             city.Draw(gameTime);
             rnd.Draw(gameTime);
             factory.Draw(gameTime);
+             */
 
-            //Game.SpriteBatch.Draw(background, backgroundBody.Position + 2 * MiResolution.Center, null, Color.White, backgroundBody.Rotation, MiResolution.Center, 1, SpriteEffects.None, 0);
+            for (int i = 0; i < collisionBodiesTextures.Count; i++)
+                if (collisionBodiesTextures[i] != null)
+                    Game.SpriteBatch.Draw(collisionBodiesTextures[i], collisionBodiesPositions[i], null, Color.White, collisionBodiesRotations[i], COLLISION_TEXTURE_ORIGIN, COLLISION_TEXTURE_SCALE, SpriteEffects.None, 0);
+
             foreach (Body mouse in mice)
-                Game.SpriteBatch.Draw(mouseImage, mouse.Position + MiResolution.Center, null, Color.White, mouse.Rotation, MOUSE_ORIGIN, MOUSE_SCALE, SpriteEffects.None, 0);
+                Game.SpriteBatch.Draw(mouseImage, ConvertUnits.ToDisplayUnits(mouse.Position) + MiResolution.Center, null, Color.White, mouse.Rotation, MOUSE_ORIGIN, MOUSE_SCALE, SpriteEffects.None, 0);
              
             cursor.Draw(gameTime);
             Game.SpriteBatch.DrawString(Game.Content.Load<SpriteFont>("Default"), system.printStats(), Vector2.Zero, Color.Black);
+
+#if DEBUG
+            //Matrix projection = camera.SimProjection * MiResolution.GetTransformationMatrix();
+            //Matrix view = camera.SimView;
+
+            //debugView.RenderDebugData(ref projection, ref view);
+#endif
         }
     }
 }
