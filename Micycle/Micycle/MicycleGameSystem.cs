@@ -90,16 +90,16 @@ namespace Micycle
             year = 2400;
             yearCtr = 0;
             month = year / 12;
-            ownerMoney = 5000;
+            ownerMoney = 3000;
 
             //city stats
-            cityPeople = 400;
+            cityPeople = 110;
             cityBums = 0;
-            cityMoney = 5000;
-            costOfLiving = 10;
+            cityMoney = 3000;
+            costOfLiving = 25;
             birthRate = 1.5f;
             deathRate = 0.1f;
-            numKidsSendRate = 0.01f;
+            numKidsSendRate = 0.02f;
             schoolSendRate = month / 5;
             bumToWorkRate = 0.02f;
 
@@ -120,15 +120,15 @@ namespace Micycle
             researcherWage = 10;
             rndUpkeep = 0;
             robots = 0 ;
-            robotEfficiency = 3;
+            robotEfficiency = 5;
             robotCost = 200;
 
             //factory stats
             factoryWorkers = 0;
             factoryWorkerCapacity = 10;
             factoryRetirementRate = 0.02f;
-            factoryWorkerWage = 30;
-            REVENUE_PER_WORKER = 60;
+            factoryWorkerWage = 25;
+            REVENUE_PER_WORKER = 40;
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
             factoryDoorWaitLimit = 30;
@@ -298,7 +298,7 @@ namespace Micycle
         {
             AddWorkerCapacity(-1);
             
-            if (factoryWorkerCapacity > factoryWorkers)
+            if (factoryWorkerCapacity < factoryWorkers)
             {
                 factoryWorkers--;
                 Signal(ref FactoryToCity.SendFromAToB);
@@ -421,10 +421,10 @@ namespace Micycle
                 educationLevel = (int)educationBudget;
             double S = (float)(educationLevel) / max_educationLevel;
 
-            double researcherPull = (S * (researcherWage + educationLevel/10 )) / 
-                                (researcherWage + factoryWorkerWage + educationLevel/10 );
+            double researcherPull = (S * (researcherWage + educationLevel/25 )) / 
+                                (researcherWage + factoryWorkerWage + educationLevel/25 );
             double factoryWorkerPull = (S * (factoryWorkerWage)) / 
-                                (researcherWage + factoryWorkerWage + educationLevel/10);
+                                (researcherWage + factoryWorkerWage + educationLevel/25);
 
             if (researcherWage == 0 && factoryWorkerWage != 0)
             {
@@ -476,7 +476,7 @@ namespace Micycle
                 schoolTeachers = 0;
                 researchers = 0;
             }
-            if (time % month == 0)
+            if (time % (month*2) == 0)
             {
                 ownerMoney -= researcherWage * (schoolTeachers+researchers) + rndUpkeep;
                 cityMoney += researcherWage * (schoolTeachers+researchers);
@@ -491,6 +491,7 @@ namespace Micycle
 
                     researchers -= toRetire;
                 }
+
             }
         }
 
@@ -582,7 +583,7 @@ namespace Micycle
             updateResearchCenter();
             if (cityPeople > 0 && time % schoolSendRate == 0 && students.Count < schoolCapacity )
             {
-                int toSend = (int)(cityPeople*numKidsSendRate);
+                int toSend = (int)Math.Ceiling(cityPeople*numKidsSendRate);
                 toSend = Math.Min(toSend, schoolCapacity - students.Count);
 
                 for (int i = 0; i < toSend; i++)
