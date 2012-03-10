@@ -198,7 +198,7 @@ namespace Micycle
             if (dx > 0)
             {
                 for (int i = 0; i < dx; i++)
-                    if ((robots + RndToFactory.SendFromAToB + RndToFactory.HasReachedB + 1) * robotEfficiency < factoryWorkerCapacity)
+                    if ((robots + RndToFactory.SendFromAToB + RndToFactory.HasReachedWaitQueueTail + 1) * robotEfficiency < factoryWorkerCapacity)
                     {
                         Signal(ref RndToFactory.SendFromAToB);
                     }
@@ -498,73 +498,73 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            if (Wait(ref SchoolToCity.HasReachedB))
+            if (Wait(ref SchoolToCity.HasReachedWaitQueueTail))
             {
-                Signal(ref SchoolToCity.AcceptIntoB);
+                Signal(ref SchoolToCity.Accept);
                 cityBums++;
             }
 
-            if ((factoryWorkers + robots * robotEfficiency) < factoryWorkerCapacity && Wait(ref SchoolToFactory.HasReachedB))
+            if ((factoryWorkers + robots * robotEfficiency) < factoryWorkerCapacity && Wait(ref SchoolToFactory.HasReachedWaitQueueTail))
             {
-                Signal(ref SchoolToFactory.AcceptIntoB);
+                Signal(ref SchoolToFactory.Accept);
                 factoryWorkers++;    
             }
-            else if (Wait(ref SchoolToFactory.HasReachedB))
+            else if (Wait(ref SchoolToFactory.HasReachedWaitQueueTail))
             {
                 factoryDoorWait++;
                 if (factoryDoorWait == factoryDoorWaitLimit)
                 {
-                    Signal(ref SchoolToFactory.RejectFromB);
+                    Signal(ref SchoolToFactory.Reject);
                 }
                 else
                 {
-                    Signal(ref SchoolToFactory.HasReachedB);
+                    Signal(ref SchoolToFactory.HasReachedWaitQueueTail);
                 }
             }
-            if (Wait(ref SchoolToRnd.HasReachedB))
+            if (Wait(ref SchoolToRnd.HasReachedWaitQueueTail))
             {
-                Signal(ref SchoolToRnd.AcceptIntoB);
+                Signal(ref SchoolToRnd.Accept);
                 researchers++;
             }
 
-            if (students.Count < schoolCapacity && Wait(ref CityToSchool.HasReachedB))
+            if (students.Count < schoolCapacity && Wait(ref CityToSchool.HasReachedWaitQueueTail))
             {
-                Signal(ref CityToSchool.AcceptIntoB);
+                Signal(ref CityToSchool.Accept);
                 students.Add(new StudentWrapper(studyTime));
             }
 
-            if ((factoryWorkers+robots*robotEfficiency) < factoryWorkerCapacity &&  Wait(ref CityToFactory.HasReachedB))
+            if ((factoryWorkers+robots*robotEfficiency) < factoryWorkerCapacity &&  Wait(ref CityToFactory.HasReachedWaitQueueTail))
             {
-                Signal(ref CityToFactory.AcceptIntoB);
+                Signal(ref CityToFactory.Accept);
                 factoryWorkers++;  
             }
 
-            if (Wait(ref CityToRnd.HasReachedB))
+            if (Wait(ref CityToRnd.HasReachedWaitQueueTail))
             {
-                Signal( ref CityToRnd.AcceptIntoB );
+                Signal( ref CityToRnd.Accept );
                 researchers++;
             }
 
-            if (Wait(ref RndToCity.HasReachedB))
+            if (Wait(ref RndToCity.HasReachedWaitQueueTail))
             {
-                Signal(ref RndToCity.AcceptIntoB);
+                Signal(ref RndToCity.Accept);
                 cityBums++;
             }
 
-            if (Wait(ref RndToSchool.HasReachedB))
+            if (Wait(ref RndToSchool.HasReachedWaitQueueTail))
             {
-                Signal(ref RndToSchool.AcceptIntoB);
+                Signal(ref RndToSchool.Accept);
                 schoolTeachers++;
             }
 
-            if (Wait(ref FactoryToCity.HasReachedB))
+            if (Wait(ref FactoryToCity.HasReachedWaitQueueTail))
             {
-                Signal(ref FactoryToCity.AcceptIntoB);
+                Signal(ref FactoryToCity.Accept);
                 cityBums++;
             }
-            if (Wait(ref RndToFactory.HasReachedB))
+            if (Wait(ref RndToFactory.HasReachedWaitQueueTail))
             {
-                Signal(ref RndToFactory.AcceptIntoB);
+                Signal(ref RndToFactory.Accept);
                 robots++;
                 int delta = (robots * robotEfficiency) + factoryWorkers - factoryWorkerCapacity;
 

@@ -26,7 +26,7 @@ namespace Micycle
         {
             // Set the game resolution
             MiResolution.SetVirtualResolution(1200, 900);
-            MiResolution.SetResolution(800, 600);
+            MiResolution.SetResolution(800, 600, false);
 
             // Initialize Input Handler
             inputHandler = new MicycleInputHandler(this);

@@ -3,6 +3,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
+using FarseerPhysics;
+using FarseerPhysics.Dynamics;
+using FarseerPhysics.Factories;
+using FarseerPhysics.Collision;
+using FarseerPhysics.Collision.Shapes;
+
 namespace MiUtil
 {
     /// <summary>
@@ -67,12 +73,12 @@ namespace MiUtil
 
         public MiAnimatingComponent(MiGame game) : this(game, 0, 0, 1, 0, 0, 0) { }
 
-        public MiAnimatingComponent(MiGame game, float default_x, float default_y) : this(game, default_x, default_y, 1, 0, 0, 0) { }
+        public MiAnimatingComponent(MiGame game, float init_x, float init_y) : this(game, init_x, init_y, 1, 0, 0, 0) { }
 
-        public MiAnimatingComponent(MiGame game, float default_x, float default_y, float default_scale, float default_rotate, float origin_x, float origin_y)
-            : this(game, default_x, default_y, default_scale, default_rotate, origin_x, origin_y, 255) { }
+        public MiAnimatingComponent(MiGame game, float init_x, float init_y, float init_scale, float init_rotate, float origin_x, float origin_y)
+            : this(game, init_x, init_y, init_scale, init_rotate, origin_x, origin_y, 255) { }
 
-        public MiAnimatingComponent(MiGame game, float default_x, float default_y, float default_scale, float default_rotate, float origin_x, float origin_y, byte alpha)
+        public MiAnimatingComponent(MiGame game, float init_x, float init_y, float init_scale, float init_rotate, float origin_x, float origin_y, byte alpha)
             : base(game)
         {
             spriteQueue = new Queue<KeyValuePair<Texture2D, int>>();
@@ -80,22 +86,22 @@ namespace MiUtil
 
             moveTimer = 0;
 
-            position = new Vector2(default_x, default_y);
-            scale = default_scale;
-            rotation = default_rotate;
+            position = new Vector2(init_x, init_y);
+            scale = init_scale;
+            rotation = init_rotate;
             origin = new Vector2(origin_x, origin_y);
 
             XPositionOverTime = new Curve();
-            XPositionOverTime.Keys.Add(new CurveKey(0, default_x));
+            XPositionOverTime.Keys.Add(new CurveKey(0, init_x));
 
             YPositionOverTime = new Curve();
-            YPositionOverTime.Keys.Add(new CurveKey(0, default_y));
+            YPositionOverTime.Keys.Add(new CurveKey(0, init_y));
 
             ScalingOverTime = new Curve();
-            ScalingOverTime.Keys.Add(new CurveKey(0, default_scale));
+            ScalingOverTime.Keys.Add(new CurveKey(0, init_scale));
 
             RotationOverTime = new Curve();
-            RotationOverTime.Keys.Add(new CurveKey(0, default_rotate));
+            RotationOverTime.Keys.Add(new CurveKey(0, init_rotate));
 
             OriginXOverTime = new Curve();
             OriginXOverTime.Keys.Add(new CurveKey(0, origin_x));
