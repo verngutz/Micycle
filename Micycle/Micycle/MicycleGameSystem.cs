@@ -37,10 +37,13 @@ namespace Micycle
         private float researchPoints;
         private float rndRetirementRate;
         private float researchRate;
+        private float rndPassingRate;
+
         private int rndUpkeep;
         private int robots;
         private int robotEfficiency;
         private int robotCost;
+        private int robotsDeployed;
 
         private int factoryWorkers;
         private int factoryWorkerCapacity;
@@ -117,6 +120,7 @@ namespace Micycle
             researchers = 0;
             researchRate = 0.5f;
             rndRetirementRate = 0.02f;
+            rndPassingRate = 0.30f;
             researcherWage = 10;
             rndUpkeep = 0;
             robots = 0 ;
@@ -132,7 +136,7 @@ namespace Micycle
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
             factoryDoorWaitLimit = 30;
-
+            robotsDeployed = 0;
             //birth control
             cityPeopleBirthBias = 0f;
             studentsBirthBias = 0.1f;
@@ -163,6 +167,27 @@ namespace Micycle
         {
             init();
         }
+
+        public int getTotalPopulation() 
+        {
+            int population = cityPeople + cityBums + researchers + factoryWorkers + schoolTeachers;
+            population += CityToFactory.getTotal() + CityToRnd.getTotal() + CityToSchool.getTotal() +
+                          SchoolToCity.getTotal() + SchoolToFactory.getTotal() + SchoolToRnd.getTotal() +
+                          FactoryToCity.getTotal() + 
+                          RndToCity.getTotal() + RndToFactory.getTotal() + RndToSchool.getTotal();
+
+            return population;
+        }
+
+        
+        private static int ECONOMY_GOAL = 100;
+        private static int TECH_GOAL = 20;
+
+        public float EconomyGoalProgress { get { return (cityMoney / getTotalPopulation()) / ECONOMY_GOAL; } }
+        public float TechnologyGoalProgress { get { return robotsDeployed / TECH_GOAL; } }
+        public float EmploymentGoalProgress { get { return (getTotalPopulation()-cityBums)/getTotalPopulation(); } }
+        public float EducationGoalProgress { get { return getEducationLevel() / max_educationLevel; } }
+
         private void AddEducationBudget(int dx) 
         {
             educationBudget += dx;
@@ -412,14 +437,31 @@ namespace Micycle
             }  
         }
 
+        public int getEducationLevel() 
+        {
+            educationLevel = (int)(educationBudget * schoolTeachers / students.Count);
+            if (schoolTeachers > students.Count)
+                educationLevel = (int)educationBudget;
+
+            return educationLevel;
+        }
         private void graduateStudent()
         {
             //do whatever needed when student leaves school
             double num = rnd.NextDouble();
-            educationLevel = (int)(educationBudget * schoolTeachers / students.Count);
-            if (schoolTeachers > students.Count)
-                educationLevel = (int)educationBudget;
+            educationLevel = getEducationLevel();
             double S = (float)(educationLevel) / max_educationLevel;
+
+            if (num < S && S < rndPassingRate && factoryWorkerWage > 0 )
+            {
+                Signal(ref SchoolToFactory.SendFromAToB);
+                return;
+            }
+            else if (num < S && S<rndPassingRate && factoryWorkerWage == 0)
+            {
+                Signal(ref SchoolToCity.SendFromAToB);
+                return;
+            }
 
             double researcherPull = (S * (researcherWage + educationLevel/25 )) / 
                                 (researcherWage + factoryWorkerWage + educationLevel/25 );
@@ -498,18 +540,18 @@ namespace Micycle
 
         public override void Update(GameTime gameTime)
         {
-            if (Wait(ref SchoolToCity.HasReachedWaitQueueTail))
+            if (Wait(ref SchoolToCity.HasReachedWaitQueueHead))
             {
                 Signal(ref SchoolToCity.Accept);
                 cityBums++;
             }
 
-            if ((factoryWorkers + robots * robotEfficiency) < factoryWorkerCapacity && Wait(ref SchoolToFactory.HasReachedWaitQueueTail))
+            if ((factoryWorkers + robots * robotEfficiency) < factoryWorkerCapacity && Wait(ref SchoolToFactory.HasReachedWaitQueueHead))
             {
                 Signal(ref SchoolToFactory.Accept);
                 factoryWorkers++;    
             }
-            else if (Wait(ref SchoolToFactory.HasReachedWaitQueueTail))
+            else if (Wait(ref SchoolToFactory.HasReachedWaitQueueHead))
             {
                 factoryDoorWait++;
                 if (factoryDoorWait == factoryDoorWaitLimit)
@@ -518,51 +560,51 @@ namespace Micycle
                 }
                 else
                 {
-                    Signal(ref SchoolToFactory.HasReachedWaitQueueTail);
+                    Signal(ref SchoolToFactory.HasReachedWaitQueueHead);
                 }
             }
-            if (Wait(ref SchoolToRnd.HasReachedWaitQueueTail))
+            if (Wait(ref SchoolToRnd.HasReachedWaitQueueHead))
             {
                 Signal(ref SchoolToRnd.Accept);
                 researchers++;
             }
 
-            if (students.Count < schoolCapacity && Wait(ref CityToSchool.HasReachedWaitQueueTail))
+            if (students.Count < schoolCapacity && Wait(ref CityToSchool.HasReachedWaitQueueHead))
             {
                 Signal(ref CityToSchool.Accept);
                 students.Add(new StudentWrapper(studyTime));
             }
 
-            if ((factoryWorkers+robots*robotEfficiency) < factoryWorkerCapacity &&  Wait(ref CityToFactory.HasReachedWaitQueueTail))
+            if ((factoryWorkers+robots*robotEfficiency) < factoryWorkerCapacity &&  Wait(ref CityToFactory.HasReachedWaitQueueHead))
             {
                 Signal(ref CityToFactory.Accept);
                 factoryWorkers++;  
             }
 
-            if (Wait(ref CityToRnd.HasReachedWaitQueueTail))
+            if (Wait(ref CityToRnd.HasReachedWaitQueueHead))
             {
                 Signal( ref CityToRnd.Accept );
                 researchers++;
             }
 
-            if (Wait(ref RndToCity.HasReachedWaitQueueTail))
+            if (Wait(ref RndToCity.HasReachedWaitQueueHead))
             {
                 Signal(ref RndToCity.Accept);
                 cityBums++;
             }
 
-            if (Wait(ref RndToSchool.HasReachedWaitQueueTail))
+            if (Wait(ref RndToSchool.HasReachedWaitQueueHead))
             {
                 Signal(ref RndToSchool.Accept);
                 schoolTeachers++;
             }
 
-            if (Wait(ref FactoryToCity.HasReachedWaitQueueTail))
+            if (Wait(ref FactoryToCity.HasReachedWaitQueueHead))
             {
                 Signal(ref FactoryToCity.Accept);
                 cityBums++;
             }
-            if (Wait(ref RndToFactory.HasReachedWaitQueueTail))
+            if (Wait(ref RndToFactory.HasReachedWaitQueueHead))
             {
                 Signal(ref RndToFactory.Accept);
                 robots++;
@@ -581,13 +623,18 @@ namespace Micycle
             updateFactory();
             updateSchool();
             updateResearchCenter();
-            if (cityPeople > 0 && time % schoolSendRate == 0 && students.Count < schoolCapacity )
+            if (cityPeople > 0 && time % schoolSendRate == 0 )
             {
                 int toSend = (int)Math.Ceiling(cityPeople*numKidsSendRate);
                 toSend = Math.Min(toSend, schoolCapacity - students.Count);
 
                 for (int i = 0; i < toSend; i++)
                 {
+                    if (CityToSchool.SendFromAToB + CityToSchool.HasReachedWaitQueueTail == 10)
+                    {
+                        Wait(ref CityToSchool.HasReachedWaitQueueTail);
+                        Signal(ref CityToSchool.Reject);
+                    }
                     Signal(ref CityToSchool.SendFromAToB);
                     
                 }

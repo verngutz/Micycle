@@ -560,7 +560,7 @@ namespace Micycle
                 }
                 else yield return MOUSE_MOVETIME;
             }
-             */
+             
             mice.Remove(mouseBody);
             world.RemoveBody(mouseBody);
         }

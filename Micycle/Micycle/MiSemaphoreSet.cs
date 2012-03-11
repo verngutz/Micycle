@@ -16,5 +16,10 @@
             Accept = 0;
             Reject = 0;
         }
+
+        public int getTotal()
+        {
+            return SendFromAToB + HasReachedWaitQueueHead + HasReachedWaitQueueTail + Accept + Reject;
+        }
     }
 }
