@@ -30,9 +30,9 @@ namespace Micycle
         private const int CENTER_Y = 450;
         private const int RADIUS = 350;
 
-        private const int SCHOOL_WIDTH = 188;
-        private const int SCHOOL_HEIGHT = 365;
-        private const float SCHOOL_SCALE = 0.5f;
+        private const int SCHOOL_WIDTH = 900;
+        private const int SCHOOL_HEIGHT = 900;
+        private const float SCHOOL_SCALE = 0.1f;
         private const int SCHOOL_X = CENTER_X;
         private const int SCHOOL_Y = CENTER_Y;
         private const float SCHOOL_ORIGIN_X = SCHOOL_WIDTH / 2;
@@ -50,9 +50,9 @@ namespace Micycle
         private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
 
-        private const int CITY_WIDTH = 188;
-        private const int CITY_HEIGHT = 365;
-        private const float CITY_SCALE = 0.5f;
+        private const int CITY_WIDTH = 900;
+        private const int CITY_HEIGHT = 900;
+        private const float CITY_SCALE = 0.1f;
         private const int CITY_X = CENTER_X;
         private const int CITY_Y = CENTER_Y - 300;
         private const float CITY_ORIGIN_X = CITY_WIDTH / 2;
@@ -70,9 +70,9 @@ namespace Micycle
         private const float CITY_EAST_ENTRANCE_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float CITY_EAST_ENTRANCE_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 4;
 
-        private const int RND_WIDTH = 188;
-        private const int RND_HEIGHT = 365;
-        private const float RND_SCALE = 0.5f;
+        private const int RND_WIDTH = 900;
+        private const int RND_HEIGHT = 900;
+        private const float RND_SCALE = 0.1f;
         private const int RND_X = CENTER_X + 300;
         private const int RND_Y = CENTER_Y + 225;
         private const float RND_ORIGIN_X = RND_WIDTH / 2;
@@ -90,9 +90,9 @@ namespace Micycle
         private const float RND_SOUTH_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 4;
         private const float RND_SOUTH_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         
-        private const int FACTORY_WIDTH = 188;
-        private const int FACTORY_HEIGHT = 365;
-        private const float FACTORY_SCALE = 0.5f;
+        private const int FACTORY_WIDTH = 900;
+        private const int FACTORY_HEIGHT = 900;
+        private const float FACTORY_SCALE = 0.1f;
         private const int FACTORY_X = CENTER_X - 300;
         private const int FACTORY_Y = CENTER_Y + 225;
         private const float FACTORY_ORIGIN_X = FACTORY_WIDTH / 2;
@@ -277,7 +277,7 @@ namespace Micycle
         private const int COLLISION_MAP_HEIGHT = 11;
         private const float COLLISION_MAP_X_OFFSET = 2;
         private const float COLLISION_MAP_Y_OFFSET = 1;
-        private const int O = -1;
+        private const int O = 9;
         private const int M = 0;
         private const int X = 1;
         private const int I = 2;
@@ -314,9 +314,28 @@ namespace Micycle
         };
 
         private List<Texture2D> collisionBodiesTextures;
-        private static List<Vector2> collisionBodiesPositions;
-        private static List<float> collisionBodiesRotations;
+        private List<Vector2> collisionBodiesPositions;
+        private List<float> collisionBodiesRotations;
         private List<Body> collisionBodies;
+
+        private const int ROAD_TEXTURE_KINDS = 10;
+        private static readonly string[] ROAD_TEXTURE_KIND_NAMES = 
+        { 
+            "RoadImage\\FLOOR_TILE", 
+            "RoadImage\\BUILDING_IN", 
+            "RoadImage\\STRAIGHT",
+            "RoadImage\\STRAIGHT",
+            "RoadImage\\CORNER", 
+            "RoadImage\\CORNER", 
+            "RoadImage\\CORNER", 
+            "RoadImage\\CORNER", 
+            "RoadImage\\BUILDING_CORNER",
+            "RoadImage\\GRASS_TILE"
+        };
+        private Texture2D[] roadTextures;
+        private List<Texture2D> roadTexturesToDraw;
+        private List<Vector2> roadTexturePositions;
+        private List<float> roadTextureRotations;
 
         #endregion
 
@@ -334,6 +353,9 @@ namespace Micycle
         private MiButton factoryButton;
 
         #endregion
+
+        private const float BACKGROUND_SCALE = 4;
+        private Texture2D background;
 
         private MiAnimatingComponent cursor;
         private MicycleGameSystem system;
@@ -530,7 +552,6 @@ namespace Micycle
                 }
                 else if (system.Wait(ref sema.Reject))
                 {
-                    System.Console.WriteLine("Rejected");
                     // mouseBody.IgnoreCollisionWith(backgroundBody);
                     nextGoal = ConvertUnits.ToSimUnits(new Vector2(path.RejectWaitQueueTailX, path.RejectWaitQueueTailY) - MiResolution.Center);
                     while (Vector2.DistanceSquared(mouseBody.Position, nextGoal) > ConvertUnits.ToSimUnits(DESTINATION_REACHED_LAXITY))
@@ -560,7 +581,6 @@ namespace Micycle
                 }
                 else yield return MOUSE_MOVETIME;
             }
-             */
             mice.Remove(mouseBody);
             world.RemoveBody(mouseBody);
         }
@@ -641,6 +661,7 @@ namespace Micycle
             debugView.LoadContent(Game.GraphicsDevice, Game.Content);
             camera = new Camera2D(Game.GraphicsDevice);
 #endif
+            background = Game.Content.Load<Texture2D>("RoadImage\\GRASS_TILE");
 
             collisionTextures = new Texture2D[COLLISION_TEXTURE_KINDS];
             for (int i = 0; i < COLLISION_TEXTURE_KINDS; i++)
@@ -690,10 +711,36 @@ namespace Micycle
                 collisionBodies.Add(collisionBody);
             }
 
-            school.AddTexture(Game.Content.Load<Texture2D>("School"), 0);
-            city.AddTexture(Game.Content.Load<Texture2D>("City"), 0);
-            rnd.AddTexture(Game.Content.Load<Texture2D>("RnD"), 0);
-            factory.AddTexture(Game.Content.Load<Texture2D>("Factory"), 0);
+            roadTextures = new Texture2D[ROAD_TEXTURE_KINDS];
+            for (int i = 0; i < ROAD_TEXTURE_KINDS; i++)
+                roadTextures[i] = Game.Content.Load<Texture2D>(ROAD_TEXTURE_KIND_NAMES[i]);
+
+            roadTexturesToDraw = new List<Texture2D>();
+            for (int i = 0; i < COLLISION_MAP_WIDTH; i++)
+                for (int j = 0; j < COLLISION_MAP_HEIGHT; j++)
+                    if (COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != O && COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != M)
+                        roadTexturesToDraw.Add(roadTextures[COLLISION_BODIES_TEXTURE_KIND_MAP[j][i]]);
+
+            roadTexturePositions = new List<Vector2>();
+            for (int i = 0; i < COLLISION_MAP_WIDTH; i++)
+                for (int j = 0; j < COLLISION_MAP_HEIGHT; j++)
+                    if (COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != O && COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != M)
+                        roadTexturePositions.Add(new Vector2((i + COLLISION_MAP_X_OFFSET) * COLLISION_TEXTURE_WIDTH * COLLISION_TEXTURE_SCALE, (j + COLLISION_MAP_Y_OFFSET) * COLLISION_TEXTURE_HEIGHT * COLLISION_TEXTURE_SCALE));
+
+            roadTextureRotations = new List<float>();
+            for (int i = 0; i < COLLISION_MAP_WIDTH; i++)
+                for (int j = 0; j < COLLISION_MAP_HEIGHT; j++)
+                    if (COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != O && COLLISION_BODIES_TEXTURE_KIND_MAP[j][i] != M)
+                    {
+                        float rotation;
+                        COLLISION_BODIES_ROTATION_MAP.TryGetValue(COLLISION_BODIES_TEXTURE_KIND_MAP[j][i], out rotation);
+                        roadTextureRotations.Add(rotation);
+                    }
+
+            school.AddTexture(Game.Content.Load<Texture2D>("Buildings\\SCHOOL"), 0);
+            city.AddTexture(Game.Content.Load<Texture2D>("Buildings\\CITY"), 0);
+            rnd.AddTexture(Game.Content.Load<Texture2D>("Buildings\\LAB"), 0);
+            factory.AddTexture(Game.Content.Load<Texture2D>("Buildings\\FACTORY"), 0);
 
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
 
@@ -797,21 +844,22 @@ namespace Micycle
 
         public override void Draw(GameTime gameTime)
         {
-            /**
+            Game.SpriteBatch.Draw(background, Vector2.Zero, null, Color.White, 0, Vector2.Zero, BACKGROUND_SCALE, SpriteEffects.None, 0);
+
+            for (int i = 0; i < roadTexturesToDraw.Count; i++)
+                if (roadTexturesToDraw[i] != null)
+                    Game.SpriteBatch.Draw(roadTexturesToDraw[i], roadTexturePositions[i], null, Color.White, roadTextureRotations[i], COLLISION_TEXTURE_ORIGIN, COLLISION_TEXTURE_SCALE, SpriteEffects.None, 0);
+
+            foreach (Body mouse in mice)
+                Game.SpriteBatch.Draw(mouseImage, ConvertUnits.ToDisplayUnits(mouse.Position) + MiResolution.Center, null, Color.White, mouse.Rotation, MOUSE_ORIGIN, MOUSE_SCALE, SpriteEffects.None, 0);
+
             school.Draw(gameTime);
             city.Draw(gameTime);
             rnd.Draw(gameTime);
             factory.Draw(gameTime);
-             */
 
-            for (int i = 0; i < collisionBodiesTextures.Count; i++)
-                if (collisionBodiesTextures[i] != null)
-                    Game.SpriteBatch.Draw(collisionBodiesTextures[i], collisionBodiesPositions[i], null, Color.White, collisionBodiesRotations[i], COLLISION_TEXTURE_ORIGIN, COLLISION_TEXTURE_SCALE, SpriteEffects.None, 0);
-
-            foreach (Body mouse in mice)
-                Game.SpriteBatch.Draw(mouseImage, ConvertUnits.ToDisplayUnits(mouse.Position) + MiResolution.Center, null, Color.White, mouse.Rotation, MOUSE_ORIGIN, MOUSE_SCALE, SpriteEffects.None, 0);
-             
             cursor.Draw(gameTime);
+
             Game.SpriteBatch.DrawString(Game.Content.Load<SpriteFont>("Default"), system.printStats(), Vector2.Zero, Color.Black);
 
 #if DEBUG

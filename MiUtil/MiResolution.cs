@@ -129,13 +129,13 @@ namespace MiUtil
             // Start by reseting viewport to (0,0,1,1)
             // FullViewport();
             // Clear to Black
-            // device.GraphicsDevice.Clear(Color.Black);
+            device.GraphicsDevice.Clear(Color.Black);
             // Calculate Proper Viewport according to Aspect Ratio
             ResetViewport();
             // and clear that
             // This way we are gonna have black bars if aspect ratio requires it and
             // the clear color on the rest
-            device.GraphicsDevice.Clear(Color.CornflowerBlue);
+            // device.GraphicsDevice.Clear(Color.CornflowerBlue);
         }
 
         private static void RecreateScaleMatrix()
