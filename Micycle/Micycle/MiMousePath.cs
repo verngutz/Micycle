@@ -1,53 +1,38 @@
-﻿namespace Micycle
+﻿using Microsoft.Xna.Framework;
+
+using FarseerPhysics.SamplesFramework;
+
+using MiUtil;
+
+namespace Micycle
 {
     class MiMousePath
     {
-        private float sourceX;
-        private float sourceY;
-        private float sourceExitX;
-        private float sourceExitY;
-        private float waitQueueHeadX;
-        private float waitQueueHeadY;
-        private float acceptDestX;
-        private float acceptDestY;
-        private float rejectWaitQueueTailX;
-        private float rejectWaitQueueTailY;
-        private float rejectWaitQueueHeadX;
-        private float rejectWaitQueueHeadY;
-        private float rejectDestX;
-        private float rejectDestY;
+        private Vector2 source;
+        private Vector2 acceptWaitQueueTail;
+        private Vector2 acceptWaitQueueHead;
+        private Vector2 acceptDest;
+        private Vector2 rejectWaitQueueTail;
+        private Vector2 rejectWaitQueueHead;
+        private Vector2 rejectDest;
 
-        public float SourceX { get { return sourceX; } }
-        public float SourceY { get { return sourceY; } }
-        public float SourceExitX { get { return sourceExitX; } }
-        public float SourceExitY { get { return sourceExitY; } }
-        public float WaitQueueHeadX { get { return waitQueueHeadX; } }
-        public float WaitQueueHeadY { get { return waitQueueHeadY; } }
-        public float AcceptDestX { get { return acceptDestX; } }
-        public float AcceptDestY { get { return acceptDestY; } }
-        public float RejectDestX { get { return rejectDestX; } }
-        public float RejectDestY { get { return rejectDestY; } }
-        public float RejectWaitQueueTailX { get { return rejectWaitQueueTailX; } }
-        public float RejectWaitQueueTailY { get { return rejectWaitQueueTailY; } }
-        public float RejectWaitQueueHeadX { get { return rejectWaitQueueHeadX; } }
-        public float RejectWaitQueueHeadY { get { return rejectWaitQueueHeadY; } }
+        public Vector2 Source { get { return source; } }
+        public Vector2 AcceptWaitQueueTail { get { return acceptWaitQueueTail; } }
+        public Vector2 AcceptWaitQueueHead { get { return acceptWaitQueueHead; } }
+        public Vector2 AcceptDest { get { return acceptDest; } }
+        public Vector2 RejectWaitQueueTail { get { return rejectWaitQueueTail; } }
+        public Vector2 RejectWaitQueueHead { get { return rejectWaitQueueHead; } }
+        public Vector2 RejectDest { get { return rejectDest; } }
 
-        public MiMousePath(float source_x, float source_y, float source_exit_x, float source_exit_y, float wait_queue_head_x, float wait_queue_head_y, float accept_dest_x, float accept_dest_y, float reject_dest_x, float reject_dest_y, float reject_wait_queue_tail_x, float reject_wait_queue_tail_y, float reject_wait_queue_head_x, float reject_wait_queue_head_y)
+        public MiMousePath(Vector2 source, Vector2 accept_wait_queue_tail, Vector2 accept_wait_queue_head, Vector2 accept_dest, Vector2 reject_wait_queue_tail, Vector2 reject_wait_queue_head, Vector2 reject_dest)
         {
-            sourceX = source_x;
-            sourceY = source_y;
-            sourceExitX = source_exit_x;
-            sourceExitY = source_exit_y;
-            waitQueueHeadX = wait_queue_head_x;
-            waitQueueHeadY = wait_queue_head_y;
-            acceptDestX = accept_dest_x;
-            acceptDestY = accept_dest_y;
-            rejectDestX = reject_dest_x;
-            rejectDestY = reject_dest_y;
-            rejectWaitQueueTailX = reject_wait_queue_tail_x;
-            rejectWaitQueueTailY = reject_wait_queue_tail_y;
-            rejectWaitQueueHeadX = reject_wait_queue_head_x;
-            rejectWaitQueueHeadY = reject_wait_queue_head_y;
+            this.source = ConvertUnits.ToSimUnits(source - MiResolution.Center);
+            this.acceptWaitQueueTail = ConvertUnits.ToSimUnits(accept_wait_queue_tail - MiResolution.Center);
+            this.acceptWaitQueueHead = ConvertUnits.ToSimUnits(accept_wait_queue_head - MiResolution.Center);
+            this.acceptDest = ConvertUnits.ToSimUnits(accept_dest - MiResolution.Center);
+            this.rejectWaitQueueTail = ConvertUnits.ToSimUnits(reject_wait_queue_tail - MiResolution.Center);
+            this.rejectWaitQueueHead = ConvertUnits.ToSimUnits(reject_wait_queue_head - MiResolution.Center);
+            this.rejectDest = ConvertUnits.ToSimUnits(reject_dest - MiResolution.Center);
         }
     }
 }
