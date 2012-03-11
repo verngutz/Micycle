@@ -231,7 +231,6 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Compile Include="Sprites\Rat\Prototype00.png">
       <Name>Prototype00</Name>

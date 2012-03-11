@@ -774,11 +774,13 @@ namespace Micycle
             camera.Update(gameTime);
 #endif
 
+            /**
             school.Update(gameTime);
             city.Update(gameTime);
             rnd.Update(gameTime);
             factory.Update(gameTime);
             cursor.Update(gameTime);
+             */
 
             if (system.Enabled)
             {
@@ -869,12 +871,10 @@ namespace Micycle
             foreach (Body mouse in mice)
                 Game.SpriteBatch.Draw(mouseImage, ConvertUnits.ToDisplayUnits(mouse.Position) + MiResolution.Center, null, Color.White, mouse.Rotation, MOUSE_ORIGIN, MOUSE_SCALE, SpriteEffects.None, 0);
 
-            /**
             school.Draw(gameTime);
             city.Draw(gameTime);
             rnd.Draw(gameTime);
             factory.Draw(gameTime);
-             */
 
             cursor.Draw(gameTime);
 
