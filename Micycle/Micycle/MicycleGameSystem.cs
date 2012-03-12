@@ -7,6 +7,8 @@ namespace Micycle
 {
     class MicycleGameSystem : MiComponent
     {
+        public const ushort TIME_LIMIT = 300;
+
         public static Random rnd = new Random();
 
         private float cityMoney;
@@ -156,6 +158,7 @@ namespace Micycle
             RndToSchool = new MiSemaphoreSet();
             RndToFactory = new MiSemaphoreSet();
             FactoryToCity = new MiSemaphoreSet();
+            FactoryToRnd = new MiSemaphoreSet();
         }
         public MicycleGameSystem(Micycle game)
             : base(game)

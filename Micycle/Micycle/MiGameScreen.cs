@@ -258,6 +258,7 @@ namespace Micycle
         #region Neighboring Screens or Menus
 
         private MiInGameMenu inGameMenu;
+        private MiGameOverScreen gameOverScreen;
         private MiFactoryMenu factoryMenu;
         private MiSchoolMenu schoolMenu;
         private MiRndMenu rndMenu;
@@ -405,8 +406,8 @@ namespace Micycle
         private const int TIME_LIMIT_ICON_HEIGHT = 50;
         private const float TIME_LIMIT_ICON_SCALE = 0.5f;
         private Vector2 timeLimitTextPosition;
-        private const ushort TIME_LIMIT = 300;
         private double timeLeft;
+        private bool gameRunning;
 
         #endregion
 
@@ -468,6 +469,7 @@ namespace Micycle
             cursor = new MiAnimatingComponent(game, SCHOOL_X, SCHOOL_Y, 0.94f, 0, 50, 37.5f);
             system = new MicycleGameSystem(game);
             inGameMenu = new MiInGameMenu(game, system);
+            gameOverScreen = new MiGameOverScreen(game, system);
             mice = new List<Body>();
             inGameScripts = new MiScriptEngine(game);
             world = new World(Vector2.Zero);
@@ -615,7 +617,8 @@ namespace Micycle
 
             timeLimitIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 3 * barWidth, TOP_PADDING, TIME_LIMIT_ICON_SCALE, 0, 0, 0);
             timeLimitTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + TIME_LIMIT_ICON_WIDTH * TIME_LIMIT_ICON_SCALE + 3 * barWidth, TOP_PADDING);
-            timeLeft = TIME_LIMIT;
+            timeLeft = MicycleGameSystem.TIME_LIMIT;
+            gameRunning = true;
 
             #endregion
 
@@ -805,6 +808,20 @@ namespace Micycle
             }
         }
 
+        private IEnumerator<ulong> GameOver()
+        {
+            yield return 1;
+            system.Enabled = false;
+            Game.ToUpdate.Push(gameOverScreen);
+            Game.ToDraw.AddLast(gameOverScreen);
+            IEnumerator<ulong> entry = gameOverScreen.EntrySequence();
+            do
+            {
+                yield return entry.Current;
+            }
+            while (entry.MoveNext());
+        }
+
         public override void LoadContent()
         {
 
@@ -914,6 +931,7 @@ namespace Micycle
             statsFont = Game.Content.Load<SpriteFont>("Default");
 
             inGameMenu.LoadContent();
+            gameOverScreen.LoadContent();
             schoolMenu.LoadContent();
             factoryMenu.LoadContent();
             rndMenu.LoadContent();
@@ -1016,6 +1034,11 @@ namespace Micycle
                 if (timeLeft <= 0)
                 {
                     timeLeft = 0;
+                    if (gameRunning)
+                    {
+                        gameRunning = false;
+                        Game.ScriptEngine.ExecuteScript(new MiScript(GameOver));
+                    }
                 }
                 economyBar.Height = (int)(economyBarFull.Height * system.EconomyGoalProgress);
                 economyBar.Y = GOAL_BAR_Y + GOAL_BAR_HEIGHT - economyBar.Height;
@@ -1071,6 +1094,7 @@ namespace Micycle
             Game.SpriteBatch.Draw(barTexture, educationBar, technologyBarColor);
 
 #if DEBUG
+            Game.SpriteBatch.DrawString(statsFont, system.printStats(), new Vector2(0, 50), Color.Black);
             //Matrix projection = camera.SimProjection * MiResolution.GetTransformationMatrix();
             //Matrix view = camera.SimView;
 
