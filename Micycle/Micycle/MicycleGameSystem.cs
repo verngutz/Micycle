@@ -168,6 +168,22 @@ namespace Micycle
             Init();
         }
 
+        // TO-DO: Put actual data
+        public float GetCash()
+        {
+            return 0.5f;
+        }
+
+        public float GetTechPoints()
+        {
+            return 0.5f;
+        }
+
+        public float GetRobotCost()
+        {
+            return 0.4f;
+        }
+
         public int GetTotalPopulation() 
         {
             int population = cityPeople + cityBums + researchers + factoryWorkers + schoolTeachers;

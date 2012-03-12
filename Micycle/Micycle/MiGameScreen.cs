@@ -355,6 +355,53 @@ namespace Micycle
 
         #endregion
 
+        #region Player Game Resource Stats
+
+        private const int TOP_PADDING = 5;
+        private const int LEFT_PADDING = 5;
+        private const int RIGHT_PADDING = 5;
+        private const int BAR_HEIGHT = 20;
+
+        private Texture2D barBackgroundTexture;
+        private Texture2D barTexture;
+
+        private MiAnimatingComponent cashIcon;
+        private const int CASH_ICON_WIDTH = 50;
+        private const int CASH_ICON_HEIGHT = 50;
+        private const float CASH_ICON_SCALE = 0.5f;
+        private Rectangle cashBarFull;
+        private Rectangle cashBar;
+        private Color cashBarColor;
+
+        private MiAnimatingComponent techPointsIcon;
+        private const int TECH_POINTS_ICON_WIDTH = 50;
+        private const int TECH_POINTS_ICON_HEIGHT = 50;
+        private const float TECH_POINTS_ICON_SCALE = 0.5f;
+        private Rectangle techPointsBarFull;
+        private Rectangle techPointsBar;
+        private Color techPointsBarColor;
+
+        private SpriteFont statsFont;
+
+        private MiAnimatingComponent populationIcon;
+        private const int POPULATION_ICON_WIDTH = 50;
+        private const int POPULATION_ICON_HEIGHT = 50;
+        private const float POPULATION_ICON_SCALE = 0.5f;
+        private Vector2 populationTextPosition;
+
+        private MiAnimatingComponent timeLimitIcon;
+        private const int TIME_LIMIT_ICON_WIDTH = 50;
+        private const int TIME_LIMIT_ICON_HEIGHT = 50;
+        private const float TIME_LIMIT_ICON_SCALE = 0.5f;
+        private Vector2 timeLimitTextPosition;
+        private const ushort TIME_LIMIT = 300;
+        private double timeLeft;
+
+        #endregion
+
+        #region Player Game Goal Stats
+        #endregion
+
         private const float BACKGROUND_SCALE = 4;
         private Texture2D background;
 
@@ -498,6 +545,28 @@ namespace Micycle
                     system.FactoryRightButtonAction();
                     return null;
                 });
+
+            #endregion
+
+            #region Player Game Stats Initialization
+
+            float barWidth = (MiResolution.VirtualWidth - (LEFT_PADDING + RIGHT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + TIME_LIMIT_ICON_WIDTH * TIME_LIMIT_ICON_SCALE)) / 4;
+            cashIcon = new MiAnimatingComponent(game, LEFT_PADDING, TOP_PADDING, CASH_ICON_SCALE, 0, 0, 0);
+            cashBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, (int)barWidth, BAR_HEIGHT);
+            cashBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, 0, BAR_HEIGHT);
+            cashBarColor = Color.Green;
+
+            techPointsIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + barWidth, TOP_PADDING, TECH_POINTS_ICON_SCALE, 0, 0, 0);
+            techPointsBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, (int)barWidth, BAR_HEIGHT);
+            techPointsBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, 0, BAR_HEIGHT);
+            techPointsBarColor = Color.Green;
+
+            populationIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + 2 * barWidth, TOP_PADDING, POPULATION_ICON_SCALE, 0, 0, 0);
+            populationTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 2 * barWidth, TOP_PADDING);
+
+            timeLimitIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 3 * barWidth, TOP_PADDING, TIME_LIMIT_ICON_SCALE, 0, 0, 0);
+            timeLimitTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + TIME_LIMIT_ICON_WIDTH * TIME_LIMIT_ICON_SCALE + 3 * barWidth, TOP_PADDING);
+            timeLeft = TIME_LIMIT;
 
             #endregion
 
@@ -762,6 +831,15 @@ namespace Micycle
 
             mouseImage = Game.Content.Load<Texture2D>("mice");
 
+            barBackgroundTexture = Game.Content.Load<Texture2D>("button");
+            barTexture = Game.Content.Load<Texture2D>("button");
+            cashIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            techPointsIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            populationIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            timeLimitIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+
+            statsFont = Game.Content.Load<SpriteFont>("Default");
+
             inGameMenu.LoadContent();
             schoolMenu.LoadContent();
             factoryMenu.LoadContent();
@@ -774,13 +852,7 @@ namespace Micycle
             camera.Update(gameTime);
 #endif
 
-            /**
-            school.Update(gameTime);
-            city.Update(gameTime);
-            rnd.Update(gameTime);
-            factory.Update(gameTime);
             cursor.Update(gameTime);
-             */
 
             if (system.Enabled)
             {
@@ -857,6 +929,10 @@ namespace Micycle
                         {
                             return SendMouse(RND_TO_FACTORY, system.RndToFactory);
                         }));
+
+                cashBar.Width = (int)(cashBarFull.Width * system.GetCash());
+                techPointsBar.Width = (int)(techPointsBarFull.Width * system.GetTechPoints());
+                timeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
 
@@ -878,7 +954,16 @@ namespace Micycle
 
             cursor.Draw(gameTime);
 
-            Game.SpriteBatch.DrawString(Game.Content.Load<SpriteFont>("Default"), system.printStats(), Vector2.Zero, Color.Black);
+            cashIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, cashBarFull, Color.White);
+            Game.SpriteBatch.Draw(barTexture, cashBar, cashBarColor);
+            techPointsIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, techPointsBarFull, Color.White);
+            Game.SpriteBatch.Draw(barTexture, techPointsBar, techPointsBarColor);
+            populationIcon.Draw(gameTime);
+            Game.SpriteBatch.DrawString(statsFont, system.GetTotalPopulation().ToString(), populationTextPosition, Color.White);
+            timeLimitIcon.Draw(gameTime);
+            Game.SpriteBatch.DrawString(statsFont, (ushort)(timeLeft / 60) + ":" + ((ushort)(timeLeft % 60)).ToString().PadLeft(2, '0'), timeLimitTextPosition, Color.White);
 
 #if DEBUG
             //Matrix projection = camera.SimProjection * MiResolution.GetTransformationMatrix();

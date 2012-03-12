@@ -58,6 +58,7 @@ namespace Micycle
         private const int CURSOR_HEIGHT = 40;
         private const int CURSOR_ORIGIN_X = CURSOR_WIDTH / 2;
         private const int CURSOR_ORIGIN_Y = CURSOR_HEIGHT / 2;
+        private const float CURSOR_ROTATE = (float)Math.PI * 3 / 4;
 
         private SpriteFont menuFont;
 
@@ -114,7 +115,7 @@ namespace Micycle
             //
             // Cursor
             //
-            cursorUpperLeftCorner = new MiAnimatingComponent(game, (MiResolution.Center.X - WIDTH / 2) + CURSOR_PADDING, resumePosition.Y, 1, 0, CURSOR_ORIGIN_X, CURSOR_ORIGIN_Y);
+            cursorUpperLeftCorner = new MiAnimatingComponent(game, (MiResolution.Center.X - WIDTH / 2) + CURSOR_PADDING, resumePosition.Y, 1, CURSOR_ROTATE, CURSOR_ORIGIN_X, CURSOR_ORIGIN_Y);
 
 
             //
