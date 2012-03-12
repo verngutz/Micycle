@@ -41,11 +41,11 @@ namespace Micycle
         private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
         private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
-        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - 3 * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float SCHOOL_WEST_EXIT_Y = SCHOOL_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + 3 * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float SCHOOL_EAST_EXIT_Y = SCHOOL_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
@@ -63,12 +63,12 @@ namespace Micycle
         private const float CITY_SOUTH_ENTRANCE_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         private const float CITY_WEST_EXIT_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float CITY_WEST_EXIT_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float CITY_WEST_ENTRANCE_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float CITY_WEST_ENTRANCE_Y = CITY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
+        private const float CITY_WEST_ENTRANCE_X = CITY_X - 5.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float CITY_WEST_ENTRANCE_Y = CITY_Y - 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
         private const float CITY_EAST_EXIT_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float CITY_EAST_EXIT_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float CITY_EAST_ENTRANCE_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float CITY_EAST_ENTRANCE_Y = CITY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
+        private const float CITY_EAST_ENTRANCE_X = CITY_X + 5.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float CITY_EAST_ENTRANCE_Y = CITY_Y - 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
 
         private const int RND_WIDTH = 900;
         private const int RND_HEIGHT = 900;
@@ -77,14 +77,14 @@ namespace Micycle
         private const int RND_Y = CENTER_Y + 225;
         private const float RND_ORIGIN_X = RND_WIDTH / 2;
         private const float RND_ORIGIN_Y = RND_HEIGHT / 2;
-        private const float RND_EAST_EXIT_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 + 60;
-        private const float RND_EAST_EXIT_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_EAST_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float RND_EAST_EXIT_X = RND_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_EAST_EXIT_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_EAST_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float RND_EAST_ENTRANCE_Y = RND_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float RND_WEST_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float RND_WEST_EXIT_Y = RND_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_WEST_ENTRANCE_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float RND_WEST_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
+        private const float RND_WEST_ENTRANCE_X = RND_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_WEST_ENTRANCE_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float RND_SOUTH_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
         private const float RND_SOUTH_EXIT_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         private const float RND_SOUTH_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
@@ -97,14 +97,14 @@ namespace Micycle
         private const int FACTORY_Y = CENTER_Y + 225;
         private const float FACTORY_ORIGIN_X = FACTORY_WIDTH / 2;
         private const float FACTORY_ORIGIN_Y = FACTORY_HEIGHT / 2;
-        private const float FACTORY_WEST_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 - 60;
-        private const float FACTORY_WEST_EXIT_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float FACTORY_WEST_ENTRANCE_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float FACTORY_WEST_EXIT_X = FACTORY_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_WEST_EXIT_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float FACTORY_WEST_ENTRANCE_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float FACTORY_WEST_ENTRANCE_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float FACTORY_EAST_EXIT_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float FACTORY_EAST_EXIT_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float FACTORY_EAST_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
+        private const float FACTORY_EAST_ENTRANCE_X = FACTORY_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
         private const float FACTORY_SOUTH_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
         private const float FACTORY_SOUTH_EXIT_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         private const float FACTORY_SOUTH_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
@@ -219,7 +219,7 @@ namespace Micycle
             new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS), 
             new Vector2(FACTORY_WEST_EXIT_X, FACTORY_WEST_EXIT_Y), 
             new Vector2(CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y),
-            new Vector2(CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS),
+            new Vector2(CITY_X - QUADRANT_RADIUS, CITY_Y - QUADRANT_RADIUS),
             new Vector2(CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y), 
             new Vector2(FACTORY_WEST_ENTRANCE_X, FACTORY_WEST_ENTRANCE_Y),
             new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y - QUADRANT_RADIUS)
@@ -233,7 +233,7 @@ namespace Micycle
         private static readonly Vector2 MOUSE_ORIGIN = new Vector2(MOUSE_R / 2, MOUSE_R / 2);
         private const float MOUSE_SCALE = 0.25f;
         private const float MOUSE_UNCROWDEDNESS = 2;
-        private const float MOUSE_MASS = 0.02f;
+        private const float MOUSE_MASS = 0.2f;
         private const ushort MOUSE_MOVETIME = 20;
         private const float DESTINATION_REACHED_LAXITY = 0.1f;
         private const float MOUSE_MOVE_FORCE = 0.5f;
@@ -400,6 +400,12 @@ namespace Micycle
         #endregion
 
         #region Player Game Goal Stats
+
+        private MiAnimatingComponent economyIcon;
+        private MiAnimatingComponent technologyIcon;
+        private MiAnimatingComponent employmentIcon;
+        private MiAnimatingComponent educationIcon;
+
         #endregion
 
         private const float BACKGROUND_SCALE = 4;
@@ -423,6 +429,7 @@ namespace Micycle
             mice = new List<Body>();
             inGameScripts = new MiScriptEngine(game);
             world = new World(Vector2.Zero);
+
 
             #region City Graphics Initialization
 
@@ -554,12 +561,12 @@ namespace Micycle
             cashIcon = new MiAnimatingComponent(game, LEFT_PADDING, TOP_PADDING, CASH_ICON_SCALE, 0, 0, 0);
             cashBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, (int)barWidth, BAR_HEIGHT);
             cashBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, 0, BAR_HEIGHT);
-            cashBarColor = Color.Green;
+            cashBarColor = Color.Violet;
 
             techPointsIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + barWidth, TOP_PADDING, TECH_POINTS_ICON_SCALE, 0, 0, 0);
             techPointsBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, (int)barWidth, BAR_HEIGHT);
             techPointsBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, 0, BAR_HEIGHT);
-            techPointsBarColor = Color.Green;
+            techPointsBarColor = Color.Orange;
 
             populationIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + 2 * barWidth, TOP_PADDING, POPULATION_ICON_SCALE, 0, 0, 0);
             populationTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 2 * barWidth, TOP_PADDING);
@@ -640,7 +647,6 @@ namespace Micycle
                         yield return MOUSE_MOVETIME;
                     }
                      * */
-                    mouseBody.ResetDynamics();
                     while (Vector2.DistanceSquared(mouseBody.Position, path.RejectWaitQueueHead) > DESTINATION_REACHED_LAXITY)
                     {
                         mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(path.RejectWaitQueueHead - mouseBody.Position);
@@ -955,10 +961,10 @@ namespace Micycle
             cursor.Draw(gameTime);
 
             cashIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, cashBarFull, Color.White);
+            Game.SpriteBatch.Draw(barBackgroundTexture, cashBarFull, Color.Black);
             Game.SpriteBatch.Draw(barTexture, cashBar, cashBarColor);
             techPointsIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, techPointsBarFull, Color.White);
+            Game.SpriteBatch.Draw(barBackgroundTexture, techPointsBarFull, Color.Black);
             Game.SpriteBatch.Draw(barTexture, techPointsBar, techPointsBarColor);
             populationIcon.Draw(gameTime);
             Game.SpriteBatch.DrawString(statsFont, system.GetTotalPopulation().ToString(), populationTextPosition, Color.White);
