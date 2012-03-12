@@ -84,11 +84,11 @@ namespace Micycle
         private const float RND_WEST_EXIT_X = RND_X - 0.5f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float RND_WEST_EXIT_Y = RND_Y - 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
         private const float RND_WEST_ENTRANCE_X = RND_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
-        private const float RND_WEST_ENTRANCE_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_SOUTH_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float RND_SOUTH_EXIT_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
-        private const float RND_SOUTH_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float RND_SOUTH_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float RND_WEST_ENTRANCE_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_SOUTH_EXIT_X = RND_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_SOUTH_EXIT_Y = RND_Y + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_SOUTH_ENTRANCE_X = RND_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_SOUTH_ENTRANCE_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
         
         private const int FACTORY_WIDTH = 900;
         private const int FACTORY_HEIGHT = 900;
@@ -105,10 +105,10 @@ namespace Micycle
         private const float FACTORY_EAST_EXIT_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float FACTORY_EAST_ENTRANCE_X = FACTORY_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
-        private const float FACTORY_SOUTH_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float FACTORY_SOUTH_EXIT_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
-        private const float FACTORY_SOUTH_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float FACTORY_SOUTH_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float FACTORY_SOUTH_EXIT_X = FACTORY_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_SOUTH_EXIT_Y = FACTORY_Y + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float FACTORY_SOUTH_ENTRANCE_X = FACTORY_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_SOUTH_ENTRANCE_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
 
         #endregion
 
@@ -223,6 +223,17 @@ namespace Micycle
             new Vector2(CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y), 
             new Vector2(FACTORY_WEST_ENTRANCE_X, FACTORY_WEST_ENTRANCE_Y),
             new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y - QUADRANT_RADIUS)
+        );
+
+        private static readonly MiMousePath FACTORY_TO_RND = new MiMousePath
+        (
+            new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS),
+            new Vector2(FACTORY_SOUTH_EXIT_X, FACTORY_SOUTH_EXIT_Y),
+            new Vector2(RND_SOUTH_ENTRANCE_X, RND_SOUTH_ENTRANCE_Y),
+            new Vector2(RND_X + QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS),
+            new Vector2(RND_SOUTH_EXIT_X, RND_SOUTH_EXIT_Y),
+            new Vector2(FACTORY_SOUTH_ENTRANCE_X, FACTORY_SOUTH_ENTRANCE_Y),
+            new Vector2(FACTORY_X + QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS)
         );
 
         #endregion
@@ -990,6 +1001,13 @@ namespace Micycle
                         delegate
                         {
                             return SendMouse(RND_TO_FACTORY, system.RndToFactory);
+                        }));
+
+                if(system.FactoryToRnd.SendUnlocked && system.Wait(ref system.FactoryToRnd.SendFromAToB))
+                    inGameScripts.ExecuteScript(new MiScript(
+                        delegate
+                        {
+                            return SendMouse(FACTORY_TO_RND, system.FactoryToRnd);
                         }));
 
                 cashBar.Width = (int)(cashBarFull.Width * system.GetCash());

@@ -70,6 +70,7 @@ namespace Micycle
         public MiSemaphoreSet RndToSchool;
         public MiSemaphoreSet RndToFactory;
         public MiSemaphoreSet FactoryToCity;
+        public MiSemaphoreSet FactoryToRnd;
 
         public void Signal(ref int sema)
         {
