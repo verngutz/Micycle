@@ -77,6 +77,9 @@ namespace Micycle
 
         //If people < retireImmunity, slower retirement
         private int retireImmunity = 5;
+
+        private int cityToSchoolLimitBeforeReject = 25;
+
         public void Signal(ref int sema)
         {
             sema++;
@@ -115,7 +118,7 @@ namespace Micycle
             //students stats
             students = new List<StudentWrapper>();
             schoolTeachers = 1;
-            studyTime = month;
+            studyTime = year;
             schoolCapacity = 25;
             educationBudget = 100;
             educationLevel = 0;
@@ -138,10 +141,10 @@ namespace Micycle
             factoryWorkerCapacity = 10;
             factoryRetirementRate = 0.02f;
             factoryWorkerWage = 25;
-            REVENUE_PER_WORKER = 40;
+            REVENUE_PER_WORKER = 40; //INCOME = REVENUE-WAGE
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
-            factoryDoorWaitLimit = 0;
+            factoryDoorWaitLimit = 1;
             robotsDeployed = 0;
             //birth control
             cityPeopleBirthBias = 0f;
@@ -180,49 +183,52 @@ namespace Micycle
         //
         public float GetCash()
         {
-            return 0.5f;
+            if (ownerMoney < 0) return -0.01f;
+            return ownerMoney;
         }
 
         public float GetTechPoints()
         {
-            return 0.5f;
+            return researchPoints;
         }
 
         public float GetRobotCost()
         {
-            return 0.4f;
+            return robotCost;
         }
         public float GetEducationBudget()
         {
-            return 0.1f;
+            return educationBudget;
         }
         public float GetStudentCapacity()
         {
             // students/capacity
-            return 0.1f;
+            return (float)students.Count/schoolCapacity;
         }
         public float GetTeacherStudentRatio()
         {
-            return 0.1f;
+            return (float)schoolTeachers/students.Count;
         }
         public float GetWorkersCapacity()
         {
             // workers/capacity
-            return 0.1f;
+            return (float)factoryWorkers/factoryWorkerCapacity;
         }
         public float GetRobotsCapacity()
         {
             // robots * (workers/robot conversion) / capacity
-            return 0.1f;
+            return robots*(robotEfficiency)/factoryWorkerCapacity;
         }
         public float GetWorkerWage()
         {
             // translate and scale it so that 0.5f maps to cost of living
-            return 0.1f;
+            if (factoryWorkerWage > 2 * costOfLiving) return 1;
+            return factoryWorkerWage/(2*costOfLiving);
         }
         public float GetRndFunding()
         {
-            return 0.1f;
+            if (researcherWage > 2 * costOfLiving) return 1;
+            return researcherWage/(2*costOfLiving);
         }
         //
         // END TO-DO
@@ -242,10 +248,10 @@ namespace Micycle
         private static int ECONOMY_GOAL = 100;
         private static int TECH_GOAL = 20;
 
-        public float EconomyGoalProgress { get { return (cityMoney / GetTotalPopulation()) / ECONOMY_GOAL; } }
-        public float TechnologyGoalProgress { get { return robotsDeployed / TECH_GOAL; } }
-        public float EmploymentGoalProgress { get { return (GetTotalPopulation()-cityBums)/GetTotalPopulation(); } }
-        public float EducationGoalProgress { get { return getEducationLevel() / max_educationLevel; } }
+        public float EconomyGoalProgress { get { return ((float)cityMoney / GetTotalPopulation()) / ECONOMY_GOAL; } }
+        public float TechnologyGoalProgress { get { return (float)robotsDeployed / TECH_GOAL; } }
+        public float EmploymentGoalProgress { get { return (float)(GetTotalPopulation()-cityBums)/GetTotalPopulation(); } }
+        public float EducationGoalProgress { get { return (float)getEducationLevel() / max_educationLevel; } }
 
         private void AddEducationBudget(int dx) 
         {
@@ -282,10 +288,8 @@ namespace Micycle
             if (dx > 0)
             {
                 for (int i = 0; i < dx; i++)
-                    if ((robots + RndToFactory.SendFromAToB + RndToFactory.HasReachedWaitQueueTail + 1) * robotEfficiency < factoryWorkerCapacity)
-                    {
-                        Signal(ref RndToFactory.SendFromAToB);
-                    }
+                    Signal(ref RndToFactory.SendFromAToB);
+                    
             }
             else
             {
@@ -408,7 +412,11 @@ namespace Micycle
 
         public void RndLeftButtonAction()
         {
-            
+            if (robots > 0)
+            {
+                robots--;
+                Signal(ref RndToFactory.SendFromAToB);
+            }
         }
 
         public void RndRightButtonAction()
@@ -456,7 +464,11 @@ namespace Micycle
 
             if (time % month == 0)
             {
-                ownerMoney += (REVENUE_PER_WORKER - factoryWorkerWage) * factoryWorkers  + robots*REVENUE_PER_WORKER;
+                int income = (int)((REVENUE_PER_WORKER - factoryWorkerWage) * factoryWorkers +
+                              (robots * robotEfficiency) * REVENUE_PER_WORKER);
+                if (income > REVENUE_PER_WORKER * factoryWorkerCapacity)
+                    income = REVENUE_PER_WORKER * factoryWorkerCapacity;
+                ownerMoney += income;
                 ownerMoney -= factoryUpkeep;
                 cityMoney += factoryWorkerWage * factoryWorkers ;
 
@@ -500,10 +512,12 @@ namespace Micycle
 
         public int getEducationLevel() 
         {
-            educationLevel = (int)(educationBudget * schoolTeachers / students.Count);
+            educationLevel = (int)(educationBudget * ((float)schoolTeachers / students.Count));
             if (schoolTeachers > students.Count)
                 educationLevel = (int)educationBudget;
 
+            if (educationLevel > max_educationLevel)
+                return max_educationLevel;
             return educationLevel;
         }
         private void graduateStudent()
@@ -619,6 +633,8 @@ namespace Micycle
                 if (factoryDoorWait == factoryDoorWaitLimit)
                 {
                     Signal(ref SchoolToFactory.Reject);
+                    cityBums++;
+                    factoryDoorWait = 0;
                 }
                 else
                 {
@@ -661,17 +677,13 @@ namespace Micycle
                 schoolTeachers++;
             }
 
-            if (Wait(ref FactoryToCity.HasReachedWaitQueueHead))
-            {
-                Signal(ref FactoryToCity.Accept);
-                cityBums++;
-            }
             if (Wait(ref RndToFactory.HasReachedWaitQueueHead))
             {
                 Signal(ref RndToFactory.Accept);
                 robots++;
                 int delta = (robots * robotEfficiency) + factoryWorkers - factoryWorkerCapacity;
-
+                if (delta > factoryWorkers)
+                    delta = factoryWorkers;
                 if (delta > 0)
                 {
                     for (int i = 0; i < delta; i++)
@@ -680,6 +692,13 @@ namespace Micycle
                     if (factoryWorkers < 0) factoryWorkers = 0;
                 }
             }
+
+            if (Wait(ref FactoryToCity.HasReachedWaitQueueHead))
+            {
+                Signal(ref FactoryToCity.Accept);
+                cityBums++;
+            }
+            
             time++;
             updateCity();
             updateFactory();
@@ -688,14 +707,16 @@ namespace Micycle
             if (cityPeople > 0 && time % schoolSendRate == 0 )
             {
                 int toSend = (int)Math.Ceiling(cityPeople*numKidsSendRate);
-                toSend = Math.Min(toSend, schoolCapacity - students.Count);
+                //toSend = Math.Min(toSend, schoolCapacity - students.Count);
 
                 for (int i = 0; i < toSend; i++)
                 {
-                    if (CityToSchool.HasReachedWaitQueueHead == 15)
+                    if (CityToSchool.GetTotal()- CityToFactory.Accept - CityToFactory.Reject >= cityToSchoolLimitBeforeReject)
                     {
-                        Wait(ref CityToSchool.HasReachedWaitQueueTail);
+                        Wait(ref CityToSchool.HasReachedWaitQueueHead);
                         Signal(ref CityToSchool.Reject);
+                        //System.Console.WriteLine("REJECT");
+                        cityBums++;
                     }
                     Signal(ref CityToSchool.SendFromAToB);
                     
