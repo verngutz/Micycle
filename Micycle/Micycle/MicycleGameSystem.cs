@@ -732,7 +732,7 @@ namespace Micycle
             if (cityPeople > 0 && time % schoolSendRate == 0 )
             {
                 int toSend = (int)Math.Ceiling(cityPeople*numKidsSendRate);
-                //toSend = Math.Min(toSend, schoolCapacity - students.Count);
+                //toSend = Math.Min(toSend, schoolCapacity - students.Count);  
 
                 for (int i = 0; i < toSend; i++)
                 {
