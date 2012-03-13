@@ -629,7 +629,7 @@ namespace Micycle
 
                 for (int i = 0; i < toSend; i++)
                 {
-                    if (CityToSchool.SendFromAToB + CityToSchool.HasReachedWaitQueueTail == 10)
+                    if (CityToSchool.GetTotal() - CityToSchool.Accept - CityToSchool.Reject == 10)
                     {
                         Wait(ref CityToSchool.HasReachedWaitQueueTail);
                         Signal(ref CityToSchool.Reject);
