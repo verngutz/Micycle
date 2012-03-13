@@ -121,7 +121,7 @@ namespace Micycle
             //students stats
             students = new List<StudentWrapper>();
             schoolTeachers = 1;
-            studyTime = year;
+            studyTime = 6*month;
             educationBudget = 100;
             schoolCapacity = (int)educationBudget/5;
             educationLevel = 0;
@@ -132,7 +132,7 @@ namespace Micycle
             researchers = 0;
             researchRate = 0.5f;
             rndRetirementRate = 0.02f;
-            rndPassingRate = 0.30f;
+            rndPassingRate = 0.25f;
             researcherWage = 10;
             rndUpkeep = 0;
             robots = 0 ;
