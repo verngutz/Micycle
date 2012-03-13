@@ -120,7 +120,9 @@
     <Compile Include="MicycleControllerState.cs" />
     <Compile Include="MicycleControls.cs" />
     <Compile Include="MicycleGameSystem.cs" />
+    <Compile Include="MiDialogScreen.cs" />
     <Compile Include="MiFactoryMenu.cs" />
+    <Compile Include="MiGameOverScreen.cs" />
     <Compile Include="MiGameScreen.cs" />
     <Compile Include="MicycleInputHandler.cs" />
     <Compile Include="MiInGameMenu.cs" />

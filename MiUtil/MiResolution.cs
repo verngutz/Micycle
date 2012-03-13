@@ -61,7 +61,6 @@ namespace MiUtil
         {
             width = new_width;
             height = new_height;
-            boundingRectangle = new Rectangle(0, 0, new_width, new_height);
             ApplyResolutionSettings();
         }
 
@@ -76,6 +75,7 @@ namespace MiUtil
             virtualWidth = Width;
             virtualHeight = Height;
             center = new Vector2(Width / 2, Height / 2);
+            boundingRectangle = new Rectangle(0, 0, Width, Height);
             dirtyMatrix = true;
         }
 

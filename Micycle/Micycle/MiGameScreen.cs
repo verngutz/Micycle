@@ -41,13 +41,13 @@ namespace Micycle
         private const float SCHOOL_NORTH_EXIT_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         private const float SCHOOL_NORTH_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
         private const float SCHOOL_NORTH_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
-        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_WEST_EXIT_X = SCHOOL_X - 3 * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float SCHOOL_WEST_EXIT_Y = SCHOOL_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_WEST_ENTRANCE_X = SCHOOL_X - 3 * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float SCHOOL_WEST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_EAST_EXIT_X = SCHOOL_X + 3 * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float SCHOOL_EAST_EXIT_Y = SCHOOL_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float SCHOOL_EAST_ENTRANCE_X = SCHOOL_X + 2.5f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float SCHOOL_EAST_ENTRANCE_Y = SCHOOL_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
 
         private const int CITY_WIDTH = 900;
@@ -63,12 +63,12 @@ namespace Micycle
         private const float CITY_SOUTH_ENTRANCE_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
         private const float CITY_WEST_EXIT_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float CITY_WEST_EXIT_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float CITY_WEST_ENTRANCE_X = CITY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float CITY_WEST_ENTRANCE_Y = CITY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
+        private const float CITY_WEST_ENTRANCE_X = CITY_X - 5.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float CITY_WEST_ENTRANCE_Y = CITY_Y - 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
         private const float CITY_EAST_EXIT_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float CITY_EAST_EXIT_Y = CITY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float CITY_EAST_ENTRANCE_X = CITY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float CITY_EAST_ENTRANCE_Y = CITY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
+        private const float CITY_EAST_ENTRANCE_X = CITY_X + 5.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float CITY_EAST_ENTRANCE_Y = CITY_Y - 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
 
         private const int RND_WIDTH = 900;
         private const int RND_HEIGHT = 900;
@@ -77,18 +77,18 @@ namespace Micycle
         private const int RND_Y = CENTER_Y + 225;
         private const float RND_ORIGIN_X = RND_WIDTH / 2;
         private const float RND_ORIGIN_Y = RND_HEIGHT / 2;
-        private const float RND_EAST_EXIT_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 + 60;
-        private const float RND_EAST_EXIT_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_EAST_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float RND_EAST_EXIT_X = RND_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_EAST_EXIT_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_EAST_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float RND_EAST_ENTRANCE_Y = RND_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_WEST_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float RND_WEST_EXIT_Y = RND_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_WEST_ENTRANCE_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float RND_WEST_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float RND_SOUTH_EXIT_X = RND_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float RND_SOUTH_EXIT_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
-        private const float RND_SOUTH_ENTRANCE_X = RND_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float RND_SOUTH_ENTRANCE_Y = RND_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float RND_WEST_EXIT_X = RND_X - 0.5f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_WEST_EXIT_Y = RND_Y - 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_WEST_ENTRANCE_X = RND_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_WEST_ENTRANCE_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_SOUTH_EXIT_X = RND_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_SOUTH_EXIT_Y = RND_Y + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float RND_SOUTH_ENTRANCE_X = RND_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float RND_SOUTH_ENTRANCE_Y = RND_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
         
         private const int FACTORY_WIDTH = 900;
         private const int FACTORY_HEIGHT = 900;
@@ -97,18 +97,18 @@ namespace Micycle
         private const int FACTORY_Y = CENTER_Y + 225;
         private const float FACTORY_ORIGIN_X = FACTORY_WIDTH / 2;
         private const float FACTORY_ORIGIN_Y = FACTORY_HEIGHT / 2;
-        private const float FACTORY_WEST_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2 - 60;
-        private const float FACTORY_WEST_EXIT_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float FACTORY_WEST_ENTRANCE_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
+        private const float FACTORY_WEST_EXIT_X = FACTORY_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_WEST_EXIT_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float FACTORY_WEST_ENTRANCE_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
         private const float FACTORY_WEST_ENTRANCE_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
         private const float FACTORY_EAST_EXIT_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
         private const float FACTORY_EAST_EXIT_Y = FACTORY_Y - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float FACTORY_EAST_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 2;
-        private const float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 3;
-        private const float FACTORY_SOUTH_EXIT_X = FACTORY_X - COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float FACTORY_SOUTH_EXIT_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
-        private const float FACTORY_SOUTH_ENTRANCE_X = FACTORY_X + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH / 3;
-        private const float FACTORY_SOUTH_ENTRANCE_Y = FACTORY_Y + COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT / 2;
+        private const float FACTORY_EAST_ENTRANCE_X = FACTORY_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_EAST_ENTRANCE_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float FACTORY_SOUTH_EXIT_X = FACTORY_X - 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_SOUTH_EXIT_Y = FACTORY_Y + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
+        private const float FACTORY_SOUTH_ENTRANCE_X = FACTORY_X + 1.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_WIDTH;
+        private const float FACTORY_SOUTH_ENTRANCE_Y = FACTORY_Y + 0.25f * COLLISION_TEXTURE_SCALE * COLLISION_TEXTURE_HEIGHT;
 
         #endregion
 
@@ -219,10 +219,21 @@ namespace Micycle
             new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS), 
             new Vector2(FACTORY_WEST_EXIT_X, FACTORY_WEST_EXIT_Y), 
             new Vector2(CITY_WEST_ENTRANCE_X, CITY_WEST_ENTRANCE_Y),
-            new Vector2(CITY_X - QUADRANT_RADIUS, CITY_Y + QUADRANT_RADIUS),
+            new Vector2(CITY_X - QUADRANT_RADIUS, CITY_Y - QUADRANT_RADIUS),
             new Vector2(CITY_WEST_EXIT_X, CITY_WEST_EXIT_Y), 
             new Vector2(FACTORY_WEST_ENTRANCE_X, FACTORY_WEST_ENTRANCE_Y),
             new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y - QUADRANT_RADIUS)
+        );
+
+        private static readonly MiMousePath FACTORY_TO_RND = new MiMousePath
+        (
+            new Vector2(FACTORY_X - QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS),
+            new Vector2(FACTORY_SOUTH_EXIT_X, FACTORY_SOUTH_EXIT_Y),
+            new Vector2(RND_SOUTH_ENTRANCE_X, RND_SOUTH_ENTRANCE_Y),
+            new Vector2(RND_X + QUADRANT_RADIUS, RND_Y + QUADRANT_RADIUS),
+            new Vector2(RND_SOUTH_EXIT_X, RND_SOUTH_EXIT_Y),
+            new Vector2(FACTORY_SOUTH_ENTRANCE_X, FACTORY_SOUTH_ENTRANCE_Y),
+            new Vector2(FACTORY_X + QUADRANT_RADIUS, FACTORY_Y + QUADRANT_RADIUS)
         );
 
         #endregion
@@ -233,7 +244,7 @@ namespace Micycle
         private static readonly Vector2 MOUSE_ORIGIN = new Vector2(MOUSE_R / 2, MOUSE_R / 2);
         private const float MOUSE_SCALE = 0.25f;
         private const float MOUSE_UNCROWDEDNESS = 2;
-        private const float MOUSE_MASS = 0.02f;
+        private const float MOUSE_MASS = 0.2f;
         private const ushort MOUSE_MOVETIME = 20;
         private const float DESTINATION_REACHED_LAXITY = 0.1f;
         private const float MOUSE_MOVE_FORCE = 0.5f;
@@ -247,6 +258,7 @@ namespace Micycle
         #region Neighboring Screens or Menus
 
         private MiInGameMenu inGameMenu;
+        private MiGameOverScreen gameOverScreen;
         private MiFactoryMenu factoryMenu;
         private MiSchoolMenu schoolMenu;
         private MiRndMenu rndMenu;
@@ -355,6 +367,90 @@ namespace Micycle
 
         #endregion
 
+        #region Player Game Resource Stats
+
+        private const int TOP_PADDING = 5;
+        private const int LEFT_PADDING = 5;
+        private const int RIGHT_PADDING = 5;
+        private const int BAR_THICKNESS = 23;
+
+        private Texture2D barBackgroundTexture;
+        private Texture2D barTexture;
+
+        private MiAnimatingComponent cashIcon;
+        private const int CASH_ICON_WIDTH = 50;
+        private const int CASH_ICON_HEIGHT = 50;
+        private const float CASH_ICON_SCALE = 0.5f;
+        private Rectangle cashBarFull;
+        private Rectangle cashBar;
+        private Color cashBarColor;
+
+        private MiAnimatingComponent techPointsIcon;
+        private const int TECH_POINTS_ICON_WIDTH = 50;
+        private const int TECH_POINTS_ICON_HEIGHT = 50;
+        private const float TECH_POINTS_ICON_SCALE = 0.5f;
+        private Rectangle techPointsBarFull;
+        private Rectangle techPointsBar;
+        private Color techPointsBarColor;
+
+        private SpriteFont statsFont;
+
+        private MiAnimatingComponent populationIcon;
+        private const int POPULATION_ICON_WIDTH = 50;
+        private const int POPULATION_ICON_HEIGHT = 50;
+        private const float POPULATION_ICON_SCALE = 0.5f;
+        private Vector2 populationTextPosition;
+
+        private MiAnimatingComponent timeLimitIcon;
+        private const int TIME_LIMIT_ICON_WIDTH = 50;
+        private const int TIME_LIMIT_ICON_HEIGHT = 50;
+        private const float TIME_LIMIT_ICON_SCALE = 0.5f;
+        private Vector2 timeLimitTextPosition;
+        private double timeLeft;
+        private bool gameRunning;
+
+        #endregion
+
+        #region Player Game Goal Stats
+
+        private const int BOTTOM_PADDING = 5;
+        private const int GOAL_BAR_Y = 650;
+        private const int GOAL_BAR_HEIGHT = 200;
+
+        private MiAnimatingComponent economyIcon;
+        private const int ECONOMY_ICON_WIDTH = 50;
+        private const int ECONOMY_ICON_HEIGHT = 50;
+        private const float ECONOMY_ICON_SCALE = 0.5f;
+        private Rectangle economyBar;
+        private Rectangle economyBarFull;
+        private Color economyBarColor;
+
+        private MiAnimatingComponent technologyIcon;
+        private const int TECHNOLOGY_ICON_WIDTH = 50;
+        private const int TECHNOLOGY_ICON_HEIGHT = 50;
+        private const float TECHNOLOGY_ICON_SCALE = 0.5f;
+        private Rectangle technologyBar;
+        private Rectangle technologyBarFull;
+        private Color technologyBarColor;
+
+        private MiAnimatingComponent employmentIcon;
+        private const int EMPLOYMENT_ICON_WIDTH = 50;
+        private const int EMPLOYMENT_ICON_HEIGHT = 50;
+        private const float EMPLOYMENT_ICON_SCALE = 0.5f;
+        private Rectangle employmentBar;
+        private Rectangle employmentBarFull;
+        private Color employmentBarColor;
+
+        private MiAnimatingComponent educationIcon;
+        private const int EDUCATION_ICON_WIDTH = 50;
+        private const int EDUCATION_ICON_HEIGHT = 50;
+        private const float EDUCATION_ICON_SCALE = 0.5f;
+        private Rectangle educationBar;
+        private Rectangle educationBarFull;
+        private Color educationBarColor;
+
+        #endregion
+
         private const float BACKGROUND_SCALE = 4;
         private Texture2D background;
 
@@ -373,9 +469,11 @@ namespace Micycle
             cursor = new MiAnimatingComponent(game, SCHOOL_X, SCHOOL_Y, 0.94f, 0, 50, 37.5f);
             system = new MicycleGameSystem(game);
             inGameMenu = new MiInGameMenu(game, system);
+            gameOverScreen = new MiGameOverScreen(game, system);
             mice = new List<Body>();
             inGameScripts = new MiScriptEngine(game);
             world = new World(Vector2.Zero);
+
 
             #region City Graphics Initialization
 
@@ -501,6 +599,50 @@ namespace Micycle
 
             #endregion
 
+            #region Player Game Stats Initialization
+
+            float barWidth = (MiResolution.VirtualWidth - (LEFT_PADDING + RIGHT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + TIME_LIMIT_ICON_WIDTH * TIME_LIMIT_ICON_SCALE)) / 4;
+            cashIcon = new MiAnimatingComponent(game, LEFT_PADDING, TOP_PADDING, CASH_ICON_SCALE, 0, 0, 0);
+            cashBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, (int)barWidth, BAR_THICKNESS);
+            cashBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, 0, BAR_THICKNESS);
+            cashBarColor = Color.Violet;
+
+            techPointsIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + barWidth, TOP_PADDING, TECH_POINTS_ICON_SCALE, 0, 0, 0);
+            techPointsBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, (int)barWidth, BAR_THICKNESS);
+            techPointsBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, 0, BAR_THICKNESS);
+            techPointsBarColor = Color.Orange;
+
+            populationIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + 2 * barWidth, TOP_PADDING, POPULATION_ICON_SCALE, 0, 0, 0);
+            populationTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 2 * barWidth, TOP_PADDING);
+
+            timeLimitIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 3 * barWidth, TOP_PADDING, TIME_LIMIT_ICON_SCALE, 0, 0, 0);
+            timeLimitTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + TIME_LIMIT_ICON_WIDTH * TIME_LIMIT_ICON_SCALE + 3 * barWidth, TOP_PADDING);
+            timeLeft = MicycleGameSystem.TIME_LIMIT;
+            gameRunning = true;
+
+            #endregion
+
+            #region Player Game Goal Stats Initialization
+
+            economyIcon = new MiAnimatingComponent(game, LEFT_PADDING, MiResolution.VirtualHeight - BOTTOM_PADDING - ECONOMY_ICON_HEIGHT * ECONOMY_ICON_SCALE, ECONOMY_ICON_SCALE, 0, 0, 0);
+            economyBarFull = new Rectangle(LEFT_PADDING, GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
+            economyBar = new Rectangle(LEFT_PADDING, GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
+            economyBarColor = Color.Violet;
+            technologyIcon = new MiAnimatingComponent(game, LEFT_PADDING + ECONOMY_ICON_WIDTH * ECONOMY_ICON_SCALE, MiResolution.VirtualHeight - BOTTOM_PADDING - TECHNOLOGY_ICON_HEIGHT * TECHNOLOGY_ICON_SCALE, TECHNOLOGY_ICON_SCALE, 0, 0, 0);
+            technologyBarFull = new Rectangle((int)(LEFT_PADDING + ECONOMY_ICON_WIDTH * ECONOMY_ICON_SCALE), GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
+            technologyBar = new Rectangle((int)(LEFT_PADDING + ECONOMY_ICON_WIDTH * ECONOMY_ICON_SCALE), GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
+            technologyBarColor = Color.Violet;
+            employmentIcon = new MiAnimatingComponent(game, MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE - EMPLOYMENT_ICON_WIDTH * EMPLOYMENT_ICON_SCALE, MiResolution.VirtualHeight - BOTTOM_PADDING - EMPLOYMENT_ICON_HEIGHT * EMPLOYMENT_ICON_SCALE, EMPLOYMENT_ICON_SCALE, 0, 0, 0);
+            employmentBarFull = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE - EMPLOYMENT_ICON_WIDTH * EMPLOYMENT_ICON_SCALE), GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
+            employmentBar = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE - EMPLOYMENT_ICON_WIDTH * EMPLOYMENT_ICON_SCALE), GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
+            employmentBarColor = Color.Violet;
+            educationIcon = new MiAnimatingComponent(game, MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE, MiResolution.VirtualHeight - BOTTOM_PADDING - EDUCATION_ICON_HEIGHT * EDUCATION_ICON_SCALE, EDUCATION_ICON_SCALE, 0, 0, 0);
+            educationBarFull = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE), GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
+            educationBar = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE), GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
+            educationBarColor = Color.Violet;
+
+            #endregion
+
             ActiveButton = schoolButton;
         }
 
@@ -571,7 +713,6 @@ namespace Micycle
                         yield return MOUSE_MOVETIME;
                     }
                      * */
-                    mouseBody.ResetDynamics();
                     while (Vector2.DistanceSquared(mouseBody.Position, path.RejectWaitQueueHead) > DESTINATION_REACHED_LAXITY)
                     {
                         mouseBody.LinearVelocity = MOUSE_MOVE_FORCE * Vector2.Normalize(path.RejectWaitQueueHead - mouseBody.Position);
@@ -665,6 +806,20 @@ namespace Micycle
                 yield return 20;
                 cursor.MoveEnabled = false;
             }
+        }
+
+        private IEnumerator<ulong> GameOver()
+        {
+            yield return 1;
+            system.Enabled = false;
+            Game.ToUpdate.Push(gameOverScreen);
+            Game.ToDraw.AddLast(gameOverScreen);
+            IEnumerator<ulong> entry = gameOverScreen.EntrySequence();
+            do
+            {
+                yield return entry.Current;
+            }
+            while (entry.MoveNext());
         }
 
         public override void LoadContent()
@@ -762,7 +917,21 @@ namespace Micycle
 
             mouseImage = Game.Content.Load<Texture2D>("mice");
 
+            barBackgroundTexture = Game.Content.Load<Texture2D>("button");
+            barTexture = Game.Content.Load<Texture2D>("button");
+            cashIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            techPointsIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            populationIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            timeLimitIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            economyIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            technologyIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            employmentIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+            educationIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
+
+            statsFont = Game.Content.Load<SpriteFont>("Default");
+
             inGameMenu.LoadContent();
+            gameOverScreen.LoadContent();
             schoolMenu.LoadContent();
             factoryMenu.LoadContent();
             rndMenu.LoadContent();
@@ -774,13 +943,7 @@ namespace Micycle
             camera.Update(gameTime);
 #endif
 
-            /**
-            school.Update(gameTime);
-            city.Update(gameTime);
-            rnd.Update(gameTime);
-            factory.Update(gameTime);
             cursor.Update(gameTime);
-             */
 
             if (system.Enabled)
             {
@@ -857,6 +1020,34 @@ namespace Micycle
                         {
                             return SendMouse(RND_TO_FACTORY, system.RndToFactory);
                         }));
+
+                if(system.FactoryToRnd.SendUnlocked && system.Wait(ref system.FactoryToRnd.SendFromAToB))
+                    inGameScripts.ExecuteScript(new MiScript(
+                        delegate
+                        {
+                            return SendMouse(FACTORY_TO_RND, system.FactoryToRnd);
+                        }));
+
+                cashBar.Width = (int)(cashBarFull.Width * system.GetCash());
+                techPointsBar.Width = (int)(techPointsBarFull.Width * system.GetTechPoints());
+                timeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (timeLeft <= 0)
+                {
+                    timeLeft = 0;
+                    if (gameRunning)
+                    {
+                        gameRunning = false;
+                        Game.ScriptEngine.ExecuteScript(new MiScript(GameOver));
+                    }
+                }
+                economyBar.Height = (int)(economyBarFull.Height * system.EconomyGoalProgress);
+                economyBar.Y = GOAL_BAR_Y + GOAL_BAR_HEIGHT - economyBar.Height;
+                technologyBar.Height = (int)(technologyBarFull.Height * system.TechnologyGoalProgress);
+                technologyBar.Y = GOAL_BAR_Y + GOAL_BAR_HEIGHT - technologyBar.Height;
+                employmentBar.Height = (int)(employmentBarFull.Height * system.EmploymentGoalProgress);
+                employmentBar.Y = GOAL_BAR_Y + GOAL_BAR_HEIGHT - employmentBar.Height;
+                educationBar.Height = (int)(educationBarFull.Height * system.EducationGoalProgress);
+                educationBar.Y = GOAL_BAR_Y + GOAL_BAR_HEIGHT - educationBar.Height;
             }
         }
 
@@ -878,9 +1069,32 @@ namespace Micycle
 
             cursor.Draw(gameTime);
 
-            Game.SpriteBatch.DrawString(Game.Content.Load<SpriteFont>("Default"), system.printStats(), Vector2.Zero, Color.Black);
+            cashIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, cashBarFull, Color.Black);
+            Game.SpriteBatch.Draw(barTexture, cashBar, cashBarColor);
+            techPointsIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, techPointsBarFull, Color.Black);
+            Game.SpriteBatch.Draw(barTexture, techPointsBar, techPointsBarColor);
+            populationIcon.Draw(gameTime);
+            Game.SpriteBatch.DrawString(statsFont, system.GetTotalPopulation().ToString(), populationTextPosition, Color.White);
+            timeLimitIcon.Draw(gameTime);
+            Game.SpriteBatch.DrawString(statsFont, (ushort)(timeLeft / 60) + ":" + ((ushort)(timeLeft % 60)).ToString().PadLeft(2, '0'), timeLimitTextPosition, Color.White);
+
+            economyIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, economyBarFull, Color.Black);
+            Game.SpriteBatch.Draw(barTexture, economyBar, economyBarColor);
+            technologyIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, technologyBarFull, Color.Black);
+            Game.SpriteBatch.Draw(barTexture, technologyBar, technologyBarColor);
+            employmentIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, employmentBarFull, Color.Black);
+            Game.SpriteBatch.Draw(barTexture, employmentBar, technologyBarColor);
+            educationIcon.Draw(gameTime);
+            Game.SpriteBatch.Draw(barBackgroundTexture, educationBarFull, Color.Black);
+            Game.SpriteBatch.Draw(barTexture, educationBar, technologyBarColor);
 
 #if DEBUG
+            Game.SpriteBatch.DrawString(statsFont, system.printStats(), new Vector2(0, 50), Color.Black);
             //Matrix projection = camera.SimProjection * MiResolution.GetTransformationMatrix();
             //Matrix view = camera.SimView;
 

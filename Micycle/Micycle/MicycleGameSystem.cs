@@ -7,6 +7,8 @@ namespace Micycle
 {
     class MicycleGameSystem : MiComponent
     {
+        public const ushort TIME_LIMIT = 300;
+
         public static Random rnd = new Random();
 
         private float cityMoney;
@@ -70,6 +72,7 @@ namespace Micycle
         public MiSemaphoreSet RndToSchool;
         public MiSemaphoreSet RndToFactory;
         public MiSemaphoreSet FactoryToCity;
+        public MiSemaphoreSet FactoryToRnd;
 
         public void Signal(ref int sema)
         {
@@ -155,6 +158,7 @@ namespace Micycle
             RndToSchool = new MiSemaphoreSet();
             RndToFactory = new MiSemaphoreSet();
             FactoryToCity = new MiSemaphoreSet();
+            FactoryToRnd = new MiSemaphoreSet();
         }
         public MicycleGameSystem(Micycle game)
             : base(game)
@@ -166,6 +170,22 @@ namespace Micycle
         public void Reset()
         {
             Init();
+        }
+
+        // TO-DO: Put actual data
+        public float GetCash()
+        {
+            return 0.5f;
+        }
+
+        public float GetTechPoints()
+        {
+            return 0.5f;
+        }
+
+        public float GetRobotCost()
+        {
+            return 0.4f;
         }
 
         public int GetTotalPopulation() 
