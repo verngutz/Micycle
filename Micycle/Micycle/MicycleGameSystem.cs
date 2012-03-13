@@ -45,7 +45,6 @@ namespace Micycle
         private int robots;
         private int robotEfficiency;
         private int robotCost;
-        private int robotsDeployed;
 
         private int factoryWorkers;
         private int factoryWorkerCapacity;
@@ -132,7 +131,7 @@ namespace Micycle
             researchers = 0;
             researchRate = 0.5f;
             rndRetirementRate = 0.02f;
-            rndPassingRate = 0.25f;
+            rndPassingRate = 0.20f;
             researcherWage = 10;
             rndUpkeep = 0;
             robots = 0 ;
@@ -148,7 +147,7 @@ namespace Micycle
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
             factoryDoorWaitLimit = 1;
-            robotsDeployed = 0;
+            
             //birth control
             cityPeopleBirthBias = 0f;
             studentsBirthBias = 0.1f;
@@ -256,11 +255,11 @@ namespace Micycle
             return population;
         }
         
-        private static int ECONOMY_GOAL = 100;
+        private static int ECONOMY_GOAL = 50;
         private static int TECH_GOAL = 20;
 
         public float EconomyGoalProgress { get { return ((float)cityMoney / GetTotalPopulation()) / ECONOMY_GOAL; } }
-        public float TechnologyGoalProgress { get { return (float)robotsDeployed / TECH_GOAL; } }
+        public float TechnologyGoalProgress { get { return (float)robots / TECH_GOAL; } }
         public float EmploymentGoalProgress { get { return (float)(GetTotalPopulation()-cityBums)/GetTotalPopulation(); } }
         public float EducationGoalProgress { get { return (float)getEducationLevel() / max_educationLevel; } }
 
@@ -538,7 +537,7 @@ namespace Micycle
         public int getEducationLevel() 
         {
             
-            educationLevel = (int)(educationBudget * ((float) 4*schoolTeachers / students.Count) );
+            educationLevel = (int)(educationBudget * ((float) 8*schoolTeachers / students.Count) );
             if (schoolTeachers > students.Count)
                 educationLevel = (int)educationBudget;
 
