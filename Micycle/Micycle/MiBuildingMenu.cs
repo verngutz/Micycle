@@ -21,6 +21,22 @@ namespace Micycle
         private const int BACKGROUND_RECTANGLE_WIDTH = 200;
         private const int BACKGROUND_RECTANGLE_HEIGHT = 250;
 
+        private const int TOP_PADDING = 5;
+        private const int LEFT_PADDING = 5;
+        private const int RIGHT_PADDING = 5;
+        private const int BOTTOM_PADDING = 5;
+
+        protected SpriteFont buildingStatsFont;
+        protected Texture2D buildingStatBarFull;
+        protected Texture2D buildingStatBar;
+
+        protected Vector2 stat1Text;
+        protected Vector2 stat2Text;
+        protected Vector2 stat3Text;
+        protected Rectangle stat1Bar;
+        protected Rectangle stat2Bar;
+        protected Rectangle stat3Bar;
+
         private const int UP_BUTTON_WIDTH = 100;
         private const int UP_BUTTON_HEIGHT = 75;
         private const float UP_BUTTON_SCALE = 0.5f;

@@ -258,7 +258,8 @@ namespace Micycle
         #region Neighboring Screens or Menus
 
         private MiInGameMenu inGameMenu;
-        private MiGameOverScreen gameOverScreen;
+        private MiGameOverTimeUp gameOverTimeUpScreen;
+        private MiGameOverMoneyUp gameOverMoneyUpScreen;
         private MiFactoryMenu factoryMenu;
         private MiSchoolMenu schoolMenu;
         private MiRndMenu rndMenu;
@@ -469,7 +470,8 @@ namespace Micycle
             cursor = new MiAnimatingComponent(game, SCHOOL_X, SCHOOL_Y, 0.94f, 0, 50, 37.5f);
             system = new MicycleGameSystem(game);
             inGameMenu = new MiInGameMenu(game, system);
-            gameOverScreen = new MiGameOverScreen(game, system);
+            gameOverTimeUpScreen = new MiGameOverTimeUp(game, system);
+            gameOverMoneyUpScreen = new MiGameOverMoneyUp(game, system);
             mice = new List<Body>();
             inGameScripts = new MiScriptEngine(game);
             world = new World(Vector2.Zero);
@@ -808,14 +810,29 @@ namespace Micycle
             }
         }
 
-        private IEnumerator<ulong> GameOver()
+        private IEnumerator<ulong> GameOverTimeUp()
         {
             yield return 1;
             system.Enabled = false;
-            Game.ToUpdate.Push(gameOverScreen);
-            Game.ToDraw.AddLast(gameOverScreen);
-            gameOverScreen.CalculateScore();
-            IEnumerator<ulong> entry = gameOverScreen.EntrySequence();
+            Game.ToUpdate.Push(gameOverTimeUpScreen);
+            Game.ToDraw.AddLast(gameOverTimeUpScreen);
+            gameOverTimeUpScreen.CalculateScore();
+            IEnumerator<ulong> entry = gameOverTimeUpScreen.EntrySequence();
+            do
+            {
+                yield return entry.Current;
+            }
+            while (entry.MoveNext());
+        }
+
+        private IEnumerator<ulong> GameOverMoneyUp()
+        {
+            yield return 1;
+            system.Enabled = false;
+            Game.ToUpdate.Push(gameOverMoneyUpScreen);
+            Game.ToDraw.AddLast(gameOverMoneyUpScreen);
+            gameOverMoneyUpScreen.CalculateScore();
+            IEnumerator<ulong> entry = gameOverMoneyUpScreen.EntrySequence();
             do
             {
                 yield return entry.Current;
@@ -932,7 +949,8 @@ namespace Micycle
             statsFont = Game.Content.Load<SpriteFont>("Default");
 
             inGameMenu.LoadContent();
-            gameOverScreen.LoadContent();
+            gameOverTimeUpScreen.LoadContent();
+            gameOverMoneyUpScreen.LoadContent();
             schoolMenu.LoadContent();
             factoryMenu.LoadContent();
             rndMenu.LoadContent();
@@ -1029,8 +1047,16 @@ namespace Micycle
                             return SendMouse(FACTORY_TO_RND, system.FactoryToRnd);
                         }));
 
-                cashBar.Width = (int)(cashBarFull.Width * system.GetCash());
                 techPointsBar.Width = (int)(techPointsBarFull.Width * system.GetTechPoints());
+                if (system.GetCash() < 0)
+                {
+                    gameRunning = false;
+                    Game.ScriptEngine.ExecuteScript(new MiScript(GameOverMoneyUp));
+                }
+                else
+                {
+                    cashBar.Width = (int)(cashBarFull.Width * system.GetCash());
+                }
                 timeLeft -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (timeLeft <= 0)
                 {
@@ -1038,7 +1064,7 @@ namespace Micycle
                     if (gameRunning)
                     {
                         gameRunning = false;
-                        Game.ScriptEngine.ExecuteScript(new MiScript(GameOver));
+                        Game.ScriptEngine.ExecuteScript(new MiScript(GameOverTimeUp));
                     }
                 }
                 economyBar.Height = (int)(economyBarFull.Height * system.EconomyGoalProgress);
