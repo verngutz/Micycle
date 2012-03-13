@@ -77,6 +77,9 @@ namespace Micycle
 
         //If people < retireImmunity, slower retirement
         private int retireImmunity = 5;
+
+        private int cityToSchoolLimitBeforeReject = 25;
+
         public void Signal(ref int sema)
         {
             sema++;
@@ -115,7 +118,7 @@ namespace Micycle
             //students stats
             students = new List<StudentWrapper>();
             schoolTeachers = 1;
-            studyTime = month;
+            studyTime = year;
             schoolCapacity = 25;
             educationBudget = 100;
             educationLevel = 0;
@@ -141,7 +144,7 @@ namespace Micycle
             REVENUE_PER_WORKER = 40; //INCOME = REVENUE-WAGE
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
-            factoryDoorWaitLimit = 0;
+            factoryDoorWaitLimit = 1;
             robotsDeployed = 0;
             //birth control
             cityPeopleBirthBias = 0f;
@@ -218,11 +221,13 @@ namespace Micycle
         public float GetWorkerWage()
         {
             // translate and scale it so that 0.5f maps to cost of living
+            if (factoryWorkerWage > 2 * costOfLiving) return 1;
             return factoryWorkerWage/(2*costOfLiving);
         }
         public float GetRndFunding()
         {
-            return researcherWage;
+            if (researcherWage > 2 * costOfLiving) return 1;
+            return researcherWage/(2*costOfLiving);
         }
         //
         // END TO-DO
@@ -504,6 +509,8 @@ namespace Micycle
             if (schoolTeachers > students.Count)
                 educationLevel = (int)educationBudget;
 
+            if (educationLevel > max_educationLevel)
+                return max_educationLevel;
             return educationLevel;
         }
         private void graduateStudent()
@@ -619,6 +626,8 @@ namespace Micycle
                 if (factoryDoorWait == factoryDoorWaitLimit)
                 {
                     Signal(ref SchoolToFactory.Reject);
+                    cityBums++;
+                    factoryDoorWait = 0;
                 }
                 else
                 {
@@ -688,14 +697,16 @@ namespace Micycle
             if (cityPeople > 0 && time % schoolSendRate == 0 )
             {
                 int toSend = (int)Math.Ceiling(cityPeople*numKidsSendRate);
-                toSend = Math.Min(toSend, schoolCapacity - students.Count);
+                //toSend = Math.Min(toSend, schoolCapacity - students.Count);
 
                 for (int i = 0; i < toSend; i++)
                 {
-                    if (CityToSchool.HasReachedWaitQueueHead == 15)
+                    if (CityToSchool.GetTotal()- CityToFactory.Accept - CityToFactory.Reject >= cityToSchoolLimitBeforeReject)
                     {
-                        Wait(ref CityToSchool.HasReachedWaitQueueTail);
+                        Wait(ref CityToSchool.HasReachedWaitQueueHead);
                         Signal(ref CityToSchool.Reject);
+                        System.Console.WriteLine("REJECT");
+                        cityBums++;
                     }
                     Signal(ref CityToSchool.SendFromAToB);
                     
