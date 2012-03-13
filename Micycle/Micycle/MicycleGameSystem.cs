@@ -202,7 +202,7 @@ namespace Micycle
         }
         public float GetEducationBudget()
         {
-            return educationBudget / someCashConstant; ;
+            return educationBudget / someBudgetConstant; 
         }
         public float GetStudentCapacity()
         {
@@ -354,6 +354,28 @@ namespace Micycle
         {
             AddEducationBudget(-10);
             schoolCapacity = (int)(educationBudget / 4);
+            
+            if (students.Count > schoolCapacity)
+            {
+                int delta = students.Count - schoolCapacity;
+                System.Console.WriteLine(schoolCapacity + " " + students.Count + " " + delta);
+                for (int i = 0; i < delta; i++)
+                {
+                    Signal(ref SchoolToCity.SendFromAToB);
+                }
+
+                List<StudentWrapper> toRemove = new List<StudentWrapper>();
+                for (int i = students.Count - 1; i >= students.Count - 1 - delta; i--)
+                {
+                    toRemove.Add(students[i]);
+                }
+
+                foreach (StudentWrapper sw in toRemove)
+                {
+                    students.Remove(sw);
+                }
+
+            }
         }
 
         public void SchoolLeftButtonAction()
