@@ -369,18 +369,10 @@ namespace Micycle
                 for (int i = 0; i < delta; i++)
                 {
                     Signal(ref SchoolToCity.SendFromAToB);
+                    students.RemoveAt(0);
                 }
 
-                List<StudentWrapper> toRemove = new List<StudentWrapper>();
-                for (int i = students.Count - 1; i >= students.Count - 1 - delta; i--)
-                {
-                    toRemove.Add(students[i]);
-                }
-
-                foreach (StudentWrapper sw in toRemove)
-                {
-                    students.Remove(sw);
-                }
+                
 
             }
         }
