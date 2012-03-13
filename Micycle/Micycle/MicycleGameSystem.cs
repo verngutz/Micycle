@@ -80,6 +80,9 @@ namespace Micycle
 
         private int cityToSchoolLimitBeforeReject = 25;
 
+        private float someCashConstant = 10000;
+        private float someBudgetConstant = 1000;
+
         public void Signal(ref int sema)
         {
             sema++;
@@ -183,13 +186,14 @@ namespace Micycle
         //
         public float GetCash()
         {
-            if (ownerMoney < 0) return -0.01f;
-            return ownerMoney;
+            if (ownerMoney > someCashConstant) return 1;
+            return ownerMoney/someCashConstant;
         }
 
         public float GetTechPoints()
         {
-            return researchPoints;
+            if (researchPoints > robotCost) return 1;
+            return (float)researchPoints/robotCost;
         }
 
         public float GetRobotCost()
@@ -198,7 +202,7 @@ namespace Micycle
         }
         public float GetEducationBudget()
         {
-            return educationBudget;
+            return educationBudget / someCashConstant; ;
         }
         public float GetStudentCapacity()
         {
@@ -217,18 +221,18 @@ namespace Micycle
         public float GetRobotsCapacity()
         {
             // robots * (workers/robot conversion) / capacity
-            return robots*(robotEfficiency)/factoryWorkerCapacity;
+            return (float)robots*(robotEfficiency)/factoryWorkerCapacity;
         }
         public float GetWorkerWage()
         {
             // translate and scale it so that 0.5f maps to cost of living
             if (factoryWorkerWage > 2 * costOfLiving) return 1;
-            return factoryWorkerWage/(2*costOfLiving);
+            return (float)factoryWorkerWage / (2 * costOfLiving);
         }
         public float GetRndFunding()
         {
             if (researcherWage > 2 * costOfLiving) return 1;
-            return researcherWage/(2*costOfLiving);
+            return (float)researcherWage / (2 * costOfLiving);
         }
         //
         // END TO-DO
