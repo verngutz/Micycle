@@ -138,7 +138,7 @@ namespace Micycle
             factoryWorkerCapacity = 10;
             factoryRetirementRate = 0.02f;
             factoryWorkerWage = 25;
-            REVENUE_PER_WORKER = 40;
+            REVENUE_PER_WORKER = 40; //INCOME = REVENUE-WAGE
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
             factoryDoorWaitLimit = 0;
@@ -185,44 +185,44 @@ namespace Micycle
 
         public float GetTechPoints()
         {
-            return 0.5f;
+            return researchPoints;
         }
 
         public float GetRobotCost()
         {
-            return 0.4f;
+            return robotCost;
         }
         public float GetEducationBudget()
         {
-            return 0.1f;
+            return educationBudget;
         }
         public float GetStudentCapacity()
         {
             // students/capacity
-            return 0.1f;
+            return (float)students.Count/schoolCapacity;
         }
         public float GetTeacherStudentRatio()
         {
-            return 0.1f;
+            return (float)schoolTeachers/students.Count;
         }
         public float GetWorkersCapacity()
         {
             // workers/capacity
-            return 0.1f;
+            return (float)factoryWorkers/factoryWorkerCapacity;
         }
         public float GetRobotsCapacity()
         {
             // robots * (workers/robot conversion) / capacity
-            return 0.1f;
+            return robots*(robotEfficiency)/factoryWorkerCapacity;
         }
         public float GetWorkerWage()
         {
             // translate and scale it so that 0.5f maps to cost of living
-            return 0.1f;
+            return factoryWorkerWage/(2*costOfLiving);
         }
         public float GetRndFunding()
         {
-            return 0.1f;
+            return researcherWage;
         }
         //
         // END TO-DO
