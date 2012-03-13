@@ -11,7 +11,7 @@ namespace Micycle
     class MiGameOverMoneyUp : MiGameOverScreen
     {
         private MiButton goToMainMenuButton;
-        private const string GO_TO_MAIN_MENU_STRING = "Return to Main Menu";
+        private const string GO_TO_MAIN_MENU_STRING = "Main Menu";
         private static readonly Vector2 GO_TO_MAIN_MENU_POSITION = MiResolution.Center + new Vector2(-WIDTH / 4, HEIGHT / 2);
         private Vector2 goToMainMenuOrigin;
 
@@ -50,6 +50,7 @@ namespace Micycle
                 delegate
                 {
                     Game.ToUpdate.Pop();
+                    Game.ToUpdate.Pop();
 
                     if (Game.ToUpdate.Peek() is MiBuildingMenu)
                     {
@@ -58,6 +59,7 @@ namespace Micycle
                     }
 
                     Game.ToUpdate.Pop();
+                    Game.ToDraw.RemoveLast();
                     Game.ToDraw.RemoveLast();
                     Game.ToDraw.RemoveLast();
                     Game.ToUpdate.Push(game.StartScreen);
