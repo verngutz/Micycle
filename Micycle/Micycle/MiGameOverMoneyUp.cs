@@ -69,6 +69,7 @@ namespace Micycle
 
         public override IEnumerator<ulong> EntrySequence()
         {
+            appearSoundInstance.Play();
             entrySequenceMutex = true;
             ActiveButton = goToMainMenuButton;
             Cursor.MoveEnabled = true;

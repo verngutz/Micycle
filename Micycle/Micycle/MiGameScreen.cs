@@ -652,6 +652,8 @@ namespace Micycle
 
         public void Reset()
         {
+            timeLeft = MicycleGameSystem.TIME_LIMIT;
+            gameRunning = true;
             foreach (Body mouse in mice)
                 world.RemoveBody(mouse);
             mice.Clear();

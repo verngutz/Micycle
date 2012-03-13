@@ -83,20 +83,6 @@ namespace Micycle
                 grade = "F";
         }
 
-        public override IEnumerator<ulong> Pressed()
-        {
-            if (entrySequenceMutex || exitSequenceMutex)
-            {
-                yield break;
-            }
-            else
-            {
-                exitSequenceMutex = true;
-                ActiveButton.Pressed();
-                exitSequenceMutex = false;
-            }
-        }
-
         public override IEnumerator<ulong> Escaped()
         {
             return Cancelled();

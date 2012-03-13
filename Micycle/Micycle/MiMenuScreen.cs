@@ -3,6 +3,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 using MiUtil;
 
@@ -44,6 +45,14 @@ namespace Micycle
 
         private MiButton newGameButton;
         private MiButton quitGameButton;
+
+        private SoundEffect clickSound;
+        private SoundEffectInstance clickSoundInstance;
+        private const float CLICK_SOUND_VOLUME = 0.5f;
+
+        private SoundEffect shiftSound;
+        private SoundEffectInstance shiftSoundInstance;
+        private const float SHIFT_SOUND_VOLUME = 0.3f;
 
         public MiMenuScreen(Micycle game)
             : base(game)
@@ -150,6 +159,8 @@ namespace Micycle
                     yield break;
                 }
 
+                clickSoundInstance.Play();
+
                 background.AlphaChangeEnabled = true;
                 background.AlphaOverTime.Keys.Add(new CurveKey(background.AlphaChangeTimer + 40, 0));
                 thisbase.AlphaChangeEnabled = true;
@@ -190,6 +201,9 @@ namespace Micycle
 
             else if (ActiveButton == quitGameButton)
             {
+                shiftSoundInstance.Stop();
+                while (shiftSoundInstance.State == SoundState.Playing) ;
+                shiftSoundInstance.Play();
                 ActiveButton = null;
                 quitGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(quitGameButtonHover.AlphaChangeTimer + 20, 0));
                 quitGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Constant;
@@ -209,6 +223,9 @@ namespace Micycle
 
             else if (ActiveButton == newGameButton)
             {
+                shiftSoundInstance.Stop();
+                while (shiftSoundInstance.State == SoundState.Playing) ;
+                shiftSoundInstance.Play();
                 ActiveButton = null;
                 newGameButtonHover.AlphaOverTime.Keys.Add(new CurveKey(newGameButtonHover.AlphaChangeTimer + 20, 0));
                 newGameButtonHover.AlphaOverTime.PostLoop = CurveLoopType.Constant;
@@ -232,6 +249,14 @@ namespace Micycle
             quitGameButtonBase.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\EXIT\\BUTTON"), 0);
             quitGameButtonHover.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\EXIT\\HOVER_INDICATOR"), 0);
             quitGameButtonClick.AddTexture(Game.Content.Load<Texture2D>("MenuScreen\\EXIT\\CLICKED_INDICATOR"), 0);
+
+            clickSound = Game.Content.Load<SoundEffect>("SFX\\zoom");
+            clickSoundInstance = clickSound.CreateInstance();
+            clickSoundInstance.Volume = CLICK_SOUND_VOLUME;
+
+            shiftSound = Game.Content.Load<SoundEffect>("SFX\\shift");
+            shiftSoundInstance = shiftSound.CreateInstance();
+            shiftSoundInstance.Volume = SHIFT_SOUND_VOLUME;
 
             gameScreen.LoadContent();
         }
