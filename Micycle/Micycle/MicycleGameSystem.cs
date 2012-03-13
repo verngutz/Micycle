@@ -248,9 +248,9 @@ namespace Micycle
         private static int ECONOMY_GOAL = 100;
         private static int TECH_GOAL = 20;
 
-        public float EconomyGoalProgress { get { return (cityMoney / GetTotalPopulation()) / ECONOMY_GOAL; } }
-        public float TechnologyGoalProgress { get { return robotsDeployed / TECH_GOAL; } }
-        public float EmploymentGoalProgress { get { return (GetTotalPopulation()-cityBums)/GetTotalPopulation(); } }
+        public float EconomyGoalProgress { get { return ((float)cityMoney / GetTotalPopulation()) / ECONOMY_GOAL; } }
+        public float TechnologyGoalProgress { get { return (float)robotsDeployed / TECH_GOAL; } }
+        public float EmploymentGoalProgress { get { return (float)(GetTotalPopulation()-cityBums)/GetTotalPopulation(); } }
         public float EducationGoalProgress { get { return (float)getEducationLevel() / max_educationLevel; } }
 
         private void AddEducationBudget(int dx) 
