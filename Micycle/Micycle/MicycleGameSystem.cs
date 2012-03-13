@@ -202,24 +202,31 @@ namespace Micycle
         }
         public float GetEducationBudget()
         {
+            if (educationBudget > someBudgetConstant) return 1;
+
             return educationBudget / someBudgetConstant; 
         }
         public float GetStudentCapacity()
         {
             // students/capacity
+            if (schoolCapacity < 1) return 1;
             return (float)students.Count/schoolCapacity;
         }
         public float GetTeacherStudentRatio()
         {
+            if (students.Count < 1) return 1;
+            if (schoolTeachers > students.Count) return 1;
             return (float)schoolTeachers/students.Count;
         }
         public float GetWorkersCapacity()
         {
             // workers/capacity
+            if (factoryWorkerCapacity < 1) return 1;
             return (float)factoryWorkers/factoryWorkerCapacity;
         }
         public float GetRobotsCapacity()
         {
+            if (factoryWorkerCapacity < 1) return 1;
             // robots * (workers/robot conversion) / capacity
             return (float)robots*(robotEfficiency)/factoryWorkerCapacity;
         }
