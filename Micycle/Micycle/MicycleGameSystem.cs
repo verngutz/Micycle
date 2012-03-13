@@ -114,7 +114,7 @@ namespace Micycle
             costOfLiving = 25;
             birthRate = 1.5f;
             deathRate = 0.1f;
-            numKidsSendRate = 0.02f;
+            numKidsSendRate = 0.01f;
             schoolSendRate = month / 5;
             bumToWorkRate = 0.02f;
 
@@ -122,8 +122,8 @@ namespace Micycle
             students = new List<StudentWrapper>();
             schoolTeachers = 1;
             studyTime = year;
-            schoolCapacity = 25;
             educationBudget = 100;
+            schoolCapacity = (int)educationBudget/5;
             educationLevel = 0;
             max_educationLevel = 100;
 
@@ -354,13 +354,13 @@ namespace Micycle
         {
 
             AddEducationBudget(10);
-            schoolCapacity = (int)(educationBudget / 4);
+            schoolCapacity = (int)(educationBudget / 5);
         }
 
         public void SchoolDownButtonAction()
         {
             AddEducationBudget(-10);
-            schoolCapacity = (int)(educationBudget / 4);
+            schoolCapacity = (int)(educationBudget / 5);
             
             if (students.Count > schoolCapacity)
             {
@@ -537,7 +537,8 @@ namespace Micycle
 
         public int getEducationLevel() 
         {
-            educationLevel = (int)(educationBudget * ((float)schoolTeachers / students.Count));
+            
+            educationLevel = (int)(educationBudget * ((float) 4*schoolTeachers / students.Count) );
             if (schoolTeachers > students.Count)
                 educationLevel = (int)educationBudget;
 
