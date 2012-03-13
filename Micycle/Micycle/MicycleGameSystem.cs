@@ -74,6 +74,9 @@ namespace Micycle
         public MiSemaphoreSet FactoryToCity;
         public MiSemaphoreSet FactoryToRnd;
 
+
+        //If people < retireImmunity, slower retirement
+        private int retireImmunity = 5;
         public void Signal(ref int sema)
         {
             sema++;
@@ -112,7 +115,7 @@ namespace Micycle
             //students stats
             students = new List<StudentWrapper>();
             schoolTeachers = 1;
-            studyTime = 200;
+            studyTime = month;
             schoolCapacity = 25;
             educationBudget = 100;
             educationLevel = 0;
@@ -138,7 +141,7 @@ namespace Micycle
             REVENUE_PER_WORKER = 40;
             factoryUpkeep = factoryWorkerCapacity;
             factoryDoorWait = 0;
-            factoryDoorWaitLimit = 30;
+            factoryDoorWaitLimit = 0;
             robotsDeployed = 0;
             //birth control
             cityPeopleBirthBias = 0f;
@@ -419,8 +422,10 @@ namespace Micycle
                 ownerMoney += (REVENUE_PER_WORKER - factoryWorkerWage) * factoryWorkers  + robots*REVENUE_PER_WORKER;
                 ownerMoney -= factoryUpkeep;
                 cityMoney += factoryWorkerWage * factoryWorkers ;
-           
+
+                if (factoryWorkers < retireImmunity && time % year != 0) return;
                 int toRetire = (int)Math.Ceiling(factoryRetirementRate * factoryWorkers);
+                
                 if (toRetire > 0)
                 {
 
@@ -542,7 +547,8 @@ namespace Micycle
                 ownerMoney -= researcherWage * (schoolTeachers+researchers) + rndUpkeep;
                 cityMoney += researcherWage * (schoolTeachers+researchers);
                 researchPoints += researchRate * researchers;
-            
+
+                if (researchers < retireImmunity && time % year != 0) return;
                 int toRetire = (int)Math.Ceiling(rndRetirementRate * researchers);
                 if (toRetire > 0)
                 {
@@ -649,7 +655,7 @@ namespace Micycle
 
                 for (int i = 0; i < toSend; i++)
                 {
-                    if (CityToSchool.GetTotal() - CityToSchool.Accept - CityToSchool.Reject == 10)
+                    if (CityToSchool.HasReachedWaitQueueHead == 15)
                     {
                         Wait(ref CityToSchool.HasReachedWaitQueueTail);
                         Signal(ref CityToSchool.Reject);
