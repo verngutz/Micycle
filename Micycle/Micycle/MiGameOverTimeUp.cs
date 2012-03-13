@@ -16,7 +16,7 @@ namespace Micycle
         private Vector2 resumeOrigin;
 
         private MiButton goToMainMenuButton;
-        private const string GO_TO_MAIN_MENU_STRING = "Return to Main Menu";
+        private const string GO_TO_MAIN_MENU_STRING = "Main Menu";
         private static readonly Vector2 GO_TO_MAIN_MENU_POSITION = MiResolution.Center + new Vector2(0, HEIGHT / 2);
         private Vector2 goToMainMenuOrigin;
 
