@@ -88,6 +88,7 @@ namespace Micycle
         public override IEnumerator<ulong> EntrySequence()
         {
             entrySequenceMutex = true;
+            appearSoundInstance.Play();
             ActiveButton = resumeButton;
             Cursor.MoveEnabled = true;
             Cursor.XPositionOverTime.Keys.Add(new CurveKey(Cursor.MoveTimer + 1, RESUME_POSITION.X - MenuFont.MeasureString(RESUME_STRING).X / 2 - CURSOR_PADDING));

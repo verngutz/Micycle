@@ -89,6 +89,7 @@ namespace Micycle
         public override IEnumerator<ulong> EntrySequence()
         {
             entrySequenceMutex = true;
+            appearSoundInstance.Play();
             ActiveButton = resumeButton;
             Cursor.MoveEnabled = true;
             Cursor.XPositionOverTime.Keys.Add(new CurveKey(Cursor.MoveTimer + 1, (MiResolution.Center.X - WIDTH / 2) + CURSOR_PADDING));
@@ -96,20 +97,6 @@ namespace Micycle
             yield return 1;
             Cursor.MoveEnabled = false;
             entrySequenceMutex = false;
-        }
-
-        public override IEnumerator<ulong> Pressed()
-        {
-            if (entrySequenceMutex || exitSequenceMutex)
-            {
-                yield break;
-            }
-            else
-            {
-                exitSequenceMutex = true;
-                ActiveButton.Pressed();
-                exitSequenceMutex = false;
-            }
         }
 
         public override IEnumerator<ulong> Escaped()

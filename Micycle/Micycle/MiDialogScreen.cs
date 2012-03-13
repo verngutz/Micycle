@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 using MiUtil;
 
@@ -63,6 +64,10 @@ namespace Micycle
         private SpriteFont menuFont;
         protected SpriteFont MenuFont { get { return menuFont; } }
 
+        private SoundEffect appearSound;
+        protected SoundEffectInstance appearSoundInstance;
+        private const float APPEAR_SOUND_VOLUME = 0.8f;
+
         public MiDialogScreen(Micycle game, int width, int height)
             : base(game)
         {
@@ -108,6 +113,21 @@ namespace Micycle
             cursor = new MiAnimatingComponent(game, 0, 0, 1, CURSOR_ROTATE, CURSOR_ORIGIN_X, CURSOR_ORIGIN_Y);
         }
 
+        public override IEnumerator<ulong> Pressed()
+        {
+            if (entrySequenceMutex || exitSequenceMutex)
+            {
+                yield break;
+            }
+            else
+            {
+                exitSequenceMutex = true;
+                appearSoundInstance.Play();
+                ActiveButton.Pressed();
+                exitSequenceMutex = false;
+            }
+        }
+
         public override void LoadContent()
         {
             /**
@@ -135,6 +155,10 @@ namespace Micycle
             menuFont = Game.Content.Load<SpriteFont>("Fonts\\Default");
 
             cursor.AddTexture(Game.Content.Load<Texture2D>("InGameMenu\\button_corner"), 0);
+
+            appearSound = Game.Content.Load<SoundEffect>("SFX\\dialogAppear");
+            appearSoundInstance = appearSound.CreateInstance();
+            appearSoundInstance.Volume = APPEAR_SOUND_VOLUME;
         }
 
         public override void Update(GameTime gameTime)
