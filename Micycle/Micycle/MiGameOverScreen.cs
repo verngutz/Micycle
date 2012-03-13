@@ -116,7 +116,10 @@ namespace Micycle
                     Game.ScriptEngine.ExecuteScript(game.StartScreen.EntrySequence);
                     return null;
                 });
+        }
 
+        public void CalculateScore()
+        {
             economy = (int)(system.EconomyGoalProgress * 100) + "%";
             technology = (int)(system.TechnologyGoalProgress * 100) + "%";
             employment = (int)(system.EmploymentGoalProgress * 100) + "%";

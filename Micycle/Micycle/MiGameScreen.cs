@@ -814,6 +814,7 @@ namespace Micycle
             system.Enabled = false;
             Game.ToUpdate.Push(gameOverScreen);
             Game.ToDraw.AddLast(gameOverScreen);
+            gameOverScreen.CalculateScore();
             IEnumerator<ulong> entry = gameOverScreen.EntrySequence();
             do
             {

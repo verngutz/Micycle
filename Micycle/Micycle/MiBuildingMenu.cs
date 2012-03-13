@@ -12,7 +12,14 @@ namespace Micycle
         private float centerX;
         private float centerY;
 
-        private const int RADIUS = 100;
+        private const int RADIUS = 150;
+
+        private Texture2D background;
+        private static readonly Vector2 BACKGROUND_ORIGIN = new Vector2(16, 16);
+        private static readonly Color BACKGROUND_COLOR = new Color(255, 255, 255, 127);
+        private Rectangle backgroundRectangle;
+        private const int BACKGROUND_RECTANGLE_WIDTH = 200;
+        private const int BACKGROUND_RECTANGLE_HEIGHT = 250;
 
         private const int UP_BUTTON_WIDTH = 100;
         private const int UP_BUTTON_HEIGHT = 75;
@@ -82,6 +89,7 @@ namespace Micycle
         {
             centerX = center_x;
             centerY = center_y;
+            backgroundRectangle = new Rectangle((int)center_x, (int)center_y, BACKGROUND_RECTANGLE_WIDTH, BACKGROUND_RECTANGLE_HEIGHT);
             this.system = system;
             this.inGameMenu = inGameMenu;
 
@@ -199,6 +207,8 @@ namespace Micycle
 
         public override void LoadContent()
         {
+            background = Game.Content.Load<Texture2D>("BlackOut");
+
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
             upButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
             downButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
@@ -217,6 +227,7 @@ namespace Micycle
 
         public override void Draw(GameTime gameTime)
         {
+            Game.SpriteBatch.Draw(background, backgroundRectangle, null, BACKGROUND_COLOR, 0, BACKGROUND_ORIGIN, SpriteEffects.None, 0);
             upButtonGraphic.Draw(gameTime);
             downButtonGraphic.Draw(gameTime);
             leftButtonGraphic.Draw(gameTime);

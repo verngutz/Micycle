@@ -175,7 +175,9 @@ namespace Micycle
             Init();
         }
 
-        // TO-DO: Put actual data
+        //
+        // TO-DO: Put actual data (this is for the status bars)
+        //
         public float GetCash()
         {
             return 0.5f;
@@ -190,6 +192,41 @@ namespace Micycle
         {
             return 0.4f;
         }
+        public float GetEducationBudget()
+        {
+            return 0.1f;
+        }
+        public float GetStudentCapacity()
+        {
+            // students/capacity
+            return 0.1f;
+        }
+        public float GetTeacherStudentRatio()
+        {
+            return 0.1f;
+        }
+        public float GetWorkersCapacity()
+        {
+            // workers/capacity
+            return 0.1f;
+        }
+        public float GetRobotsCapacity()
+        {
+            // robots * (workers/robot conversion) / capacity
+            return 0.1f;
+        }
+        public float GetWorkerWage()
+        {
+            // translate and scale it so that 0.5f maps to cost of living
+            return 0.1f;
+        }
+        public float GetRndFunding()
+        {
+            return 0.1f;
+        }
+        //
+        // END TO-DO
+        //
 
         public int GetTotalPopulation() 
         {
