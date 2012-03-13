@@ -373,22 +373,24 @@ namespace Micycle
         private const int TOP_PADDING = 5;
         private const int LEFT_PADDING = 5;
         private const int RIGHT_PADDING = 5;
-        private const int BAR_THICKNESS = 23;
+        private const int BAR_THICKNESS = 30;
 
-        private Texture2D barBackgroundTexture;
-        private Texture2D barTexture;
+        private Texture2D horizontalBarBackgroundTexture;
+        private Texture2D horizontalBarTexture;
+        private Texture2D verticalBarBackgroundTexture;
+        private Texture2D verticalBarTexture;
 
         private MiAnimatingComponent cashIcon;
-        private const int CASH_ICON_WIDTH = 50;
-        private const int CASH_ICON_HEIGHT = 50;
+        private const int CASH_ICON_WIDTH = 66;
+        private const int CASH_ICON_HEIGHT = 66;
         private const float CASH_ICON_SCALE = 0.5f;
         private Rectangle cashBarFull;
         private Rectangle cashBar;
         private Color cashBarColor;
 
         private MiAnimatingComponent techPointsIcon;
-        private const int TECH_POINTS_ICON_WIDTH = 50;
-        private const int TECH_POINTS_ICON_HEIGHT = 50;
+        private const int TECH_POINTS_ICON_WIDTH = 66;
+        private const int TECH_POINTS_ICON_HEIGHT = 66;
         private const float TECH_POINTS_ICON_SCALE = 0.5f;
         private Rectangle techPointsBarFull;
         private Rectangle techPointsBar;
@@ -397,14 +399,14 @@ namespace Micycle
         private SpriteFont statsFont;
 
         private MiAnimatingComponent populationIcon;
-        private const int POPULATION_ICON_WIDTH = 50;
-        private const int POPULATION_ICON_HEIGHT = 50;
+        private const int POPULATION_ICON_WIDTH = 66;
+        private const int POPULATION_ICON_HEIGHT = 66;
         private const float POPULATION_ICON_SCALE = 0.5f;
         private Vector2 populationTextPosition;
 
         private MiAnimatingComponent timeLimitIcon;
-        private const int TIME_LIMIT_ICON_WIDTH = 50;
-        private const int TIME_LIMIT_ICON_HEIGHT = 50;
+        private const int TIME_LIMIT_ICON_WIDTH = 66;
+        private const int TIME_LIMIT_ICON_HEIGHT = 66;
         private const float TIME_LIMIT_ICON_SCALE = 0.5f;
         private Vector2 timeLimitTextPosition;
         private double timeLeft;
@@ -419,32 +421,32 @@ namespace Micycle
         private const int GOAL_BAR_HEIGHT = 200;
 
         private MiAnimatingComponent economyIcon;
-        private const int ECONOMY_ICON_WIDTH = 50;
-        private const int ECONOMY_ICON_HEIGHT = 50;
+        private const int ECONOMY_ICON_WIDTH = 66;
+        private const int ECONOMY_ICON_HEIGHT = 66;
         private const float ECONOMY_ICON_SCALE = 0.5f;
         private Rectangle economyBar;
         private Rectangle economyBarFull;
         private Color economyBarColor;
 
         private MiAnimatingComponent technologyIcon;
-        private const int TECHNOLOGY_ICON_WIDTH = 50;
-        private const int TECHNOLOGY_ICON_HEIGHT = 50;
+        private const int TECHNOLOGY_ICON_WIDTH = 66;
+        private const int TECHNOLOGY_ICON_HEIGHT = 66;
         private const float TECHNOLOGY_ICON_SCALE = 0.5f;
         private Rectangle technologyBar;
         private Rectangle technologyBarFull;
         private Color technologyBarColor;
 
         private MiAnimatingComponent employmentIcon;
-        private const int EMPLOYMENT_ICON_WIDTH = 50;
-        private const int EMPLOYMENT_ICON_HEIGHT = 50;
+        private const int EMPLOYMENT_ICON_WIDTH = 66;
+        private const int EMPLOYMENT_ICON_HEIGHT = 66;
         private const float EMPLOYMENT_ICON_SCALE = 0.5f;
         private Rectangle employmentBar;
         private Rectangle employmentBarFull;
         private Color employmentBarColor;
 
         private MiAnimatingComponent educationIcon;
-        private const int EDUCATION_ICON_WIDTH = 50;
-        private const int EDUCATION_ICON_HEIGHT = 50;
+        private const int EDUCATION_ICON_WIDTH = 66;
+        private const int EDUCATION_ICON_HEIGHT = 66;
         private const float EDUCATION_ICON_SCALE = 0.5f;
         private Rectangle educationBar;
         private Rectangle educationBarFull;
@@ -452,7 +454,7 @@ namespace Micycle
 
         #endregion
 
-        private const float BACKGROUND_SCALE = 4;
+        private const float BACKGROUND_SCALE = 4f;
         private Texture2D background;
 
         private MiAnimatingComponent cursor;
@@ -607,12 +609,12 @@ namespace Micycle
             cashIcon = new MiAnimatingComponent(game, LEFT_PADDING, TOP_PADDING, CASH_ICON_SCALE, 0, 0, 0);
             cashBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, (int)barWidth, BAR_THICKNESS);
             cashBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE), TOP_PADDING, 0, BAR_THICKNESS);
-            cashBarColor = Color.Violet;
+            cashBarColor = Color.Turquoise;
 
             techPointsIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + barWidth, TOP_PADDING, TECH_POINTS_ICON_SCALE, 0, 0, 0);
             techPointsBarFull = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, (int)barWidth, BAR_THICKNESS);
             techPointsBar = new Rectangle((int)(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + barWidth), TOP_PADDING, 0, BAR_THICKNESS);
-            techPointsBarColor = Color.Orange;
+            techPointsBarColor = Color.LightSalmon;
 
             populationIcon = new MiAnimatingComponent(game, LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + 2 * barWidth, TOP_PADDING, POPULATION_ICON_SCALE, 0, 0, 0);
             populationTextPosition = new Vector2(LEFT_PADDING + CASH_ICON_WIDTH * CASH_ICON_SCALE + TECH_POINTS_ICON_WIDTH * TECH_POINTS_ICON_SCALE + POPULATION_ICON_WIDTH * POPULATION_ICON_SCALE + 2 * barWidth, TOP_PADDING);
@@ -629,19 +631,19 @@ namespace Micycle
             economyIcon = new MiAnimatingComponent(game, LEFT_PADDING, MiResolution.VirtualHeight - BOTTOM_PADDING - ECONOMY_ICON_HEIGHT * ECONOMY_ICON_SCALE, ECONOMY_ICON_SCALE, 0, 0, 0);
             economyBarFull = new Rectangle(LEFT_PADDING, GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
             economyBar = new Rectangle(LEFT_PADDING, GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
-            economyBarColor = Color.Violet;
+            economyBarColor = Color.SlateBlue;
             technologyIcon = new MiAnimatingComponent(game, LEFT_PADDING + ECONOMY_ICON_WIDTH * ECONOMY_ICON_SCALE, MiResolution.VirtualHeight - BOTTOM_PADDING - TECHNOLOGY_ICON_HEIGHT * TECHNOLOGY_ICON_SCALE, TECHNOLOGY_ICON_SCALE, 0, 0, 0);
             technologyBarFull = new Rectangle((int)(LEFT_PADDING + ECONOMY_ICON_WIDTH * ECONOMY_ICON_SCALE), GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
             technologyBar = new Rectangle((int)(LEFT_PADDING + ECONOMY_ICON_WIDTH * ECONOMY_ICON_SCALE), GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
-            technologyBarColor = Color.Violet;
+            technologyBarColor = Color.Goldenrod;
             employmentIcon = new MiAnimatingComponent(game, MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE - EMPLOYMENT_ICON_WIDTH * EMPLOYMENT_ICON_SCALE, MiResolution.VirtualHeight - BOTTOM_PADDING - EMPLOYMENT_ICON_HEIGHT * EMPLOYMENT_ICON_SCALE, EMPLOYMENT_ICON_SCALE, 0, 0, 0);
             employmentBarFull = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE - EMPLOYMENT_ICON_WIDTH * EMPLOYMENT_ICON_SCALE), GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
             employmentBar = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE - EMPLOYMENT_ICON_WIDTH * EMPLOYMENT_ICON_SCALE), GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
-            employmentBarColor = Color.Violet;
+            employmentBarColor = Color.MediumPurple;
             educationIcon = new MiAnimatingComponent(game, MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE, MiResolution.VirtualHeight - BOTTOM_PADDING - EDUCATION_ICON_HEIGHT * EDUCATION_ICON_SCALE, EDUCATION_ICON_SCALE, 0, 0, 0);
             educationBarFull = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE), GOAL_BAR_Y, BAR_THICKNESS, GOAL_BAR_HEIGHT);
             educationBar = new Rectangle((int)(MiResolution.VirtualWidth - RIGHT_PADDING - EDUCATION_ICON_WIDTH * EDUCATION_ICON_SCALE), GOAL_BAR_Y + GOAL_BAR_HEIGHT, BAR_THICKNESS, 0);
-            educationBarColor = Color.Violet;
+            educationBarColor = Color.Sienna;
 
             #endregion
 
@@ -935,8 +937,11 @@ namespace Micycle
 
             mouseImage = Game.Content.Load<Texture2D>("mice");
 
-            barBackgroundTexture = Game.Content.Load<Texture2D>("button");
-            barTexture = Game.Content.Load<Texture2D>("button");
+            horizontalBarBackgroundTexture = Game.Content.Load<Texture2D>("horizontalBar");
+            horizontalBarTexture = Game.Content.Load<Texture2D>("horizontalBar");
+            verticalBarBackgroundTexture = Game.Content.Load<Texture2D>("verticalBar");
+            verticalBarTexture = Game.Content.Load<Texture2D>("verticalBar");
+
             cashIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
             techPointsIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
             populationIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
@@ -946,7 +951,7 @@ namespace Micycle
             employmentIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
             educationIcon.AddTexture(Game.Content.Load<Texture2D>("mice"), 0);
 
-            statsFont = Game.Content.Load<SpriteFont>("Default");
+            statsFont = Game.Content.Load<SpriteFont>("Fonts\\Default");
 
             inGameMenu.LoadContent();
             gameOverTimeUpScreen.LoadContent();
@@ -1080,7 +1085,7 @@ namespace Micycle
 
         public override void Draw(GameTime gameTime)
         {
-            Game.SpriteBatch.Draw(background, Vector2.Zero, null, Color.White, 0, Vector2.Zero, BACKGROUND_SCALE, SpriteEffects.None, 0);
+            Game.SpriteBatch.Draw(background, MiResolution.Center, null, Color.White, 0, COLLISION_TEXTURE_ORIGIN, BACKGROUND_SCALE, SpriteEffects.None, 0);
 
             for (int i = 0; i < roadTexturesToDraw.Count; i++)
                 if (roadTexturesToDraw[i] != null)
@@ -1097,28 +1102,28 @@ namespace Micycle
             cursor.Draw(gameTime);
 
             cashIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, cashBarFull, Color.Black);
-            Game.SpriteBatch.Draw(barTexture, cashBar, cashBarColor);
+            Game.SpriteBatch.Draw(horizontalBarBackgroundTexture, cashBarFull, Color.White);
+            Game.SpriteBatch.Draw(horizontalBarTexture, cashBar, cashBarColor);
             techPointsIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, techPointsBarFull, Color.Black);
-            Game.SpriteBatch.Draw(barTexture, techPointsBar, techPointsBarColor);
+            Game.SpriteBatch.Draw(horizontalBarBackgroundTexture, techPointsBarFull, Color.White);
+            Game.SpriteBatch.Draw(horizontalBarTexture, techPointsBar, techPointsBarColor);
             populationIcon.Draw(gameTime);
             Game.SpriteBatch.DrawString(statsFont, system.GetTotalPopulation().ToString(), populationTextPosition, Color.White);
             timeLimitIcon.Draw(gameTime);
             Game.SpriteBatch.DrawString(statsFont, (ushort)(timeLeft / 60) + ":" + ((ushort)(timeLeft % 60)).ToString().PadLeft(2, '0'), timeLimitTextPosition, Color.White);
 
             economyIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, economyBarFull, Color.Black);
-            Game.SpriteBatch.Draw(barTexture, economyBar, economyBarColor);
+            Game.SpriteBatch.Draw(verticalBarBackgroundTexture, economyBarFull, Color.White);
+            Game.SpriteBatch.Draw(verticalBarTexture, economyBar, economyBarColor);
             technologyIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, technologyBarFull, Color.Black);
-            Game.SpriteBatch.Draw(barTexture, technologyBar, technologyBarColor);
+            Game.SpriteBatch.Draw(verticalBarBackgroundTexture, technologyBarFull, Color.White);
+            Game.SpriteBatch.Draw(verticalBarTexture, technologyBar, technologyBarColor);
             employmentIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, employmentBarFull, Color.Black);
-            Game.SpriteBatch.Draw(barTexture, employmentBar, technologyBarColor);
+            Game.SpriteBatch.Draw(verticalBarBackgroundTexture, employmentBarFull, Color.White);
+            Game.SpriteBatch.Draw(verticalBarTexture, employmentBar, employmentBarColor);
             educationIcon.Draw(gameTime);
-            Game.SpriteBatch.Draw(barBackgroundTexture, educationBarFull, Color.Black);
-            Game.SpriteBatch.Draw(barTexture, educationBar, technologyBarColor);
+            Game.SpriteBatch.Draw(verticalBarBackgroundTexture, educationBarFull, Color.White);
+            Game.SpriteBatch.Draw(verticalBarTexture, educationBar, educationBarColor);
 
 #if DEBUG
             Game.SpriteBatch.DrawString(statsFont, system.printStats(), new Vector2(0, 50), Color.Black);

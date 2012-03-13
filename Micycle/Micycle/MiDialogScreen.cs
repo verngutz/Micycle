@@ -132,7 +132,7 @@ namespace Micycle
             panelSide = Game.Content.Load<Texture2D>("InGameMenu\\panel_side");
             panelFill = Game.Content.Load<Texture2D>("InGameMenu\\panel_fill");
 
-            menuFont = Game.Content.Load<SpriteFont>("Default");
+            menuFont = Game.Content.Load<SpriteFont>("Fonts\\Default");
 
             cursor.AddTexture(Game.Content.Load<Texture2D>("InGameMenu\\button_corner"), 0);
         }
