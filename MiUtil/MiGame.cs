@@ -98,7 +98,7 @@ namespace MiUtil
                 screen.Draw(gameTime);
 #if DEBUG
             frameCounter++;
-            spriteBatch.DrawString(Content.Load<SpriteFont>("Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, MiResolution.VirtualHeight - 25), Color.White);
+            spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts\\Default"), "Frame Rate: " + frameRate + "fps", new Vector2(5, MiResolution.VirtualHeight - 25), Color.White);
 #endif
 
             SpriteBatch.End();

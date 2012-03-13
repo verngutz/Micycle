@@ -16,10 +16,35 @@ namespace Micycle
 
         private Texture2D background;
         private static readonly Vector2 BACKGROUND_ORIGIN = new Vector2(16, 16);
-        private static readonly Color BACKGROUND_COLOR = new Color(255, 255, 255, 127);
+        private static readonly Color BACKGROUND_COLOR = new Color(255, 255, 255, 200);
         private Rectangle backgroundRectangle;
         private const int BACKGROUND_RECTANGLE_WIDTH = 200;
         private const int BACKGROUND_RECTANGLE_HEIGHT = 250;
+
+        private const int TOP_PADDING = 5;
+        private const int LEFT_PADDING = 5;
+        private const int RIGHT_PADDING = 5;
+        private const int BOTTOM_PADDING = 5;
+
+        private const int TEXT_HEIGHT = 20;
+        private const int BAR_THICKNESS = 20;
+
+        protected SpriteFont buildingStatsFont;
+        protected Texture2D buildingStatBarFull;
+        protected Texture2D buildingStatBar;
+
+        private Vector2 stat1TextPosition;
+        protected Vector2 Stat1TextPosition { get { return stat1TextPosition; } }
+        private Vector2 stat2TextPosition;
+        protected Vector2 Stat2TextPosition { get { return stat2TextPosition; } }
+        private Vector2 stat3TextPosition;
+        protected Vector2 Stat3TextPosition { get { return stat3TextPosition; } }
+        private Rectangle stat1Bar;
+        protected Rectangle Stat1Bar { get { return stat1Bar; } }
+        private Rectangle stat2Bar;
+        protected Rectangle Stat2Bar { get { return stat2Bar; } }
+        private Rectangle stat3Bar;
+        protected Rectangle Stat3Bar { get { return stat3Bar; } }
 
         private const int UP_BUTTON_WIDTH = 100;
         private const int UP_BUTTON_HEIGHT = 75;
@@ -83,15 +108,24 @@ namespace Micycle
 
         private MiInGameMenu inGameMenu;
         private MicycleGameSystem system;
+        protected MicycleGameSystem System { get { return system; } }
 
         public MiBuildingMenu(Micycle game, float center_x, float center_y, MicycleGameSystem system, MiInGameMenu inGameMenu)
             : base(game)
         {
             centerX = center_x;
             centerY = center_y;
-            backgroundRectangle = new Rectangle((int)center_x, (int)center_y, BACKGROUND_RECTANGLE_WIDTH, BACKGROUND_RECTANGLE_HEIGHT);
             this.system = system;
             this.inGameMenu = inGameMenu;
+
+            backgroundRectangle = new Rectangle((int)center_x, (int)center_y, BACKGROUND_RECTANGLE_WIDTH, BACKGROUND_RECTANGLE_HEIGHT);
+
+            stat1TextPosition = new Vector2(center_x - BACKGROUND_RECTANGLE_WIDTH / 2 + LEFT_PADDING, center_y - BACKGROUND_RECTANGLE_HEIGHT / 2 + TOP_PADDING);
+            stat2TextPosition = stat1TextPosition + new Vector2(0, TEXT_HEIGHT + BAR_THICKNESS);
+            stat3TextPosition = stat2TextPosition + new Vector2(0, TEXT_HEIGHT + BAR_THICKNESS);
+            stat1Bar = new Rectangle((int)stat1TextPosition.X, (int)stat1TextPosition.Y + TEXT_HEIGHT, BACKGROUND_RECTANGLE_WIDTH - LEFT_PADDING - RIGHT_PADDING, BAR_THICKNESS);
+            stat2Bar = new Rectangle((int)stat2TextPosition.X, (int)stat2TextPosition.Y + TEXT_HEIGHT, stat1Bar.Width, stat1Bar.Height);
+            stat3Bar = new Rectangle((int)stat3TextPosition.X, (int)stat3TextPosition.Y + TEXT_HEIGHT, stat2Bar.Width, stat2Bar.Height);
 
             cursor = new MiAnimatingComponent(game, CANCEL_BUTTON_X, CANCEL_BUTTON_Y, 0.5f, 0, 0, 0);
             upButtonGraphic = new MiAnimatingComponent(game, UP_BUTTON_X, UP_BUTTON_Y, UP_BUTTON_SCALE, 0, 0, 0);
@@ -208,6 +242,10 @@ namespace Micycle
         public override void LoadContent()
         {
             background = Game.Content.Load<Texture2D>("BlackOut");
+
+            buildingStatsFont = Game.Content.Load<SpriteFont>("Fonts\\buildingStatFont");
+            buildingStatBarFull = Game.Content.Load<Texture2D>("horizontalBar");
+            buildingStatBar = Game.Content.Load<Texture2D>("horizontalBar");
 
             cursor.AddTexture(Game.Content.Load<Texture2D>("buttonoutline"), 0);
             upButtonGraphic.AddTexture(Game.Content.Load<Texture2D>("button"), 0);
